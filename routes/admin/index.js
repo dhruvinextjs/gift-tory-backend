@@ -18,6 +18,14 @@ router.use(
     "/returns",
     require("./return.routes")
 );
+router.use(
+    "/cancel-requests",
+    require("./cancel.routes")
+);
+router.use(
+    "/careers",
+    require("./career.routes")
+);
 router.use("/blogs", require("./blog.routes"));
 router.use("/banners", require("./banner.routes"));
 router.use("/contact", require("./contact.routes"));

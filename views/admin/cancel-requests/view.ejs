@@ -1,0 +1,144 @@
+<div class="gt-card">
+
+    <div class="gt-card-header d-flex justify-content-between align-items-center">
+
+        <div>
+            <h3>Cancel Request Details</h3>
+            <p>View and update cancel request status.</p>
+        </div>
+
+        <a href="/admin/cancel-requests" class="btn btn-secondary">
+            ← Back
+        </a>
+
+    </div>
+
+    <div class="gt-card-body">
+
+        <table class="table table-bordered">
+
+            <tr>
+                <th width="220">Customer</th>
+                <td><%= request.user?.name || "Guest User" %></td>
+            </tr>
+
+            <tr>
+                <th>Email</th>
+                <td><%= request.user?.email || "-" %></td>
+            </tr>
+
+            <tr>
+                <th>Phone</th>
+                <td><%= request.user?.phone || "-" %></td>
+            </tr>
+
+            <tr>
+                <th>Order Number</th>
+                <td><%= request.order?.orderNumber || "-" %></td>
+            </tr>
+
+            <tr>
+                <th>Order Amount</th>
+                <td>₹ <%= request.order?.totalPrice || 0 %></td>
+            </tr>
+
+            <tr>
+                <th>Reason</th>
+                <td><%= request.reason %></td>
+            </tr>
+
+            <tr>
+                <th>Description</th>
+                <td><%= request.description || "-" %></td>
+            </tr>
+
+            <tr>
+                <th>Current Status</th>
+                <td>
+
+                    <% if(request.status === "pending"){ %>
+                        <span class="badge bg-warning">Pending</span>
+                    <% } %>
+
+                    <% if(request.status === "approved"){ %>
+                        <span class="badge bg-success">Approved</span>
+                    <% } %>
+
+                    <% if(request.status === "rejected"){ %>
+                        <span class="badge bg-danger">Rejected</span>
+                    <% } %>
+
+                    <% if(request.status === "completed"){ %>
+                        <span class="badge bg-primary">Completed</span>
+                    <% } %>
+
+                </td>
+            </tr>
+
+            <tr>
+                <th>Requested On</th>
+                <td>
+                    <%= new Date(request.createdAt).toLocaleString() %>
+                </td>
+            </tr>
+
+        </table>
+
+        <hr>
+
+        <form
+            method="POST"
+            action="/admin/cancel-requests/<%= request._id %>/status"
+        >
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Update Status
+                </label>
+
+                <select
+                    name="status"
+                    class="form-select"
+                >
+
+                    <option
+                        value="pending"
+                        <%= request.status === "pending" ? "selected" : "" %>>
+                        Pending
+                    </option>
+
+                    <option
+                        value="approved"
+                        <%= request.status === "approved" ? "selected" : "" %>>
+                        Approved
+                    </option>
+
+                    <option
+                        value="rejected"
+                        <%= request.status === "rejected" ? "selected" : "" %>>
+                        Rejected
+                    </option>
+
+                    <option
+                        value="completed"
+                        <%= request.status === "completed" ? "selected" : "" %>>
+                        Completed
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Update Status
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

@@ -1,0 +1,143 @@
+<div class="gt-card">
+
+    <div class="gt-card-header d-flex justify-content-between align-items-center">
+
+        <div>
+            <h3>Careers</h3>
+            <p>Manage all career openings.</p>
+        </div>
+
+        <a
+            href="/admin/careers/add"
+            class="btn btn-primary"
+        >
+            + Add Career
+        </a>
+
+    </div>
+
+    <div class="gt-card-body">
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Work Mode</th>
+                    <th>Employment Type</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th width="220">Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% if(careers.length === 0){ %>
+
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No Career Found
+                        </td>
+                    </tr>
+
+                <% } %>
+
+                <% careers.forEach(function(career,index){ %>
+
+                    <tr>
+
+                        <td><%= index + 1 %></td>
+
+                        <td>
+                            <%= career.title %>
+                        </td>
+
+                        <td>
+                            <%= career.workMode %>
+                        </td>
+
+                        <td>
+                            <%= career.employmentType %>
+                        </td>
+
+                        <td style="max-width:350px;">
+
+                            <%= career.description.length > 100
+                            ? career.description.substring(0,100) + "..."
+                            : career.description %>
+
+                        </td>
+
+                        <td>
+
+                            <% if(career.isActive){ %>
+
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="badge bg-danger">
+                                    Inactive
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="/admin/careers/edit/<%= career._id %>"
+                                class="btn btn-sm btn-warning"
+                            >
+                                Edit
+                            </a>
+
+                            <form
+                                action="/admin/careers/delete/<%= career._id %>"
+                                method="POST"
+                                style="display:inline-block;"
+                                onsubmit="return confirm('Delete this career?')"
+                            >
+
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
+                            <form
+                                action="/admin/careers/<%= career._id %>/toggle-active"
+                                method="POST"
+                                style="display:inline-block;"
+                            >
+
+                                <button
+                                    class="btn btn-sm <%= career.isActive ? 'btn-secondary' : 'btn-success' %>"
+                                >
+                                    <%= career.isActive ? 'Deactivate' : 'Activate' %>
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

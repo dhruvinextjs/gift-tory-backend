@@ -50,6 +50,10 @@ router.use(
   "/cancel-orders",
   require("./cancel.routes")
 );
+router.use(
+    "/careers",
+    require("./career.routes")
+);
 router.use("/wishlist", require("./wishlist.routes"));
 router.use("/home-info", require("./homeInfo.routes"));
 router.use("/videos", require("./video.routes"));

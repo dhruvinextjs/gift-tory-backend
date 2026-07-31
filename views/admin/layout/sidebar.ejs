@@ -41,7 +41,6 @@
       <span class="gt-icon">🏷️</span> Coupons
     </a>
 
-
     <div class="gt-nav-section-label">Sales</div>
     <a href="/admin/orders" class="<%= active === 'orders' ? 'active' : '' %>">
       <span class="gt-icon">📦</span> Orders
@@ -117,14 +116,18 @@
       <a href="/admin/shops"> Shops </a>
     </li>
     <li>
-
-<a href="/admin/returns">
-
-Return Requests
-
-</a>
-
-</li>
+      <a href="/admin/returns"> Return Requests </a>
+    </li>
+    <li>
+      <a href="/admin/cancel-requests"> Cancel Order Requests </a>
+    </li>
+    <a
+      href="/admin/careers"
+      class="<%= active === 'careers' ? 'active' : '' %>"
+    >
+      <span class="gt-icon">💼</span>
+      Careers
+    </a>
 
     <div class="gt-nav-section-label">Enquiries</div>
     <a

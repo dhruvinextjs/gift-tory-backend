@@ -1,0 +1,87 @@
+<div class="gt-card">
+
+    <div class="gt-card-header">
+        <h3>Add Career</h3>
+        <p>Create a new career opportunity.</p>
+    </div>
+
+    <div class="gt-card-body">
+
+        <form method="POST" action="/admin/careers/add">
+
+            <div class="mb-3">
+                <label class="form-label">Job Title</label>
+                <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    required
+                >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Work Mode</label>
+
+                <select
+                    name="workMode"
+                    class="form-select"
+                    required
+                >
+                    <option value="">Select Work Mode</option>
+                    <option value="On-site">On-site</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Hybrid">Hybrid</option>
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Employment Type</label>
+
+                <select
+                    name="employmentType"
+                    class="form-select"
+                    required
+                >
+                    <option value="">Select Employment Type</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Contract">Contract</option>
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Description
+                </label>
+
+                <textarea
+                    id="editor"
+                    name="description"
+                ></textarea>
+
+            </div>
+
+            <button
+                class="btn btn-primary"
+                type="submit"
+            >
+                Save Career
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+ClassicEditor
+.create(document.querySelector("#editor"))
+.catch(error=>console.error(error));
+</script>

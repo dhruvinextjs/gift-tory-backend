@@ -24,6 +24,8 @@ const bulkOrderController = require("../../controllers/admin/bulkOrder.controlle
 const couponController = require("../../controllers/admin/coupon.controller");
 const faqController = require("../../controllers/admin/faq.controller");
 const returnController = require("../../controllers/admin/return.controller");
+const cancelController = require("../../controllers/admin/cancel.controller");
+const careerController = require("../../controllers/admin/career.controller");
 
 // ---------- Auth ----------
 router.get("/login", redirectIfAdminLoggedIn, authController.renderLoginPage);
@@ -166,14 +168,61 @@ router.get(
    returnController.renderReturnRequests
 );
 
-// router.get(
-//  "/returns/:id",
-//  returnController.renderReturnRequestDetail
-// );
+router.get(
+    "/returns/:id",
+    returnController.renderReturnRequestDetail
+);
 
-// router.post(
-//  "/returns/:id/status",
-//  returnController.updateReturnRequestStatus
-// );
+router.post(
+    "/returns/:id/status",
+    returnController.updateReturnRequestStatus
+);
+
+// ---------- Cancel Requests ----------
+router.get(
+    "/cancel-requests",
+    cancelController.renderCancelRequests
+);
+
+router.get(
+    "/cancel-requests/:id",
+    cancelController.renderCancelRequestDetail
+);
+
+router.post(
+    "/cancel-requests/:id/status",
+    cancelController.updateCancelRequestStatus
+);
+// ---------- Careers ----------
+router.get(
+    "/careers",
+    careerController.renderCareerList
+);
+
+router.get(
+    "/careers/add",
+    careerController.renderAddCareer
+);
+
+router.post(
+    "/careers/add",
+    careerController.createCareer
+);
+
+router.get(
+    "/careers/edit/:id",
+    careerController.renderEditCareer
+);
+
+router.post(
+    "/careers/edit/:id",
+    careerController.updateCareer
+);
+
+router.post(
+    "/careers/delete/:id",
+    careerController.deleteCareer
+);
+
 
 module.exports = router;

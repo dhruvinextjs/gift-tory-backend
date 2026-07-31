@@ -1,11 +1,11 @@
-const ReturnRequest = require("../../models/returnRequest.model");
+const CancelRequest = require("../../models/orderCancel.model");
 const catchAsync = require("../../utils/catchAsync");
 const ApiResponse = require("../../utils/ApiResponse");
 
-exports.getAllReturnRequests = catchAsync(async (req, res) => {
+exports.getAllCancelRequests = catchAsync(async (req, res) => {
 
     const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
+    const limit = 10;
     const skip = (page - 1) * limit;
 
     const filter = {};
@@ -14,18 +14,13 @@ exports.getAllReturnRequests = catchAsync(async (req, res) => {
         filter.status = req.query.status;
     }
 
-    const total = await ReturnRequest.countDocuments(filter);
+    const total = await CancelRequest.countDocuments(filter);
 
-    const requests = await ReturnRequest.find(filter)
-
+    const requests = await CancelRequest.find(filter)
         .populate("user", "name email phone")
-
         .populate("order", "orderNumber totalPrice createdAt")
-
         .sort("-createdAt")
-
         .skip(skip)
-
         .limit(limit);
 
     res.status(200).json(
@@ -40,14 +35,12 @@ exports.getAllReturnRequests = catchAsync(async (req, res) => {
                     totalPages: Math.ceil(total / limit)
                 }
             },
-            "Return requests fetched successfully"
+            "Cancel requests fetched successfully"
         )
     );
-
 });
 
-
-exports.renderReturnRequests = catchAsync(async (req, res) => {
+exports.renderCancelRequests = catchAsync(async (req, res) => {
 
     const page = Number(req.query.page) || 1;
     const limit = 10;
@@ -59,70 +52,55 @@ exports.renderReturnRequests = catchAsync(async (req, res) => {
         filter.status = req.query.status;
     }
 
-    const total = await ReturnRequest.countDocuments(filter);
+    const total = await CancelRequest.countDocuments(filter);
 
-    const requests = await ReturnRequest.find(filter)
+    const requests = await CancelRequest.find(filter)
         .populate("user", "name email phone")
         .populate("order", "orderNumber totalPrice createdAt")
         .sort("-createdAt")
         .skip(skip)
         .limit(limit);
 
-    res.render("admin/returns/index", {
-
-        layout: "admin/layout/main",
-
-        title: "Return Requests",
-
-        active: "returns",
-
-        adminName: req.session?.admin?.name || "Admin",
-
-        success: req.flash ? req.flash("success") : [],
-
-        error: req.flash ? req.flash("error") : [],
-
+    res.render("admin/cancel-requests/index", {
+        title: "Cancel Requests",
+        active: "cancel",
         requests,
-
         currentPage: page,
-
         totalPages: Math.ceil(total / limit),
-
         status: req.query.status || ""
-
     });
 
 });
 
 
-exports.renderReturnRequestDetail = catchAsync(async (req, res) => {
 
-    const request = await ReturnRequest.findById(req.params.id)
+exports.renderCancelRequestDetail = catchAsync(async (req, res) => {
+
+    const request = await CancelRequest.findById(req.params.id)
         .populate("user")
         .populate("order");
 
     if (!request) {
-        return res.redirect("/admin/returns");
+        return res.redirect("/admin/cancel-requests");
     }
 
-    res.render("admin/returns/view", {
-        title: "Return Request Details",
-        active: "returns",
+    res.render("admin/cancel-requests/view", {
+        title: "Cancel Request Details",
+        active: "cancel",
         request
     });
 
 });
 
-
-exports.updateReturnRequestStatus = catchAsync(async (req, res) => {
+exports.updateCancelRequestStatus = catchAsync(async (req, res) => {
 
     const { status } = req.body;
 
-    await ReturnRequest.findByIdAndUpdate(
+    await CancelRequest.findByIdAndUpdate(
         req.params.id,
         { status }
     );
 
-    res.redirect("/admin/returns/" + req.params.id);
+    res.redirect("/admin/cancel-requests/" + req.params.id);
 
 });
