@@ -14,6 +14,10 @@ router.use("/orders", require("./order.routes"));
 router.use("/users", require("./user.routes"));
 router.use("/reviews", require("./review.routes"));
 router.use("/testimonials", require("./testimonial.routes"));
+router.use(
+    "/returns",
+    require("./return.routes")
+);
 router.use("/blogs", require("./blog.routes"));
 router.use("/banners", require("./banner.routes"));
 router.use("/contact", require("./contact.routes"));

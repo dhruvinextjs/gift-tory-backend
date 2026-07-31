@@ -23,6 +23,7 @@ const contactController = require("../../controllers/admin/contact.controller");
 const bulkOrderController = require("../../controllers/admin/bulkOrder.controller");
 const couponController = require("../../controllers/admin/coupon.controller");
 const faqController = require("../../controllers/admin/faq.controller");
+const returnController = require("../../controllers/admin/return.controller");
 
 // ---------- Auth ----------
 router.get("/login", redirectIfAdminLoggedIn, authController.renderLoginPage);
@@ -157,5 +158,22 @@ router.use(
     "/shops",
     require("./shop.routes")
 );
+
+
+// ---------- Return Requests ----------
+router.get(
+   "/returns",
+   returnController.renderReturnRequests
+);
+
+// router.get(
+//  "/returns/:id",
+//  returnController.renderReturnRequestDetail
+// );
+
+// router.post(
+//  "/returns/:id/status",
+//  returnController.updateReturnRequestStatus
+// );
 
 module.exports = router;

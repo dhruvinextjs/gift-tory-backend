@@ -46,6 +46,10 @@ router.use("/story", require("./story.routes"));
 router.use("/about", require("./about.routes"));
 router.use("/coupons", require("./coupon.routes"));
 router.use("/returns", require("./return.routes"));
+router.use(
+  "/cancel-orders",
+  require("./cancel.routes")
+);
 router.use("/wishlist", require("./wishlist.routes"));
 router.use("/home-info", require("./homeInfo.routes"));
 router.use("/videos", require("./video.routes"));
