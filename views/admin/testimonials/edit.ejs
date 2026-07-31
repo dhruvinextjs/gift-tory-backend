@@ -1,0 +1,53 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Edit Testimonial</h2>
+    <a href="/admin/testimonials" class="gt-btn gt-btn-outline">← Back to list</a>
+  </div>
+  <div class="gt-card-body">
+    <form method="POST" action="/admin/testimonials/edit/<%= testimonial._id %>" enctype="multipart/form-data">
+      <div class="gt-form-grid">
+        <div class="gt-form-group">
+          <label>Customer Name *</label>
+          <input class="gt-input" type="text" name="name" value="<%= testimonial.name %>" required />
+        </div>
+        <div class="gt-form-group">
+          <label>Designation</label>
+          <input class="gt-input" type="text" name="designation" value="<%= testimonial.designation %>" />
+        </div>
+      </div>
+      <div class="gt-form-group">
+        <label>Message *</label>
+        <textarea class="gt-input" name="message" rows="3" required><%= testimonial.message %></textarea>
+      </div>
+      <div class="gt-form-grid">
+        <div class="gt-form-group">
+          <label>Rating</label>
+          <select class="gt-select" name="rating">
+            <% [5,4,3,2,1].forEach(r => { %>
+              <option value="<%= r %>" <%= testimonial.rating === r ? 'selected' : '' %>><%= r %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="gt-form-group">
+          <label>Display Order</label>
+          <input class="gt-input" type="number" name="displayOrder" value="<%= testimonial.displayOrder %>" />
+        </div>
+        <div class="gt-form-group" style="align-self:end;">
+          <label class="gt-checkbox-row"><input type="checkbox" name="isActive" <%= testimonial.isActive ? 'checked' : '' %> /> Active</label>
+        </div>
+      </div>
+      <% if (testimonial.image) { %>
+        <div class="gt-form-group">
+          <label>Current Photo</label>
+          <div class="gt-image-preview"><img src="/uploads/testimonials/<%= testimonial.image %>" alt="" /></div>
+        </div>
+      <% } %>
+      <div class="gt-form-group">
+        <label>Replace Photo</label>
+        <input class="gt-input" type="file" name="image" accept="image/*" data-preview-input="imgPreview" />
+        <div class="gt-image-preview" id="imgPreview"></div>
+      </div>
+      <button type="submit" class="gt-btn gt-btn-primary">Update Testimonial</button>
+    </form>
+  </div>
+</div>

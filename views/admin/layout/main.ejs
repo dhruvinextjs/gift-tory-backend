@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof title !== 'undefined' ? title + ' — Gifttory Admin' : 'Gifttory Admin' %></title>
+  <link rel="stylesheet" href="/admin/css/style.css" />
+</head>
+<body>
+  <div class="gt-shell">
+    <%- include('sidebar') %>
+
+    <div class="gt-main">
+      <header class="gt-topbar">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <button class="gt-menu-toggle" data-menu-toggle>☰</button>
+          <h1><%= typeof title !== 'undefined' ? title : 'Dashboard' %></h1>
+        </div>
+        <div class="gt-admin-chip">
+          <span class="gt-avatar"><%= (adminName || 'A').charAt(0).toUpperCase() %></span>
+          <span><%= adminName || 'Admin' %></span>
+        </div>
+      </header>
+
+      <main class="gt-content">
+        <% if (success && success.length) { %>
+          <div class="gt-alert gt-alert-success" data-flash>✅ <%= success[0] %></div>
+        <% } %>
+        <% if (error && error.length) { %>
+          <div class="gt-alert gt-alert-error" data-flash>⚠️ <%= error[0] %></div>
+        <% } %>
+
+        <%- body %>
+      </main>
+    </div>
+  </div>
+
+  <script src="/admin/js/script.js"></script>
+</body>
+</html>

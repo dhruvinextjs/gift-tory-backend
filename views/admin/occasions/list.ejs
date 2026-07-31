@@ -1,0 +1,32 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Occasions</h2>
+    <a href="/admin/occasions/add" class="gt-btn gt-btn-primary">+ Add Occasion</a>
+  </div>
+  <div class="gt-table-wrap">
+    <table class="gt-table">
+      <thead>
+        <tr><th>Image</th><th>Name</th><th>Order</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <% if (occasions.length === 0) { %>
+          <tr><td colspan="5" class="gt-text-muted">No occasions yet.</td></tr>
+        <% } %>
+        <% occasions.forEach(c => { %>
+          <tr>
+            <td><img class="gt-table-thumb" src="/uploads/occasions/<%= c.image %>" onerror="this.src='https://via.placeholder.com/44'" alt="" /></td>
+            <td><%= c.name %></td>
+            <td><%= c.displayOrder %></td>
+            <td><span class="gt-pill <%= c.isActive ? 'gt-pill-success' : 'gt-pill-gray' %>"><%= c.isActive ? 'Active' : 'Hidden' %></span></td>
+            <td style="white-space:nowrap;">
+              <a class="gt-btn gt-btn-outline gt-btn-sm" href="/admin/occasions/edit/<%= c._id %>">Edit</a>
+              <form class="gt-inline-form" method="POST" action="/admin/occasions/delete/<%= c._id %>" data-confirm="Delete this occasion?">
+                <button class="gt-btn gt-btn-danger gt-btn-sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

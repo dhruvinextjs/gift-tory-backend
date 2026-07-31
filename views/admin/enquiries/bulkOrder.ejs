@@ -1,0 +1,36 @@
+<div class="gt-card">
+  <div class="gt-card-header"><h2>Bulk / Corporate Order Enquiries</h2></div>
+  <div class="gt-table-wrap">
+    <table class="gt-table">
+      <thead><tr><th>Company</th><th>Contact</th><th>Phone / Email</th><th>Qty</th><th>Requirement</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% if (enquiries.length === 0) { %>
+          <tr><td colspan="7" class="gt-text-muted">No bulk order enquiries yet.</td></tr>
+        <% } %>
+        <% enquiries.forEach(e => { %>
+          <tr>
+            <td><%= e.companyName || '—' %></td>
+            <td><%= e.contactPerson %></td>
+            <td><%= e.phone %><br/><span class="gt-text-muted" style="font-size:12px;"><%= e.email %></span></td>
+            <td><%= e.quantity %></td>
+            <td style="max-width:220px;"><%= e.productRequirement %></td>
+            <td>
+              <form class="gt-inline-form" method="POST" action="/admin/enquiries/bulk-order/<%= e._id %>/status">
+                <select class="gt-select" name="status" onchange="this.form.submit()" style="padding:4px 8px; font-size:12px;">
+                  <option value="new" <%= e.status === 'new' ? 'selected' : '' %>>New</option>
+                  <option value="in_progress" <%= e.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
+                  <option value="resolved" <%= e.status === 'resolved' ? 'selected' : '' %>>Resolved</option>
+                </select>
+              </form>
+            </td>
+            <td>
+              <form class="gt-inline-form" method="POST" action="/admin/enquiries/bulk-order/<%= e._id %>/delete" data-confirm="Delete this enquiry?">
+                <button class="gt-btn gt-btn-danger gt-btn-sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

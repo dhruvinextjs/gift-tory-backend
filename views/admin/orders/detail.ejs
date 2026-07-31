@@ -1,0 +1,76 @@
+<div class="gt-flex-between" style="margin-bottom: 18px;">
+  <a href="/admin/orders" class="gt-btn gt-btn-outline">← Back to orders</a>
+</div>
+
+<div class="gt-form-grid" style="align-items:start; grid-template-columns: 2fr 1fr;">
+  <div class="gt-card">
+    <div class="gt-card-header"><h2>Order #<%= order.orderNumber %></h2></div>
+    <div class="gt-table-wrap">
+      <table class="gt-table">
+        <thead><tr><th>Image</th><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead>
+        <tbody>
+          <% order.items.forEach(item => { %>
+            <tr>
+              <td><img class="gt-table-thumb" src="/uploads/products/<%= item.image %>" onerror="this.src='https://via.placeholder.com/44'" alt="" /></td>
+              <td><%= item.name %></td>
+              <td>₹<%= item.price %></td>
+              <td><%= item.quantity %></td>
+              <td>₹<%= item.price * item.quantity %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <div class="gt-card-body" style="border-top:1px solid var(--gt-border);">
+      <div class="gt-flex-between"><span>Items Price</span><strong>₹<%= order.itemsPrice %></strong></div>
+      <div class="gt-flex-between"><span>Shipping</span><strong>₹<%= order.shippingPrice %></strong></div>
+      <div class="gt-flex-between" style="font-size:16px; margin-top:8px;"><span>Total</span><strong>₹<%= order.totalPrice %></strong></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="gt-card" style="margin-bottom:18px;">
+      <div class="gt-card-header"><h2>Customer</h2></div>
+      <div class="gt-card-body">
+        <p><strong><%= order.user ? order.user.name : 'Deleted user' %></strong></p>
+        <p class="gt-text-muted"><%= order.user ? order.user.email : '' %></p>
+        <p class="gt-text-muted"><%= order.user ? order.user.phone : '' %></p>
+      </div>
+    </div>
+
+    <div class="gt-card" style="margin-bottom:18px;">
+      <div class="gt-card-header"><h2>Shipping Address</h2></div>
+      <div class="gt-card-body">
+        <p class="gt-mb-0"><%= order.shippingAddress.fullName %></p>
+        <p class="gt-mb-0"><%= order.shippingAddress.addressLine1 %> <%= order.shippingAddress.addressLine2 || '' %></p>
+        <p class="gt-mb-0"><%= order.shippingAddress.city %>, <%= order.shippingAddress.state %> - <%= order.shippingAddress.pincode %></p>
+        <p class="gt-mb-0"><%= order.shippingAddress.phone %></p>
+      </div>
+    </div>
+
+    <div class="gt-card">
+      <div class="gt-card-header"><h2>Update Status</h2></div>
+      <div class="gt-card-body">
+        <form method="POST" action="/admin/orders/<%= order._id %>/status">
+          <div class="gt-form-group">
+            <label>Order Status</label>
+            <select class="gt-select" name="orderStatus">
+              <% statuses.forEach(s => { %>
+                <option value="<%= s %>" <%= order.orderStatus === s ? 'selected' : '' %>><%= s.replace('_',' ') %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="gt-form-group">
+            <label>Payment Status</label>
+            <select class="gt-select" name="paymentStatus">
+              <% ['pending','paid','failed','refunded'].forEach(s => { %>
+                <option value="<%= s %>" <%= order.paymentStatus === s ? 'selected' : '' %>><%= s %></option>
+              <% }) %>
+            </select>
+          </div>
+          <button type="submit" class="gt-btn gt-btn-primary" style="width:100%; justify-content:center;">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

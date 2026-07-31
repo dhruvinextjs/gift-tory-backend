@@ -1,0 +1,46 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Orders</h2>
+    <form method="GET" action="/admin/orders" style="display:flex; gap:8px;">
+      <select class="gt-select" name="status" onchange="this.form.submit()">
+        <option value="">All statuses</option>
+        <% statuses.forEach(s => { %>
+          <option value="<%= s %>" <%= status === s ? 'selected' : '' %>><%= s.replace('_',' ') %></option>
+        <% }) %>
+      </select>
+    </form>
+  </div>
+
+  <div class="gt-table-wrap">
+    <table class="gt-table">
+      <thead>
+        <tr><th>Order #</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% if (orders.length === 0) { %>
+          <tr><td colspan="8" class="gt-text-muted">No orders found.</td></tr>
+        <% } %>
+        <% orders.forEach(o => { %>
+          <tr>
+            <td><%= o.orderNumber %></td>
+            <td><%= o.user ? o.user.name : 'Deleted user' %></td>
+            <td><%= o.items.length %></td>
+            <td>₹<%= o.totalPrice %></td>
+            <td><span class="gt-pill <%= o.paymentStatus === 'paid' ? 'gt-pill-success' : 'gt-pill-warning' %>"><%= o.paymentStatus %></span></td>
+            <td><span class="gt-pill gt-pill-info"><%= o.orderStatus.replace('_',' ') %></span></td>
+            <td><%= new Date(o.createdAt).toLocaleDateString('en-IN') %></td>
+            <td><a class="gt-btn gt-btn-outline gt-btn-sm" href="/admin/orders/<%= o._id %>">View</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if (totalPages > 1) { %>
+    <div class="gt-pagination" style="padding: 0 22px 20px;">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <a href="/admin/orders?page=<%= i %>&status=<%= status %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+      <% } %>
+    </div>
+  <% } %>
+</div>

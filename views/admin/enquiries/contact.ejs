@@ -1,0 +1,36 @@
+<div class="gt-card">
+  <div class="gt-card-header"><h2>Contact Us Enquiries</h2></div>
+  <div class="gt-table-wrap">
+    <table class="gt-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Status</th><th>Received</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% if (contacts.length === 0) { %>
+          <tr><td colspan="7" class="gt-text-muted">No enquiries yet.</td></tr>
+        <% } %>
+        <% contacts.forEach(c => { %>
+          <tr>
+            <td><%= c.name %></td>
+            <td><%= c.email %></td>
+            <td><%= c.subject || '—' %></td>
+            <td style="max-width:260px;"><%= c.message %></td>
+            <td>
+              <form class="gt-inline-form" method="POST" action="/admin/enquiries/contact/<%= c._id %>/status">
+                <select class="gt-select" name="status" onchange="this.form.submit()" style="padding:4px 8px; font-size:12px;">
+                  <option value="new" <%= c.status === 'new' ? 'selected' : '' %>>New</option>
+                  <option value="in_progress" <%= c.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
+                  <option value="resolved" <%= c.status === 'resolved' ? 'selected' : '' %>>Resolved</option>
+                </select>
+              </form>
+            </td>
+            <td><%= new Date(c.createdAt).toLocaleDateString('en-IN') %></td>
+            <td>
+              <form class="gt-inline-form" method="POST" action="/admin/enquiries/contact/<%= c._id %>/delete" data-confirm="Delete this enquiry?">
+                <button class="gt-btn gt-btn-danger gt-btn-sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Add Coupon</h2>
+    <a href="/admin/coupons" class="gt-btn gt-btn-outline">← Back to list</a>
+  </div>
+  <div class="gt-card-body">
+    <form method="POST" action="/admin/coupons/add">
+      <div class="gt-form-grid">
+        <div class="gt-form-group">
+          <label>Coupon Code *</label>
+          <input class="gt-input" type="text" name="code" placeholder="GIFT10" required style="text-transform:uppercase;" />
+        </div>
+        <div class="gt-form-group">
+          <label>Discount Type *</label>
+          <select class="gt-select" name="discountType" required>
+            <option value="percentage">Percentage (%)</option>
+            <option value="flat">Flat Amount (₹)</option>
+          </select>
+        </div>
+        <div class="gt-form-group">
+          <label>Discount Value *</label>
+          <input class="gt-input" type="number" name="discountValue" required />
+        </div>
+      </div>
+      <div class="gt-form-grid">
+        <div class="gt-form-group">
+          <label>Minimum Order Amount (₹)</label>
+          <input class="gt-input" type="number" name="minOrderAmount" value="0" />
+        </div>
+        <div class="gt-form-group">
+          <label>Max Discount Amount (₹) — for percentage type</label>
+          <input class="gt-input" type="number" name="maxDiscountAmount" />
+        </div>
+        <div class="gt-form-group">
+          <label>Usage Limit</label>
+          <input class="gt-input" type="number" name="usageLimit" value="100" />
+        </div>
+      </div>
+      <div class="gt-form-grid">
+        <div class="gt-form-group">
+          <label>Expiry Date *</label>
+          <input class="gt-input" type="date" name="expiryDate" required />
+        </div>
+        <div class="gt-form-group" style="align-self:end;">
+          <label class="gt-checkbox-row"><input type="checkbox" name="isActive" checked /> Active</label>
+        </div>
+      </div>
+      <button type="submit" class="gt-btn gt-btn-primary">Save Coupon</button>
+    </form>
+  </div>
+</div>

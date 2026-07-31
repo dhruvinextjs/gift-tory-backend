@@ -1,0 +1,45 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Edit Blog Post</h2>
+    <a href="/admin/blogs" class="gt-btn gt-btn-outline">← Back to list</a>
+  </div>
+  <div class="gt-card-body">
+    <form method="POST" action="/admin/blogs/edit/<%= blog._id %>" enctype="multipart/form-data">
+      <div class="gt-form-group">
+        <label>Title *</label>
+        <input class="gt-input" type="text" name="title" value="<%= blog.title %>" required />
+      </div>
+      <div class="gt-form-group">
+        <label>Excerpt (short summary)</label>
+        <input class="gt-input" type="text" name="excerpt" value="<%= blog.excerpt %>" />
+      </div>
+      <div class="gt-form-group">
+        <label>Content *</label>
+        <textarea class="gt-input" name="content" rows="8" required><%= blog.content %></textarea>
+      </div>
+      <div class="gt-form-grid">
+        <div class="gt-form-group">
+          <label>Author</label>
+          <input class="gt-input" type="text" name="author" value="<%= blog.author %>" />
+        </div>
+        <div class="gt-form-group">
+          <label>Tags (comma separated)</label>
+          <input class="gt-input" type="text" name="tags" value="<%= blog.tags.join(', ') %>" />
+        </div>
+        <div class="gt-form-group" style="align-self:end;">
+          <label class="gt-checkbox-row"><input type="checkbox" name="isPublished" <%= blog.isPublished ? 'checked' : '' %> /> Published</label>
+        </div>
+      </div>
+      <div class="gt-form-group">
+        <label>Current Cover Image</label>
+        <div class="gt-image-preview"><img src="/uploads/blogs/<%= blog.coverImage %>" alt="" /></div>
+      </div>
+      <div class="gt-form-group">
+        <label>Replace Cover Image</label>
+        <input class="gt-input" type="file" name="coverImage" accept="image/*" data-preview-input="imgPreview" />
+        <div class="gt-image-preview" id="imgPreview"></div>
+      </div>
+      <button type="submit" class="gt-btn gt-btn-primary">Update Blog Post</button>
+    </form>
+  </div>
+</div>

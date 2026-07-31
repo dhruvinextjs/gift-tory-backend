@@ -1,0 +1,58 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>All Products</h2>
+    <div style="display:flex; gap:10px;">
+      <form method="GET" action="/admin/products" style="display:flex; gap:8px;">
+        <input class="gt-input" type="text" name="search" value="<%= search %>" placeholder="Search products..." />
+        <button class="gt-btn gt-btn-outline" type="submit">Search</button>
+      </form>
+      <a href="/admin/products/add" class="gt-btn gt-btn-primary">+ Add Product</a>
+    </div>
+  </div>
+
+  <div class="gt-table-wrap">
+    <table class="gt-table">
+      <thead>
+        <tr>
+          <th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (products.length === 0) { %>
+          <tr><td colspan="7" class="gt-text-muted">No products found.</td></tr>
+        <% } %>
+        <% products.forEach(p => { %>
+          <tr>
+            <td>
+              <img class="gt-table-thumb" src="/uploads/products/<%= p.images[0] %>" onerror="this.src='https://via.placeholder.com/44'" alt="<%= p.name %>" />
+            </td>
+            <td><%= p.name %></td>
+            <td><%= p.category ? p.category.name : '—' %></td>
+            <td>
+              ₹<%= p.discountPrice || p.price %>
+              <% if (p.discountPrice) { %><span class="gt-text-muted" style="text-decoration:line-through; font-size:12px;">₹<%= p.price %></span><% } %>
+            </td>
+            <td><%= p.stock %></td>
+            <td>
+              <span class="gt-pill <%= p.isActive ? 'gt-pill-success' : 'gt-pill-gray' %>"><%= p.isActive ? 'Active' : 'Hidden' %></span>
+            </td>
+            <td style="white-space:nowrap;">
+              <a class="gt-btn gt-btn-outline gt-btn-sm" href="/admin/products/edit/<%= p._id %>">Edit</a>
+              <form class="gt-inline-form" method="POST" action="/admin/products/delete/<%= p._id %>" data-confirm="Delete this product permanently?">
+                <button class="gt-btn gt-btn-danger gt-btn-sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if (totalPages > 1) { %>
+    <div class="gt-pagination" style="padding: 0 22px 20px;">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <a href="/admin/products?page=<%= i %>&search=<%= search %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+      <% } %>
+    </div>
+  <% } %>
+</div>

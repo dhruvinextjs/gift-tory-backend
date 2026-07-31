@@ -1,0 +1,37 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Edit Occasion</h2>
+    <a href="/admin/occasions" class="gt-btn gt-btn-outline">← Back to list</a>
+  </div>
+  <div class="gt-card-body">
+    <form method="POST" action="/admin/occasions/edit/<%= occasion._id %>" enctype="multipart/form-data">
+      <div class="gt-form-group">
+        <label>Occasion Name *</label>
+        <input class="gt-input" type="text" name="name" value="<%= occasion.name %>" required />
+      </div>
+      <div class="gt-form-group">
+        <label>Description</label>
+        <textarea class="gt-input" name="description" rows="3"><%= occasion.description %></textarea>
+      </div>
+      <div class="gt-form-grid">
+        <div class="gt-form-group">
+          <label>Display Order</label>
+          <input class="gt-input" type="number" name="displayOrder" value="<%= occasion.displayOrder %>" />
+        </div>
+        <div class="gt-form-group" style="align-self:end;">
+          <label class="gt-checkbox-row"><input type="checkbox" name="isActive" <%= occasion.isActive ? 'checked' : '' %> /> Active (visible on site)</label>
+        </div>
+      </div>
+      <div class="gt-form-group">
+        <label>Current Image</label>
+        <div class="gt-image-preview"><img src="/uploads/occasions/<%= occasion.image %>" alt="" /></div>
+      </div>
+      <div class="gt-form-group">
+        <label>Replace Image (optional)</label>
+        <input class="gt-input" type="file" name="image" accept="image/*" data-preview-input="imgPreview" />
+        <div class="gt-image-preview" id="imgPreview"></div>
+      </div>
+      <button type="submit" class="gt-btn gt-btn-primary">Update Occasion</button>
+    </form>
+  </div>
+</div>

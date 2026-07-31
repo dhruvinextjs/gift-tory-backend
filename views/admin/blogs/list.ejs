@@ -1,0 +1,31 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Blog Posts</h2>
+    <a href="/admin/blogs/add" class="gt-btn gt-btn-primary">+ Add Blog</a>
+  </div>
+  <div class="gt-table-wrap">
+    <table class="gt-table">
+      <thead><tr><th>Cover</th><th>Title</th><th>Author</th><th>Views</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% if (blogs.length === 0) { %>
+          <tr><td colspan="6" class="gt-text-muted">No blog posts yet.</td></tr>
+        <% } %>
+        <% blogs.forEach(b => { %>
+          <tr>
+            <td><img class="gt-table-thumb" src="/uploads/blogs/<%= b.coverImage %>" onerror="this.src='https://via.placeholder.com/44'" alt="" /></td>
+            <td><%= b.title %></td>
+            <td><%= b.author %></td>
+            <td><%= b.views %></td>
+            <td><span class="gt-pill <%= b.isPublished ? 'gt-pill-success' : 'gt-pill-gray' %>"><%= b.isPublished ? 'Published' : 'Draft' %></span></td>
+            <td style="white-space:nowrap;">
+              <a class="gt-btn gt-btn-outline gt-btn-sm" href="/admin/blogs/edit/<%= b._id %>">Edit</a>
+              <form class="gt-inline-form" method="POST" action="/admin/blogs/delete/<%= b._id %>" data-confirm="Delete this blog post?">
+                <button class="gt-btn gt-btn-danger gt-btn-sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

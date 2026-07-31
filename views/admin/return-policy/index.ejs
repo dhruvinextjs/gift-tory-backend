@@ -1,0 +1,61 @@
+<div class="gt-card">
+
+    <div class="gt-card-header">
+        <h3>Return Policy</h3>
+        <p>Update the return policy shown on the website.</p>
+    </div>
+
+    <div class="gt-card-body">
+
+        <form method="POST" action="/admin/return-policy">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Effective Date
+                </label>
+
+                <input
+                    type="date"
+                    name="effectiveDate"
+                    class="form-control"
+                    value="<%= policy.effectiveDate ? new Date(policy.effectiveDate).toISOString().split('T')[0] : '' %>"
+                >
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Return Policy
+                </label>
+
+                <textarea
+                    id="editor"
+                    name="content"
+                ><%= policy.content || "" %></textarea>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Save Changes
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+
+ClassicEditor
+.create(document.querySelector("#editor"))
+.catch(error=>console.error(error));
+
+</script>

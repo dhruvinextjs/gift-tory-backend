@@ -1,0 +1,61 @@
+<div class="gt-card">
+
+    <div class="gt-card-header">
+        <h3>Home Information</h3>
+        <p>Manage Homepage Statistics</p>
+    </div>
+
+    <div class="gt-card-body">
+
+        <form
+            method="POST"
+            action="/admin/home-info"
+        >
+
+            <% for(let i=0;i<3;i++){ %>
+
+            <div
+                style="
+                border:1px solid #ddd;
+                padding:20px;
+                margin-bottom:20px;
+                border-radius:8px;
+                "
+            >
+
+                <h5>Card <%= i+1 %></h5>
+
+                <label>Value</label>
+
+                <input
+                    type="text"
+                    class="form-control mb-3"
+                    name="value<%= i %>"
+                    value="<%= data.infos[i].value %>"
+                >
+
+                <label>Title</label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    name="title<%= i %>"
+                    value="<%= data.infos[i].title %>"
+                >
+
+            </div>
+
+            <% } %>
+
+            <button
+                class="btn btn-primary"
+                type="submit"
+            >
+                Save
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

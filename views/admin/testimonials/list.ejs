@@ -1,0 +1,31 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Testimonials</h2>
+    <a href="/admin/testimonials/add" class="gt-btn gt-btn-primary">+ Add Testimonial</a>
+  </div>
+  <div class="gt-table-wrap">
+    <table class="gt-table">
+      <thead><tr><th>Photo</th><th>Name</th><th>Rating</th><th>Message</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% if (testimonials.length === 0) { %>
+          <tr><td colspan="6" class="gt-text-muted">No testimonials yet.</td></tr>
+        <% } %>
+        <% testimonials.forEach(t => { %>
+          <tr>
+            <td><img class="gt-table-thumb" src="/uploads/testimonials/<%= t.image %>" onerror="this.src='https://via.placeholder.com/44'" alt="" /></td>
+            <td><%= t.name %><br/><span class="gt-text-muted" style="font-size:12px;"><%= t.designation %></span></td>
+            <td>⭐ <%= t.rating %></td>
+            <td style="max-width:260px;"><%= t.message %></td>
+            <td><span class="gt-pill <%= t.isActive ? 'gt-pill-success' : 'gt-pill-gray' %>"><%= t.isActive ? 'Active' : 'Hidden' %></span></td>
+            <td style="white-space:nowrap;">
+              <a class="gt-btn gt-btn-outline gt-btn-sm" href="/admin/testimonials/edit/<%= t._id %>">Edit</a>
+              <form class="gt-inline-form" method="POST" action="/admin/testimonials/delete/<%= t._id %>" data-confirm="Delete this testimonial?">
+                <button class="gt-btn gt-btn-danger gt-btn-sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
