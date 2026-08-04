@@ -64,13 +64,18 @@
                             <%= career.employmentType %>
                         </td>
 
-                        <td style="max-width:350px;">
+                 <td style="max-width:350px;">
 
-                            <%= career.description.length > 100
-                            ? career.description.substring(0,100) + "..."
-                            : career.description %>
+    <%
+        const plainDescription = career.description.replace(/<[^>]*>/g, "");
+    %>
 
-                        </td>
+    <%= plainDescription.length > 100
+        ? plainDescription.substring(0, 100) + "..."
+        : plainDescription
+    %>
+
+</td>
 
                         <td>
 

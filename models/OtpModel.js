@@ -23,6 +23,11 @@ const otpSchema = new mongoose.Schema(
       required: true,
     },
 
+    referralCode: {
+    type: String,
+    default: ""
+},
+
     purpose: {
     type: String,
     enum: ["signup", "forgot-password"],

@@ -4,6 +4,7 @@ const ApiError = require("../../utils/ApiError");
 const ApiResponse = require("../../utils/ApiResponse");
 const bcrypt = require("bcryptjs");
 const Otp = require("../../models/OtpModel");
+const generateReferralCode = require("../../utils/generateReferralCode");
 
 const generateOtp = require("../../utils/generateOtp");
 const sendOtp = require("../../utils/sendOtp");
@@ -20,7 +21,7 @@ const cookieOptions = {
 // @route   POST /api/user/auth/register
 exports.requestOtp = async (req, res) => {
   try {
-    const { phone, password } = req.body;
+    const { phone, password, referralCode } = req.body;
 
     // Phone Validation
     if (!phone) {
@@ -71,6 +72,7 @@ exports.requestOtp = async (req, res) => {
     await Otp.create({
       phone,
       password: hashedPassword,
+      referralCode,
       otp,
       purpose: "signup",
       expiresAt: new Date(Date.now() + 5 * 60 * 1000),
@@ -82,7 +84,7 @@ exports.requestOtp = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully",
-      otp:otp
+      otp: otp,
     });
   } catch (error) {
     console.log(error);
@@ -105,10 +107,10 @@ exports.verifyOtp = async (req, res) => {
       });
     }
 
-   const otpData = await Otp.findOne({
-  phone,
-  purpose: "signup",
-});
+    const otpData = await Otp.findOne({
+      phone,
+      purpose: "signup",
+    });
 
     if (!otpData) {
       return res.status(404).json({
@@ -118,7 +120,6 @@ exports.verifyOtp = async (req, res) => {
     }
 
     if (otpData.expiresAt < new Date()) {
-
       await Otp.deleteOne({ _id: otpData._id });
 
       return res.status(400).json({
@@ -128,21 +129,21 @@ exports.verifyOtp = async (req, res) => {
     }
 
     if (otpData.otp !== otp) {
-
       return res.status(400).json({
         success: false,
         message: "Invalid OTP",
       });
     }
+    const referralCode = await generateReferralCode();
 
     const user = await User.create({
-
       phone: otpData.phone,
 
       password: otpData.password,
 
-      isVerified: true
+      isVerified: true,
 
+      referralCode,
     });
 
     await Otp.deleteOne({ _id: otpData._id });
@@ -150,7 +151,6 @@ exports.verifyOtp = async (req, res) => {
     const token = generateToken(user._id);
 
     return res.status(201).json({
-
       success: true,
 
       message: "Signup successful",
@@ -158,63 +158,45 @@ exports.verifyOtp = async (req, res) => {
       token,
 
       data: {
-
         id: user._id,
 
-        phone: user.phone
-
-      }
-
+        phone: user.phone,
+      },
     });
-
   } catch (error) {
-
     console.log(error);
 
     return res.status(500).json({
-
       success: false,
 
-      message: "Internal Server Error"
-
+      message: "Internal Server Error",
     });
-
   }
 };
 
 exports.resendOtp = async (req, res) => {
-
   try {
-
     const { phone } = req.body;
 
     if (!phone) {
-
       return res.status(400).json({
+        success: false,
 
-        success:false,
-
-        message:"Phone number is required"
-
+        message: "Phone number is required",
       });
-
     }
 
     const otpData = await Otp.findOne({
-  phone,
-  purpose: "signup",
-});
+      phone,
+      purpose: "signup",
+    });
 
     if (!otpData) {
-
       return res.status(404).json({
+        success: false,
 
-        success:false,
-
-        message:"Request OTP first"
-
+        message: "Request OTP first",
       });
-
     }
 
     const otp = generateOtp();
@@ -228,27 +210,19 @@ exports.resendOtp = async (req, res) => {
     await sendOtp(phone, otp);
 
     return res.status(200).json({
+      success: true,
 
-      success:true,
-
-      message:"OTP resent successfully"
-
+      message: "OTP resent successfully",
     });
-
   } catch (error) {
-
     console.log(error);
 
     return res.status(500).json({
+      success: false,
 
-      success:false,
-
-      message:"Internal Server Error"
-
+      message: "Internal Server Error",
     });
-
   }
-
 };
 
 exports.loginUser = async (req, res) => {
@@ -271,7 +245,7 @@ exports.loginUser = async (req, res) => {
       });
     }
 
-const isPasswordMatch = await user.comparePassword(password);
+    const isPasswordMatch = await user.comparePassword(password);
 
     if (!isPasswordMatch) {
       return res.status(401).json({
@@ -300,7 +274,6 @@ const isPasswordMatch = await user.comparePassword(password);
     });
   }
 };
-
 
 exports.forgotPasswordRequestOtp = async (req, res) => {
   try {
@@ -342,25 +315,20 @@ exports.forgotPasswordRequestOtp = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully",
-      otp:otp
+      otp: otp,
     });
-
   } catch (error) {
-
     console.log(error);
 
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
-
   }
 };
 
-
 exports.forgotPasswordVerifyOtp = async (req, res) => {
   try {
-
     const { phone, otp } = req.body;
 
     if (!phone || !otp) {
@@ -383,7 +351,6 @@ exports.forgotPasswordVerifyOtp = async (req, res) => {
     }
 
     if (otpData.expiresAt < new Date()) {
-
       await Otp.deleteOne({
         _id: otpData._id,
       });
@@ -405,23 +372,18 @@ exports.forgotPasswordVerifyOtp = async (req, res) => {
       success: true,
       message: "OTP verified successfully",
     });
-
   } catch (error) {
-
     console.log(error);
 
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
-
   }
 };
 
-
 exports.resetPassword = async (req, res) => {
   try {
-
     const { phone, password, confirmPassword } = req.body;
 
     if (!phone || !password || !confirmPassword) {
@@ -450,11 +412,11 @@ exports.resetPassword = async (req, res) => {
       });
     }
 
-const user = await User.findOne({ phone });
+    const user = await User.findOne({ phone });
 
-user.password = password;
+    user.password = password;
 
-await user.save();
+    await user.save();
 
     await Otp.deleteOne({
       _id: otpData._id,
@@ -464,22 +426,18 @@ await user.save();
       success: true,
       message: "Password updated successfully",
     });
-
   } catch (error) {
-
     console.log(error);
 
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
-
   }
 };
 
 exports.forgotPasswordResendOtp = async (req, res) => {
   try {
-
     const { phone } = req.body;
 
     if (!phone) {
@@ -514,18 +472,15 @@ exports.forgotPasswordResendOtp = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "OTP resent successfully",
-      otp:otp
+      otp: otp,
     });
-
   } catch (error) {
-
     console.log(error);
 
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
-
   }
 };
 
@@ -572,7 +527,9 @@ exports.changePassword = catchAsync(async (req, res) => {
   user.password = newPassword;
   await user.save();
 
-  res.status(200).json(new ApiResponse(200, null, "Password changed successfully"));
+  res
+    .status(200)
+    .json(new ApiResponse(200, null, "Password changed successfully"));
 });
 
 // @desc    Add a new address
