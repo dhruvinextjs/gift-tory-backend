@@ -30,6 +30,15 @@ const cartSchema = new mongoose.Schema(
     type: String,
     default: ""
 },
+deliveryType: {
+    type: String,
+    default: "Standard Delivery"
+},
+
+deliverySlot: {
+    type: String,
+    default: ""
+},
 
 couponDiscount: {
     type: Number,

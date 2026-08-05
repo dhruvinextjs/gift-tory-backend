@@ -65,6 +65,16 @@ const personalizationSchema = new mongoose.Schema(
       default: "",
     },
 
+    deliveryType: {
+  type: String,
+  default: "Standard Delivery",
+},
+
+deliverySlot: {
+  type: String,
+  default: "",
+},
+
     // Checkbox
     sameAsProfile: {
       type: Boolean,

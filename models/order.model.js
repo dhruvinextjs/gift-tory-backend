@@ -28,6 +28,22 @@ const orderSchema = new mongoose.Schema(
       country: { type: String, default: "India" },
     },
 
+    deliveryType: {
+  type: String,
+  enum: [
+    "Standard Delivery",
+    "Fixed Time Delivery",
+    "Early Morning Delivery",
+    "Midnight Delivery",
+  ],
+  default: "Standard Delivery",
+},
+
+deliverySlot: {
+  type: String,
+  default: "",
+},
+
     itemsPrice: { type: Number, required: true },
     shippingPrice: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },

@@ -1,4 +1,6 @@
 const Coupon = require("../models/coupon.model");
+const DeliveryCharge = require("../models/deliveryCharge.model");
+const DeliverySlot = require("../models/deliverySlot.model");
 
 const calculateCartSummary = async (cart) => {
   let mrpTotal = 0;
@@ -64,14 +66,31 @@ const calculateCartSummary = async (cart) => {
   // Delivery Charge
   //--------------------------------------------------
 
-  const subtotal = mrpTotal - productDiscount - couponDiscount;
+//--------------------------------------------------
+// Delivery Charge
+//--------------------------------------------------
 
-  if (subtotal >= 999) {
-    deliveryCharge = 0;
-  } else {
-    deliveryCharge = 49;
-  }
+const subtotal = mrpTotal - productDiscount - couponDiscount;
 
+
+console.log("Cart Delivery Type:", cart.deliveryType);
+console.log("Cart Delivery Slot:", cart.deliverySlot);
+
+
+let delivery = null;
+
+
+    delivery = await DeliveryCharge.findOne({
+        deliveryType: cart.deliveryType,
+        isActive: true,
+    });
+
+console.log("Delivery DB:", delivery);
+
+deliveryCharge = delivery ? delivery.deliveryCharge : 0;
+
+
+console.log("Final Delivery Charge:", deliveryCharge);
   //--------------------------------------------------
   // Grand Total
   //--------------------------------------------------

@@ -1,0 +1,101 @@
+
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Delivery Charges</h3>
+
+        <a href="/admin/delivery-charges/add" class="btn btn-primary">
+            Add Delivery Charge
+        </a>
+    </div>
+
+    <% if(deliveryCharges.length===0){ %>
+
+        <div class="alert alert-warning">
+            No delivery charges found.
+        </div>
+
+    <% } %>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Delivery Type</th>
+
+<th>Time Slot</th>
+
+<th>Charge</th>
+
+<th>Status</th>
+
+<th width="180">Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% deliveryCharges.forEach(item=>{ %>
+
+<tr>
+
+<td><%= item.deliveryType %></td>
+
+<td><%= item.timeSlot %></td>
+
+<td>₹ <%= item.deliveryCharge %></td>
+
+<td>
+
+<% if(item.isActive){ %>
+
+<span class="badge bg-success">Active</span>
+
+<% }else{ %>
+
+<span class="badge bg-danger">Inactive</span>
+
+<% } %>
+
+</td>
+
+<td>
+
+<a href="/admin/delivery-charges/edit/<%= item._id %>" class="btn btn-sm btn-warning">
+
+Edit
+
+</a>
+
+<form
+action="/admin/delivery-charges/delete/<%= item._id %>"
+method="POST"
+style="display:inline">
+
+<button
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete?')">
+
+Delete
+
+</button>
+
+</form>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+

@@ -1,0 +1,81 @@
+
+
+<div class="container">
+
+<h3 class="mb-4">
+Add Delivery Charge
+</h3>
+
+<form
+action="/admin/delivery-charges/create"
+method="POST">
+
+<div class="mb-3">
+
+<label>Delivery Type</label>
+
+<select
+name="deliveryType"
+class="form-control">
+
+<option>Standard Delivery</option>
+
+<option>Fixed Time Delivery</option>
+
+<option>Early Morning Delivery</option>
+
+<option>Midnight Delivery</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>Time Slot</label>
+
+<input
+type="text"
+name="timeSlot"
+class="form-control"
+placeholder="10 AM - 2 PM">
+
+</div>
+
+<div class="mb-3">
+
+<label>Delivery Charge</label>
+
+<input
+type="number"
+name="deliveryCharge"
+class="form-control">
+
+</div>
+
+<div class="form-check mb-3">
+
+<input
+type="checkbox"
+checked
+name="isActive"
+class="form-check-input">
+
+<label class="form-check-label">
+
+Active
+
+</label>
+
+</div>
+
+<button class="btn btn-success">
+
+Save
+
+</button>
+
+</form>
+
+</div>
+

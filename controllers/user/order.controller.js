@@ -6,14 +6,18 @@ const ApiError = require("../../utils/ApiError");
 const ApiResponse = require("../../utils/ApiResponse");
 const calculateCartSummary = require("../../utils/cartSummary");
 const Coupon = require("../../models/coupon.model");
+const DeliveryCharge = require("../../models/deliveryCharge.model");
+const DeliverySlot = require("../../models/deliverySlot.model");
 
 // @desc    Place a new order (checkout from cart)
 // @route   POST /api/user/orders
 // body: { shippingAddress, paymentMethod, couponCode, isSameDayDelivery }
 exports.placeOrder = catchAsync(async (req, res) => {
- const {
+const {
   shippingAddress,
   paymentMethod,
+  deliveryType,
+  deliverySlot,
   cardHolderName,
   cardNumber,
   expiryMonth,
@@ -28,6 +32,19 @@ exports.placeOrder = catchAsync(async (req, res) => {
   const cart = await Cart.findOne({ user: req.user._id }).populate(
     "items.product",
   );
+
+const Personalization = require("../../models/personalization.model");
+
+const personalization = await Personalization.findOne({
+    cart: cart._id,
+});
+
+if (personalization) {
+    cart.deliveryType = personalization.deliveryType || "Standard Delivery";
+    cart.deliverySlot = personalization.deliverySlot || "";
+
+    await cart.save();
+}
 
   if (!cart || cart.items.length === 0) {
     throw new ApiError(400, "Your cart is empty");
@@ -121,6 +138,10 @@ if (paymentMethod === "CARD") {
 
     shippingPrice: summary.deliveryCharge,
 
+    deliveryType: cart.deliveryType,
+
+deliverySlot: cart.deliverySlot,
+
     totalPrice: summary.grandTotal,
 
     paymentMethod,
@@ -162,12 +183,17 @@ if (paymentMethod === "CARD") {
   }
 
   // Clear cart
-  cart.items = [];
-  cart.couponCode = "";
+cart.items = [];
 
-  cart.couponDiscount = 0;
+cart.couponCode = "";
 
-  await cart.save();
+cart.couponDiscount = 0;
+
+cart.deliveryType = "Standard Delivery";
+
+cart.deliverySlot = "";
+
+await cart.save();
 
   res
     .status(201)

@@ -54,6 +54,10 @@ router.use(
     "/careers",
     require("./career.routes")
 );
+router.use(
+  "/delivery-charges",
+  require("./deliveryCharge.routes")
+);
 router.use("/wishlist", require("./wishlist.routes"));
 router.use("/home-info", require("./homeInfo.routes"));
 router.use("/videos", require("./video.routes"));

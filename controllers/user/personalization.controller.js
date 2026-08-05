@@ -26,6 +26,12 @@ const getCart = async (req) => {
 exports.savePersonalization = catchAsync(async (req, res) => {
   const cart = await getCart(req);
 
+  // Save delivery selection in cart
+cart.deliveryType = req.body.deliveryType || "Standard Delivery";
+cart.deliverySlot = req.body.deliverySlot || "";
+
+await cart.save();
+
   if (!cart) {
     throw new ApiError(404, "Cart not found");
   }
@@ -37,7 +43,9 @@ exports.savePersonalization = catchAsync(async (req, res) => {
     senderName: req.body.senderName,
     senderPhone: req.body.senderPhone,
     sameAsProfile: req.body.sameAsProfile,
-      keepSurprise: req.body.keepSurprise
+    keepSurprise: req.body.keepSurprise,
+    deliveryType: req.body.deliveryType,
+    deliverySlot: req.body.deliverySlot,
   };
 
   const personalization = await Personalization.findOneAndUpdate(

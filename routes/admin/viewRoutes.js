@@ -26,6 +26,7 @@ const faqController = require("../../controllers/admin/faq.controller");
 const returnController = require("../../controllers/admin/return.controller");
 const cancelController = require("../../controllers/admin/cancel.controller");
 const careerController = require("../../controllers/admin/career.controller");
+const deliveryChargeController = require("../../controllers/admin/deliveryCharge.controller");
 
 // ---------- Auth ----------
 router.get("/login", redirectIfAdminLoggedIn, authController.renderLoginPage);
@@ -224,5 +225,36 @@ router.post(
     careerController.deleteCareer
 );
 
+// ---------- Delivery Charges ----------
+
+router.get(
+  "/delivery-charges",
+  deliveryChargeController.renderDeliveryChargeList
+);
+
+router.get(
+  "/delivery-charges/add",
+  deliveryChargeController.renderAddDeliveryCharge
+);
+
+router.post(
+  "/delivery-charges/create",
+  deliveryChargeController.createDeliveryCharge
+);
+
+router.get(
+  "/delivery-charges/edit/:id",
+  deliveryChargeController.renderEditDeliveryCharge
+);
+
+router.post(
+  "/delivery-charges/edit/:id",
+  deliveryChargeController.updateDeliveryCharge
+);
+
+router.post(
+  "/delivery-charges/delete/:id",
+  deliveryChargeController.deleteDeliveryCharge
+);
 
 module.exports = router;
