@@ -1,19 +1,20 @@
 <div class="gt-card">
 
-    <div class="gt-card-header d-flex justify-content-between align-items-center">
+    <div class="gt-card-header">
 
         <div>
-            <h3>Cancel Requests</h3>
-            <p>Manage customer cancellation requests.</p>
+            <h2>Cancel Requests</h2>
+            <p class="gt-text-muted">
+                Manage customer cancellation requests.
+            </p>
         </div>
 
         <form method="GET" action="/admin/cancel-requests">
 
             <select
                 name="status"
-                class="form-select"
-                onchange="this.form.submit()"
-            >
+                class="gt-select"
+                onchange="this.form.submit()">
 
                 <option value="">All Status</option>
 
@@ -35,27 +36,21 @@
 
     </div>
 
-    <div class="gt-card-body">
+    <div class="gt-table-wrap">
 
-        <table class="table table-bordered table-hover">
+        <table class="gt-table">
 
             <thead>
 
                 <tr>
 
                     <th>#</th>
-
-                    <th>Order No</th>
-
+                    <th>Order No.</th>
                     <th>Customer</th>
-
                     <th>Reason</th>
-
                     <th>Status</th>
-
                     <th>Date</th>
-
-                    <th>Action</th>
+                    <th>Actions</th>
 
                 </tr>
 
@@ -67,9 +62,9 @@
 
                     <tr>
 
-                        <td colspan="7" class="text-center">
+                        <td colspan="7" class="gt-text-muted">
 
-                            No Cancel Requests Found
+                            No cancel requests found.
 
                         </td>
 
@@ -82,57 +77,45 @@
                     <tr>
 
                         <td>
-
                             <%= (currentPage-1)*10 + index + 1 %>
-
                         </td>
 
                         <td>
-
-                            <%= item.order?.orderNumber || "-" %>
-
+                            <strong>
+                                <%= item.order?.orderNumber || "-" %>
+                            </strong>
                         </td>
 
                         <td>
-
                             <%= item.user?.name || "Guest User" %>
-
                         </td>
 
                         <td>
-
                             <%= item.reason %>
-
                         </td>
 
                         <td>
 
                             <% if(item.status==="pending"){ %>
 
-                                <span class="badge bg-warning">
-
+                                <span class="gt-pill gt-pill-warning">
                                     Pending
-
                                 </span>
 
                             <% } %>
 
                             <% if(item.status==="approved"){ %>
 
-                                <span class="badge bg-success">
-
+                                <span class="gt-pill gt-pill-success">
                                     Approved
-
                                 </span>
 
                             <% } %>
 
                             <% if(item.status==="rejected"){ %>
 
-                                <span class="badge bg-danger">
-
+                                <span class="gt-pill gt-pill-danger">
                                     Rejected
-
                                 </span>
 
                             <% } %>
@@ -149,8 +132,7 @@
 
                             <a
                                 href="/admin/cancel-requests/<%= item._id %>"
-                                class="btn btn-primary btn-sm"
-                            >
+                                class="gt-btn gt-btn-outline gt-btn-sm">
 
                                 View
 
@@ -168,33 +150,24 @@
 
     </div>
 
-</div>
+    <% if(totalPages>1){ %>
 
-<% if(totalPages>1){ %>
+        <div class="gt-pagination" style="padding:20px;">
 
-<nav class="mt-4">
-
-    <ul class="pagination justify-content-center">
-
-        <% for(let i=1;i<=totalPages;i++){ %>
-
-            <li class="page-item <%= currentPage===i ? "active" : "" %>">
+            <% for(let i=1;i<=totalPages;i++){ %>
 
                 <a
-                    class="page-link"
                     href="/admin/cancel-requests?page=<%= i %>&status=<%= status %>"
-                >
+                    class="<%= currentPage===i ? 'active' : '' %>">
 
                     <%= i %>
 
                 </a>
 
-            </li>
+            <% } %>
 
-        <% } %>
+        </div>
 
-    </ul>
+    <% } %>
 
-</nav>
-
-<% } %>
+</div>

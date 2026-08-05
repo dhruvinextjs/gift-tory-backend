@@ -1,129 +1,237 @@
 <div class="gt-card">
 
-    <div class="gt-card-header d-flex justify-content-between align-items-center">
+    <div class="gt-card-header">
 
         <div>
-            <h3>Cancel Request Details</h3>
-            <p>View and update cancel request status.</p>
+
+            <h2>Cancel Request Details</h2>
+
+            <p class="gt-text-muted">
+
+                View customer request and update cancellation status.
+
+            </p>
+
         </div>
 
-        <a href="/admin/cancel-requests" class="btn btn-secondary">
+        <a
+            href="/admin/cancel-requests"
+            class="gt-btn gt-btn-outline">
+
             ← Back
+
         </a>
 
     </div>
 
     <div class="gt-card-body">
 
-        <table class="table table-bordered">
+        <div class="gt-table-wrap">
 
-            <tr>
-                <th width="220">Customer</th>
-                <td><%= request.user?.name || "Guest User" %></td>
-            </tr>
+            <table class="gt-table">
 
-            <tr>
-                <th>Email</th>
-                <td><%= request.user?.email || "-" %></td>
-            </tr>
+                <tbody>
 
-            <tr>
-                <th>Phone</th>
-                <td><%= request.user?.phone || "-" %></td>
-            </tr>
+                    <tr>
 
-            <tr>
-                <th>Order Number</th>
-                <td><%= request.order?.orderNumber || "-" %></td>
-            </tr>
+                        <th width="220">Customer</th>
 
-            <tr>
-                <th>Order Amount</th>
-                <td>₹ <%= request.order?.totalPrice || 0 %></td>
-            </tr>
+                        <td>
 
-            <tr>
-                <th>Reason</th>
-                <td><%= request.reason %></td>
-            </tr>
+                            <%= request.user?.name || "Guest User" %>
 
-            <tr>
-                <th>Description</th>
-                <td><%= request.description || "-" %></td>
-            </tr>
+                        </td>
 
-            <tr>
-                <th>Current Status</th>
-                <td>
+                    </tr>
 
-                    <% if(request.status === "pending"){ %>
-                        <span class="badge bg-warning">Pending</span>
-                    <% } %>
+                    <tr>
 
-                    <% if(request.status === "approved"){ %>
-                        <span class="badge bg-success">Approved</span>
-                    <% } %>
+                        <th>Email</th>
 
-                    <% if(request.status === "rejected"){ %>
-                        <span class="badge bg-danger">Rejected</span>
-                    <% } %>
+                        <td>
 
-                    <% if(request.status === "completed"){ %>
-                        <span class="badge bg-primary">Completed</span>
-                    <% } %>
+                            <%= request.user?.email || "-" %>
 
-                </td>
-            </tr>
+                        </td>
 
-            <tr>
-                <th>Requested On</th>
-                <td>
-                    <%= new Date(request.createdAt).toLocaleString() %>
-                </td>
-            </tr>
+                    </tr>
 
-        </table>
+                    <tr>
 
-        <hr>
+                        <th>Phone</th>
+
+                        <td>
+
+                            <%= request.user?.phone || "-" %>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Order Number</th>
+
+                        <td>
+
+                            <strong>
+
+                                <%= request.order?.orderNumber || "-" %>
+
+                            </strong>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Order Amount</th>
+
+                        <td>
+
+                            ₹ <%= request.order?.totalPrice || 0 %>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Reason</th>
+
+                        <td>
+
+                            <%= request.reason %>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Description</th>
+
+                        <td>
+
+                            <%= request.description || "-" %>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Current Status</th>
+
+                        <td>
+
+                            <% if(request.status==="pending"){ %>
+
+                                <span class="gt-pill gt-pill-warning">
+
+                                    Pending
+
+                                </span>
+
+                            <% } %>
+
+                            <% if(request.status==="approved"){ %>
+
+                                <span class="gt-pill gt-pill-success">
+
+                                    Approved
+
+                                </span>
+
+                            <% } %>
+
+                            <% if(request.status==="rejected"){ %>
+
+                                <span class="gt-pill gt-pill-danger">
+
+                                    Rejected
+
+                                </span>
+
+                            <% } %>
+
+                            <% if(request.status==="completed"){ %>
+
+                                <span class="gt-pill gt-pill-primary">
+
+                                    Completed
+
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>Requested On</th>
+
+                        <td>
+
+                            <%= new Date(request.createdAt).toLocaleString() %>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <hr style="margin:30px 0;">
 
         <form
             method="POST"
-            action="/admin/cancel-requests/<%= request._id %>/status"
-        >
+            action="/admin/cancel-requests/<%= request._id %>/status">
 
-            <div class="mb-3">
+            <div class="gt-form-group">
 
-                <label class="form-label">
+                <label>
+
                     Update Status
+
                 </label>
 
                 <select
                     name="status"
-                    class="form-select"
-                >
+                    class="gt-select">
 
-                    <option
-                        value="pending"
-                        <%= request.status === "pending" ? "selected" : "" %>>
+                    <option value="pending"
+                        <%= request.status==="pending" ? "selected":"" %>>
+
                         Pending
+
                     </option>
 
-                    <option
-                        value="approved"
-                        <%= request.status === "approved" ? "selected" : "" %>>
+                    <option value="approved"
+                        <%= request.status==="approved" ? "selected":"" %>>
+
                         Approved
+
                     </option>
 
-                    <option
-                        value="rejected"
-                        <%= request.status === "rejected" ? "selected" : "" %>>
+                    <option value="rejected"
+                        <%= request.status==="rejected" ? "selected":"" %>>
+
                         Rejected
+
                     </option>
 
-                    <option
-                        value="completed"
-                        <%= request.status === "completed" ? "selected" : "" %>>
+                    <option value="completed"
+                        <%= request.status==="completed" ? "selected":"" %>>
+
                         Completed
+
                     </option>
 
                 </select>
@@ -132,9 +240,10 @@
 
             <button
                 type="submit"
-                class="btn btn-primary"
-            >
+                class="gt-btn gt-btn-primary">
+
                 Update Status
+
             </button>
 
         </form>

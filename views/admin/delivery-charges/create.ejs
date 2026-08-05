@@ -1,81 +1,106 @@
+<div class="gt-card">
 
+    <div class="gt-card-header">
 
-<div class="container">
+        <h2>Add Delivery Charge</h2>
 
-<h3 class="mb-4">
-Add Delivery Charge
-</h3>
+        <a
+            href="/admin/delivery-charges"
+            class="gt-btn gt-btn-outline">
 
-<form
-action="/admin/delivery-charges/create"
-method="POST">
+            ← Back to List
 
-<div class="mb-3">
+        </a>
 
-<label>Delivery Type</label>
+    </div>
 
-<select
-name="deliveryType"
-class="form-control">
+    <div class="gt-card-body">
 
-<option>Standard Delivery</option>
+        <form
+            action="/admin/delivery-charges/create"
+            method="POST">
 
-<option>Fixed Time Delivery</option>
+            <div class="gt-form-grid">
 
-<option>Early Morning Delivery</option>
+                <div class="gt-form-group">
 
-<option>Midnight Delivery</option>
+                    <label>Delivery Type *</label>
 
-</select>
+                    <select
+                        name="deliveryType"
+                        class="gt-select"
+                        required>
+
+                        <option value="">Select Delivery Type</option>
+
+                        <option>Standard Delivery</option>
+
+                        <option>Fixed Time Delivery</option>
+
+                        <option>Early Morning Delivery</option>
+
+                        <option>Midnight Delivery</option>
+
+                    </select>
+
+                </div>
+
+                <div class="gt-form-group">
+
+                    <label>Time Slot</label>
+
+                    <input
+                        type="text"
+                        name="timeSlot"
+                        class="gt-input"
+                        placeholder="Example : 10 AM - 2 PM">
+
+                </div>
+
+            </div>
+
+            <div class="gt-form-grid">
+
+                <div class="gt-form-group">
+
+                    <label>Delivery Charge (₹) *</label>
+
+                    <input
+                        type="number"
+                        name="deliveryCharge"
+                        class="gt-input"
+                        placeholder="Enter delivery charge"
+                        required>
+
+                </div>
+
+            </div>
+
+            <div class="gt-form-group">
+
+                <label class="gt-checkbox-row">
+
+                    <input
+                        type="checkbox"
+                        checked
+                        name="isActive">
+
+                    Active
+
+                </label>
+
+            </div>
+
+            <button
+                type="submit"
+                class="gt-btn gt-btn-primary">
+
+                Save Delivery Charge
+
+            </button>
+
+        </form>
+
+    </div>
 
 </div>
-
-<div class="mb-3">
-
-<label>Time Slot</label>
-
-<input
-type="text"
-name="timeSlot"
-class="form-control"
-placeholder="10 AM - 2 PM">
-
-</div>
-
-<div class="mb-3">
-
-<label>Delivery Charge</label>
-
-<input
-type="number"
-name="deliveryCharge"
-class="form-control">
-
-</div>
-
-<div class="form-check mb-3">
-
-<input
-type="checkbox"
-checked
-name="isActive"
-class="form-check-input">
-
-<label class="form-check-label">
-
-Active
-
-</label>
-
-</div>
-
-<button class="btn btn-success">
-
-Save
-
-</button>
-
-</form>
-
-</div>
-

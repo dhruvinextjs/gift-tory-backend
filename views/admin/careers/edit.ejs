@@ -1,115 +1,143 @@
 <div class="gt-card">
 
     <div class="gt-card-header">
-        <h3>Edit Career</h3>
-        <p>Update career opening details.</p>
+        <div>
+            <h2>Edit Career</h2>
+            <p>Update career opening details.</p>
+        </div>
+
+        <a href="/admin/careers" class="gt-btn gt-btn-outline">
+            ← Back to Careers
+        </a>
     </div>
 
     <div class="gt-card-body">
 
         <form action="/admin/careers/edit/<%= career._id %>" method="POST">
 
-            <div class="mb-3">
-                <label class="form-label">Job Title</label>
-                <input
-                    type="text"
-                    name="title"
-                    class="form-control"
-                    value="<%= career.title %>"
+            <div class="gt-form-grid">
+
+                <div class="gt-form-group">
+                    <label>Job Title *</label>
+                    <input
+                        type="text"
+                        name="title"
+                        class="gt-input"
+                        value="<%= career.title %>"
+                        required
+                    >
+                </div>
+
+                <div class="gt-form-group">
+                    <label>Work Mode *</label>
+
+                    <select
+                        name="workMode"
+                        class="gt-select"
+                        required
+                    >
+
+                        <option
+                            value="On-site"
+                            <%= career.workMode === "On-site" ? "selected" : "" %>>
+                            On-site
+                        </option>
+
+                        <option
+                            value="Remote"
+                            <%= career.workMode === "Remote" ? "selected" : "" %>>
+                            Remote
+                        </option>
+
+                        <option
+                            value="Hybrid"
+                            <%= career.workMode === "Hybrid" ? "selected" : "" %>>
+                            Hybrid
+                        </option>
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="gt-form-group mt-3">
+
+                <label>Employment Type *</label>
+
+                <select
+                    name="employmentType"
+                    class="gt-select"
                     required
                 >
+
+                    <option
+                        value="Full-time"
+                        <%= career.employmentType === "Full-time" ? "selected" : "" %>>
+                        Full-time
+                    </option>
+
+                    <option
+                        value="Part-time"
+                        <%= career.employmentType === "Part-time" ? "selected" : "" %>>
+                        Part-time
+                    </option>
+
+                    <option
+                        value="Internship"
+                        <%= career.employmentType === "Internship" ? "selected" : "" %>>
+                        Internship
+                    </option>
+
+                    <option
+                        value="Contract"
+                        <%= career.employmentType === "Contract" ? "selected" : "" %>>
+                        Contract
+                    </option>
+
+                </select>
+
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Work Mode</label>
-        <select
-    name="workMode"
-    class="form-select"
->
+            <div class="gt-form-group mt-3">
 
-<option
-value="On-site"
-<%= career.workMode==="On-site"?"selected":"" %>>
-On-site
-</option>
-
-<option
-value="Remote"
-<%= career.workMode==="Remote"?"selected":"" %>>
-Remote
-</option>
-
-<option
-value="Hybrid"
-<%= career.workMode==="Hybrid"?"selected":"" %>>
-Hybrid
-</option>
-
-</select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Emploment Type</label>
-
-               <select
-name="employmentType"
-class="form-select"
->
-
-<option
-value="Full-time"
-<%= career.employmentType==="Full-time"?"selected":"" %>>
-Full-time
-</option>
-
-<option
-value="Part-time"
-<%= career.employmentType==="Part-time"?"selected":"" %>>
-Part-time
-</option>
-
-<option
-value="Internship"
-<%= career.employmentType==="Internship"?"selected":"" %>>
-Internship
-</option>
-
-<option
-value="Contract"
-<%= career.employmentType==="Contract"?"selected":"" %>>
-Contract
-</option>
-
-</select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Description</label>
+                <label>Description *</label>
 
                 <textarea
+                    id="editor"
                     name="description"
-                    rows="6"
-                    class="form-control"
-                    required
+                    rows="8"
                 ><%= career.description %></textarea>
+
             </div>
 
-            <button
-                type="submit"
-                class="btn btn-primary"
-            >
-                Update Career
-            </button>
+            <div class="mt-4 d-flex gap-2">
 
-            <a
-                href="/admin/careers"
-                class="btn btn-secondary"
-            >
-                Cancel
-            </a>
+                <button
+                    type="submit"
+                    class="gt-btn gt-btn-primary"
+                >
+                    Update Career
+                </button>
+
+                <a
+                    href="/admin/careers"
+                    class="gt-btn gt-btn-outline"
+                >
+                    Cancel
+                </a>
+
+            </div>
 
         </form>
 
     </div>
 
 </div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+ClassicEditor
+    .create(document.querySelector("#editor"))
+    .catch(error => console.error(error));
+</script>

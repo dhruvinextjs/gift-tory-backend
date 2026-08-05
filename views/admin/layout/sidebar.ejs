@@ -40,12 +40,13 @@
     >
       <span class="gt-icon">🏷️</span> Coupons
     </a>
-    <li class="<%= active === 'delivery-charges' ? 'active' : '' %>">
-    <a href="/admin/delivery-charges">
-        <i class="fas fa-truck"></i>
-        Delivery Charges
-    </a>
-</li>
+ <a
+  href="/admin/delivery-charges"
+  class="<%= active === 'delivery-charges' ? 'active' : '' %>"
+>
+  <span class="gt-icon">🚚</span>
+  Delivery Charges
+</a>
 
     <div class="gt-nav-section-label">Sales</div>
     <a href="/admin/orders" class="<%= active === 'orders' ? 'active' : '' %>">
@@ -115,18 +116,34 @@
       Home Info
     </a>
 
-    <li>
-      <a href="/admin/videos"> Videos </a>
-    </li>
-    <li>
-      <a href="/admin/shops"> Shops </a>
-    </li>
-    <li>
-      <a href="/admin/returns"> Return Requests </a>
-    </li>
-    <li>
-      <a href="/admin/cancel-requests"> Cancel Order Requests </a>
-    </li>
+    <a
+  href="/admin/videos"
+  class="<%= active === 'videos' ? 'active' : '' %>"
+>
+  <span class="gt-icon">🎥</span>
+  Videos
+</a>
+<a
+  href="/admin/shops"
+  class="<%= active === 'shops' ? 'active' : '' %>"
+>
+  <span class="gt-icon">🏬</span>
+  Shops
+</a>
+    <a
+  href="/admin/returns"
+  class="<%= active === 'returns' ? 'active' : '' %>"
+>
+  <span class="gt-icon">↩️</span>
+  Return Requests
+</a>
+  <a
+  href="/admin/cancel-requests"
+  class="<%= active === 'cancel-requests' ? 'active' : '' %>"
+>
+  <span class="gt-icon">❌</span>
+  Cancel Requests
+</a>
     <a
       href="/admin/careers"
       class="<%= active === 'careers' ? 'active' : '' %>"

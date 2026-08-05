@@ -1,35 +1,40 @@
 <div class="gt-card">
 
-    <div class="gt-card-header d-flex justify-content-between align-items-center">
+    <div class="gt-card-header">
 
         <div>
-            <h3>Careers</h3>
-            <p>Manage all career openings.</p>
+            <h2>Careers</h2>
+            <p class="gt-text-muted">
+                Manage all career openings.
+            </p>
         </div>
 
         <a
             href="/admin/careers/add"
-            class="btn btn-primary"
-        >
+            class="gt-btn gt-btn-primary">
+
             + Add Career
+
         </a>
 
     </div>
 
-    <div class="gt-card-body">
+    <div class="gt-table-wrap">
 
-        <table class="table table-bordered table-hover">
+        <table class="gt-table">
 
             <thead>
 
                 <tr>
+
                     <th>#</th>
                     <th>Job Title</th>
                     <th>Work Mode</th>
                     <th>Employment Type</th>
                     <th>Description</th>
                     <th>Status</th>
-                    <th width="220">Action</th>
+                    <th style="width:240px;">Actions</th>
+
                 </tr>
 
             </thead>
@@ -39,9 +44,13 @@
                 <% if(careers.length === 0){ %>
 
                     <tr>
-                        <td colspan="7" class="text-center">
-                            No Career Found
+
+                        <td colspan="7" class="gt-text-muted">
+
+                            No career openings found.
+
                         </td>
+
                     </tr>
 
                 <% } %>
@@ -50,85 +59,106 @@
 
                     <tr>
 
-                        <td><%= index + 1 %></td>
-
                         <td>
-                            <%= career.title %>
+
+                            <%= index + 1 %>
+
                         </td>
 
                         <td>
+
+                            <strong>
+
+                                <%= career.title %>
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
                             <%= career.workMode %>
+
                         </td>
 
                         <td>
+
                             <%= career.employmentType %>
+
                         </td>
 
-                 <td style="max-width:350px;">
+                        <td style="max-width:360px;">
 
-    <%
-        const plainDescription = career.description.replace(/<[^>]*>/g, "");
-    %>
+                            <%
+                                const plainDescription = career.description.replace(/<[^>]*>/g, "");
+                            %>
 
-    <%= plainDescription.length > 100
-        ? plainDescription.substring(0, 100) + "..."
-        : plainDescription
-    %>
+                            <%= plainDescription.length > 100
+                                ? plainDescription.substring(0,100) + "..."
+                                : plainDescription
+                            %>
 
-</td>
+                        </td>
 
                         <td>
 
                             <% if(career.isActive){ %>
 
-                                <span class="badge bg-success">
+                                <span class="gt-pill gt-pill-success">
+
                                     Active
+
                                 </span>
 
                             <% } else { %>
 
-                                <span class="badge bg-danger">
+                                <span class="gt-pill gt-pill-danger">
+
                                     Inactive
+
                                 </span>
 
                             <% } %>
 
                         </td>
 
-                        <td>
+                        <td style="white-space:nowrap;">
 
                             <a
                                 href="/admin/careers/edit/<%= career._id %>"
-                                class="btn btn-sm btn-warning"
-                            >
+                                class="gt-btn gt-btn-outline gt-btn-sm">
+
                                 Edit
+
                             </a>
 
                             <form
+                                class="gt-inline-form"
                                 action="/admin/careers/delete/<%= career._id %>"
                                 method="POST"
-                                style="display:inline-block;"
-                                onsubmit="return confirm('Delete this career?')"
-                            >
+                                data-confirm="Delete this career permanently?">
 
                                 <button
-                                    class="btn btn-sm btn-danger"
-                                >
+                                    type="submit"
+                                    class="gt-btn gt-btn-danger gt-btn-sm">
+
                                     Delete
+
                                 </button>
 
                             </form>
 
                             <form
+                                class="gt-inline-form"
                                 action="/admin/careers/<%= career._id %>/toggle-active"
-                                method="POST"
-                                style="display:inline-block;"
-                            >
+                                method="POST">
 
                                 <button
-                                    class="btn btn-sm <%= career.isActive ? 'btn-secondary' : 'btn-success' %>"
-                                >
+                                    type="submit"
+                                    class="gt-btn <%= career.isActive ? 'gt-btn-outline' : 'gt-btn-primary' %> gt-btn-sm">
+
                                     <%= career.isActive ? 'Deactivate' : 'Activate' %>
+
                                 </button>
 
                             </form>

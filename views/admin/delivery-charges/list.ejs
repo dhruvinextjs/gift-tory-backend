@@ -1,101 +1,99 @@
+<div class="gt-card">
+  <div class="gt-card-header">
+    <h2>Delivery Charges</h2>
 
+    <a href="/admin/delivery-charges/add" class="gt-btn gt-btn-primary">
+      + Add Delivery Charge
+    </a>
+  </div>
 
-<div class="container-fluid">
+  <div class="gt-table-wrap">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Delivery Charges</h3>
+    <table class="gt-table">
 
-        <a href="/admin/delivery-charges/add" class="btn btn-primary">
-            Add Delivery Charge
-        </a>
-    </div>
+      <thead>
+        <tr>
+          <th>Delivery Type</th>
+          <th>Time Slot</th>
+          <th>Charge</th>
+          <th>Status</th>
+          <th style="width:180px;">Actions</th>
+        </tr>
+      </thead>
 
-    <% if(deliveryCharges.length===0){ %>
+      <tbody>
 
-        <div class="alert alert-warning">
+      <% if(deliveryCharges.length===0){ %>
+
+        <tr>
+          <td colspan="5" class="gt-text-muted">
             No delivery charges found.
-        </div>
+          </td>
+        </tr>
 
-    <% } %>
+      <% } %>
 
-<table class="table table-bordered">
+      <% deliveryCharges.forEach(item=>{ %>
 
-<thead>
+      <tr>
 
-<tr>
+        <td>
+          <strong><%= item.deliveryType %></strong>
+        </td>
 
-<th>Delivery Type</th>
+        <td>
+          <%= item.timeSlot || "—" %>
+        </td>
 
-<th>Time Slot</th>
+        <td>
+          ₹<%= item.deliveryCharge %>
+        </td>
 
-<th>Charge</th>
+        <td>
 
-<th>Status</th>
+          <span class="gt-pill <%= item.isActive ? 'gt-pill-success' : 'gt-pill-gray' %>">
 
-<th width="180">Action</th>
+            <%= item.isActive ? "Active" : "Inactive" %>
 
-</tr>
+          </span>
 
-</thead>
+        </td>
 
-<tbody>
+        <td style="white-space:nowrap;">
 
-<% deliveryCharges.forEach(item=>{ %>
+          <a
+            href="/admin/delivery-charges/edit/<%= item._id %>"
+            class="gt-btn gt-btn-outline gt-btn-sm">
 
-<tr>
+            Edit
 
-<td><%= item.deliveryType %></td>
+          </a>
 
-<td><%= item.timeSlot %></td>
+          <form
+            class="gt-inline-form"
+            method="POST"
+            action="/admin/delivery-charges/delete/<%= item._id %>"
+            data-confirm="Delete this delivery charge?">
 
-<td>₹ <%= item.deliveryCharge %></td>
+            <button
+              type="submit"
+              class="gt-btn gt-btn-danger gt-btn-sm">
 
-<td>
+              Delete
 
-<% if(item.isActive){ %>
+            </button>
 
-<span class="badge bg-success">Active</span>
+          </form>
 
-<% }else{ %>
+        </td>
 
-<span class="badge bg-danger">Inactive</span>
+      </tr>
 
-<% } %>
+      <% }) %>
 
-</td>
+      </tbody>
 
-<td>
+    </table>
 
-<a href="/admin/delivery-charges/edit/<%= item._id %>" class="btn btn-sm btn-warning">
-
-Edit
-
-</a>
-
-<form
-action="/admin/delivery-charges/delete/<%= item._id %>"
-method="POST"
-style="display:inline">
-
-<button
-class="btn btn-danger btn-sm"
-onclick="return confirm('Delete?')">
-
-Delete
-
-</button>
-
-</form>
-
-</td>
-
-</tr>
-
-<% }) %>
-
-</tbody>
-
-</table>
-
+  </div>
 </div>
-
