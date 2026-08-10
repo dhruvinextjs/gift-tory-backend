@@ -1,172 +1,184 @@
-<aside class="gt-sidebar">
-  <div class="gt-sidebar-brand">
-    <div class="gt-logo-mark">GT</div>
-    <div>
-      <div class="gt-brand-name">Gifttory</div>
-      <div class="gt-brand-sub">Admin Panel</div>
+<nav
+    id="horizontal-nav"
+    class="gt-horizontal-nav"
+>
+
+    <div class="gt-nav-container">
+
+        <ul
+            id="ul-horizontal-nav"
+            class="gt-nav-list"
+        >
+
+            <li class="<%= active === 'dashboard' ? 'active' : '' %>">
+                <a href="/admin/dashboard">
+                    <i class="material-icons">dashboard</i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="<%= active === 'products' ? 'active' : '' %>">
+                <a href="/admin/products">
+                    <i class="material-icons">inventory_2</i>
+                    <span>Products</span>
+                </a>
+            </li>
+
+            <li class="<%= active === 'categories' ? 'active' : '' %>">
+                <a href="/admin/categories">
+                    <i class="material-icons">category</i>
+                    <span>Categories</span>
+                </a>
+            </li>
+
+            <li class="<%= active === 'occasions' ? 'active' : '' %>">
+                <a href="/admin/occasions">
+                    <i class="material-icons">celebration</i>
+                    <span>Occasions</span>
+                </a>
+            </li>
+
+            <li class="<%= active === 'coupons' ? 'active' : '' %>">
+                <a href="/admin/coupons">
+                    <i class="material-icons">sell</i>
+                    <span>Coupons</span>
+                </a>
+            </li>
+
+            <li class="<%= active === 'orders' ? 'active' : '' %>">
+                <a href="/admin/orders">
+                    <i class="material-icons">shopping_cart</i>
+                    <span>Orders</span>
+                </a>
+            </li>
+
+            <li class="<%= active === 'users' ? 'active' : '' %>">
+                <a href="/admin/users">
+                    <i class="material-icons">people</i>
+                    <span>Customers</span>
+                </a>
+            </li>
+
+            <li class="<%= active === 'reviews' ? 'active' : '' %>">
+                <a href="/admin/reviews">
+                    <i class="material-icons">star</i>
+                    <span>Reviews</span>
+                </a>
+            </li>
+
+            <!-- CMS -->
+            <li
+                id="cmsMenuItem"
+                class="gt-cms-item <%= active === 'cms' ? 'active' : '' %>"
+            >
+
+                <a
+                    href="#"
+                    class="gt-cms-trigger"
+                    id="cmsToggle"
+                    aria-expanded="false"
+                >
+
+                    <i class="material-icons">description</i>
+
+                    <span>CMS</span>
+
+                    <i class="material-icons gt-cms-arrow">
+                        keyboard_arrow_down
+                    </i>
+
+                </a>
+
+                <div
+                    class="gt-cms-dropdown"
+                    id="cmsDropdown"
+                >
+
+                    <a href="/admin/banners">
+                        <i class="material-icons">image</i>
+                        <span>Banners</span>
+                    </a>
+
+                    <a href="/admin/testimonials">
+                        <i class="material-icons">format_quote</i>
+                        <span>Testimonials</span>
+                    </a>
+
+                    <a href="/admin/blogs">
+                        <i class="material-icons">article</i>
+                        <span>Blogs</span>
+                    </a>
+
+                    <a href="/admin/faqs">
+                        <i class="material-icons">help_outline</i>
+                        <span>FAQs</span>
+                    </a>
+
+                    <a href="/admin/privacy-policy">
+                        <i class="material-icons">privacy_tip</i>
+                        <span>Privacy Policy</span>
+                    </a>
+
+                    <a href="/admin/shipping-policy">
+                        <i class="material-icons">local_shipping</i>
+                        <span>Shipping Policy</span>
+                    </a>
+
+                    <a href="/admin/return-policy">
+                        <i class="material-icons">assignment_return</i>
+                        <span>Return Policy</span>
+                    </a>
+
+                    <a href="/admin/about-us">
+                        <i class="material-icons">info_outline</i>
+                        <span>About Us</span>
+                    </a>
+
+                    <a href="/admin/home-info">
+                        <i class="material-icons">home</i>
+                        <span>Home Info</span>
+                    </a>
+
+                    <a href="/admin/videos">
+                        <i class="material-icons">videocam</i>
+                        <span>Videos</span>
+                    </a>
+
+                    <a href="/admin/shops">
+                        <i class="material-icons">store</i>
+                        <span>Shops</span>
+                    </a>
+
+                    <a href="/admin/returns">
+                        <i class="material-icons">assignment_return</i>
+                        <span>Return Requests</span>
+                    </a>
+
+                    <a href="/admin/cancel-requests">
+                        <i class="material-icons">cancel</i>
+                        <span>Cancel Requests</span>
+                    </a>
+
+                </div>
+
+            </li>
+
+            <li class="<%= active === 'careers' ? 'active' : '' %>">
+                <a href="/admin/careers">
+                    <i class="material-icons">work</i>
+                    <span>Careers</span>
+                </a>
+            </li>
+
+            <li class="<%= active === 'contact' ? 'active' : '' %>">
+                <a href="/admin/enquiries/contact">
+                    <i class="material-icons">mail</i>
+                    <span>Contact</span>
+                </a>
+            </li>
+
+        </ul>
+
     </div>
-  </div>
 
-  <nav class="gt-nav">
-    <a
-      href="/admin/dashboard"
-      class="<%= active === 'dashboard' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">📊</span> Dashboard
-    </a>
-
-    <div class="gt-nav-section-label">Catalog</div>
-    <a
-      href="/admin/products"
-      class="<%= active === 'products' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">🎁</span> Products
-    </a>
-    <a
-      href="/admin/categories"
-      class="<%= active === 'categories' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">🗂️</span> Categories
-    </a>
-    <a
-      href="/admin/occasions"
-      class="<%= active === 'occasions' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">🎉</span> Occasions
-    </a>
-    <a
-      href="/admin/coupons"
-      class="<%= active === 'coupons' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">🏷️</span> Coupons
-    </a>
- <a
-  href="/admin/delivery-charges"
-  class="<%= active === 'delivery-charges' ? 'active' : '' %>"
->
-  <span class="gt-icon">🚚</span>
-  Delivery Charges
-</a>
-
-    <div class="gt-nav-section-label">Sales</div>
-    <a href="/admin/orders" class="<%= active === 'orders' ? 'active' : '' %>">
-      <span class="gt-icon">📦</span> Orders
-    </a>
-    <a href="/admin/users" class="<%= active === 'users' ? 'active' : '' %>">
-      <span class="gt-icon">👥</span> Customers
-    </a>
-    <a
-      href="/admin/reviews"
-      class="<%= active === 'reviews' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">⭐</span> Reviews
-    </a>
-
-    <div class="gt-nav-section-label">Content</div>
-    <a
-      href="/admin/banners"
-      class="<%= active === 'banners' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">🖼️</span> Banners
-    </a>
-    <a
-      href="/admin/testimonials"
-      class="<%= active === 'testimonials' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">💬</span> Testimonials
-    </a>
-    <a href="/admin/blogs" class="<%= active === 'blogs' ? 'active' : '' %>">
-      <span class="gt-icon">📝</span> Blog
-    </a>
-    <a href="/admin/faqs" class="<%= active === 'faqs' ? 'active' : '' %>">
-      <span class="gt-icon">❓</span> FAQs
-    </a>
-    <a
-      href="/admin/privacy-policy"
-      class="<%= active === 'privacy-policy' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">⚠️</span> Privacy Policy
-    </a>
-    <a
-      href="/admin/shipping-policy"
-      class="<%= active === 'shipping-policy' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">🚚</span>
-      Shipping Policy
-    </a>
-    <a
-      href="/admin/return-policy"
-      class="<%= active === 'return-policy' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">↩️</span>
-      Return Policy
-    </a>
-    <a
-      href="/admin/about-us"
-      class="<%= active === 'about-us' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">🏢</span>
-      About Us
-    </a>
-    <a
-      href="/admin/home-info"
-      class="<%= active === 'home-info' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">📊</span>
-      Home Info
-    </a>
-
-    <a
-  href="/admin/videos"
-  class="<%= active === 'videos' ? 'active' : '' %>"
->
-  <span class="gt-icon">🎥</span>
-  Videos
-</a>
-<a
-  href="/admin/shops"
-  class="<%= active === 'shops' ? 'active' : '' %>"
->
-  <span class="gt-icon">🏬</span>
-  Shops
-</a>
-    <a
-  href="/admin/returns"
-  class="<%= active === 'returns' ? 'active' : '' %>"
->
-  <span class="gt-icon">↩️</span>
-  Return Requests
-</a>
-  <a
-  href="/admin/cancel-requests"
-  class="<%= active === 'cancel-requests' ? 'active' : '' %>"
->
-  <span class="gt-icon">❌</span>
-  Cancel Requests
-</a>
-    <a
-      href="/admin/careers"
-      class="<%= active === 'careers' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">💼</span>
-      Careers
-    </a>
-
-    <div class="gt-nav-section-label">Enquiries</div>
-    <a
-      href="/admin/enquiries/contact"
-      class="<%= active === 'contact' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">✉️</span> Contact Us
-    </a>
-    <a
-      href="/admin/enquiries/bulk-order"
-      class="<%= active === 'bulkOrder' ? 'active' : '' %>"
-    >
-      <span class="gt-icon">🏢</span> Bulk Orders
-    </a>
-
-    <div class="gt-nav-section-label">Account</div>
-    <a href="/admin/logout"> <span class="gt-icon">🚪</span> Logout </a>
-  </nav>
-</aside>
+</nav>

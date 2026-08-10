@@ -1,91 +1,407 @@
+<!-- =========================
+     DASHBOARD HEADER
+========================= -->
+
+<div class="gt-page-header">
+  <div>
+    <h1 class="gt-page-title">Dashboard</h1>
+    <p class="gt-page-subtitle">
+      Welcome back to Gifttory Admin Panel
+    </p>
+  </div>
+</div>
+
+
+<!-- =========================
+     MAIN STAT CARDS
+========================= -->
+
 <div class="gt-stat-grid">
-  <div class="gt-stat-card bg-rose">
-    <div class="gt-stat-icon">👥</div>
-    <div class="gt-stat-label">Total Customers</div>
-    <div class="gt-stat-value"><%= stats.totalUsers %></div>
-  </div>
-  <div class="gt-stat-card bg-gold">
-    <div class="gt-stat-icon">🎁</div>
-    <div class="gt-stat-label">Total Products</div>
-    <div class="gt-stat-value"><%= stats.totalProducts %></div>
-  </div>
-  <div class="gt-stat-card bg-info">
-    <div class="gt-stat-icon">📦</div>
-    <div class="gt-stat-label">Total Orders</div>
-    <div class="gt-stat-value"><%= stats.totalOrders %></div>
-  </div>
-  <div class="gt-stat-card bg-success">
-    <div class="gt-stat-icon">💰</div>
-    <div class="gt-stat-label">Revenue (Paid)</div>
-    <div class="gt-stat-value">₹<%= stats.totalRevenue.toLocaleString('en-IN') %></div>
-  </div>
-</div>
 
-<div class="gt-stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); margin-bottom: 24px;">
-  <div class="gt-stat-card">
-    <div class="gt-stat-label">New Contact Enquiries</div>
-    <div class="gt-stat-value"><%= stats.pendingContacts %></div>
-    <a href="/admin/enquiries/contact" class="gt-btn gt-btn-outline gt-btn-sm" style="margin-top:12px;">View all</a>
-  </div>
-  <div class="gt-stat-card">
-    <div class="gt-stat-label">New Bulk Order Enquiries</div>
-    <div class="gt-stat-value"><%= stats.pendingBulkOrders %></div>
-    <a href="/admin/enquiries/bulk-order" class="gt-btn gt-btn-outline gt-btn-sm" style="margin-top:12px;">View all</a>
-  </div>
-  <div class="gt-stat-card">
-    <div class="gt-stat-label">Total Categories</div>
-    <div class="gt-stat-value"><%= stats.totalCategories %></div>
-    <a href="/admin/categories" class="gt-btn gt-btn-outline gt-btn-sm" style="margin-top:12px;">Manage</a>
-  </div>
-</div>
+  <!-- Total Customers -->
+  <a href="/admin/users" class="gt-stat-card bg-rose gt-stat-link">
 
-<div class="gt-form-grid" style="align-items:start;">
-  <div class="gt-card">
-    <div class="gt-card-header">
-      <h2>Recent Orders</h2>
-      <a href="/admin/orders" class="gt-btn gt-btn-outline gt-btn-sm">View all</a>
+    <div class="gt-stat-top">
+      <div class="gt-stat-icon">
+        👥
+      </div>
     </div>
+
+    <div class="gt-stat-label">
+      Total Customers
+    </div>
+
+    <div class="gt-stat-value">
+      <%= stats.totalUsers || 0 %>
+    </div>
+
+  </a>
+
+
+  <!-- Total Products -->
+  <a href="/admin/products" class="gt-stat-card bg-gold gt-stat-link">
+
+    <div class="gt-stat-top">
+      <div class="gt-stat-icon">
+        🎁
+      </div>
+    </div>
+
+    <div class="gt-stat-label">
+      Total Products
+    </div>
+
+    <div class="gt-stat-value">
+      <%= stats.totalProducts || 0 %>
+    </div>
+
+  </a>
+
+
+  <!-- Total Orders -->
+  <a href="/admin/orders" class="gt-stat-card bg-info gt-stat-link">
+
+    <div class="gt-stat-top">
+      <div class="gt-stat-icon">
+        📦
+      </div>
+    </div>
+
+    <div class="gt-stat-label">
+      Total Orders
+    </div>
+
+    <div class="gt-stat-value">
+      <%= stats.totalOrders || 0 %>
+    </div>
+
+  </a>
+
+
+  <!-- Revenue -->
+  <a href="/admin/orders" class="gt-stat-card bg-success gt-stat-link">
+
+    <div class="gt-stat-top">
+      <div class="gt-stat-icon">
+        💰
+      </div>
+    </div>
+
+    <div class="gt-stat-label">
+      Revenue (Paid)
+    </div>
+
+    <div class="gt-stat-value">
+      ₹<%= (stats.totalRevenue || 0).toLocaleString('en-IN') %>
+    </div>
+
+  </a>
+
+</div>
+
+
+<!-- =========================
+     SECONDARY STAT CARDS
+========================= -->
+
+<div class="gt-stat-grid gt-secondary-stats">
+
+  <!-- Contact Enquiries -->
+  <div class="gt-stat-card">
+
+    <div class="gt-stat-label">
+      New Contact Enquiries
+    </div>
+
+    <div class="gt-stat-value">
+      <%= stats.pendingContacts || 0 %>
+    </div>
+
+    <a
+      href="/admin/enquiries/contact"
+      class="gt-btn gt-btn-outline gt-btn-sm"
+    >
+      View all
+    </a>
+
+  </div>
+
+
+  <!-- Bulk Order Enquiries -->
+  <div class="gt-stat-card">
+
+    <div class="gt-stat-label">
+      New Bulk Order Enquiries
+    </div>
+
+    <div class="gt-stat-value">
+      <%= stats.pendingBulkOrders || 0 %>
+    </div>
+
+    <a
+      href="/admin/enquiries/bulk-order"
+      class="gt-btn gt-btn-outline gt-btn-sm"
+    >
+      View all
+    </a>
+
+  </div>
+
+
+  <!-- Categories -->
+  <div class="gt-stat-card">
+
+    <div class="gt-stat-label">
+      Total Categories
+    </div>
+
+    <div class="gt-stat-value">
+      <%= stats.totalCategories || 0 %>
+    </div>
+
+    <a
+      href="/admin/categories"
+      class="gt-btn gt-btn-outline gt-btn-sm"
+    >
+      Manage
+    </a>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     DASHBOARD CONTENT
+========================= -->
+
+<div class="gt-dashboard-grid">
+
+
+  <!-- =========================
+       RECENT ORDERS
+  ========================= -->
+
+  <div class="gt-card">
+
+    <div class="gt-card-header">
+
+      <div>
+        <h2>
+          Recent Orders
+        </h2>
+
+        <p class="gt-card-subtitle">
+          Latest orders placed by customers
+        </p>
+      </div>
+
+      <a
+        href="/admin/orders"
+        class="gt-btn gt-btn-outline gt-btn-sm"
+      >
+        View all
+      </a>
+
+    </div>
+
+
     <div class="gt-table-wrap">
+
       <table class="gt-table">
+
         <thead>
-          <tr><th>Order #</th><th>Customer</th><th>Amount</th><th>Status</th></tr>
+
+          <tr>
+            <th>Order #</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+
         </thead>
+
+
         <tbody>
-          <% if (stats.recentOrders.length === 0) { %>
-            <tr><td colspan="4" class="gt-text-muted">No orders yet</td></tr>
-          <% } %>
-          <% stats.recentOrders.forEach(order => { %>
+
+          <% if (!stats.recentOrders || stats.recentOrders.length === 0) { %>
+
             <tr>
-              <td><a href="/admin/orders/<%= order._id %>"><%= order.orderNumber %></a></td>
-              <td><%= order.user ? order.user.name : 'Deleted user' %></td>
-              <td>₹<%= order.totalPrice %></td>
-              <td>
-                <span class="gt-pill gt-pill-<%= order.orderStatus === 'delivered' ? 'success' : order.orderStatus === 'cancelled' ? 'danger' : 'info' %>">
-                  <%= order.orderStatus.replace('_',' ') %>
-                </span>
+              <td
+                colspan="4"
+                class="gt-text-muted gt-empty-state"
+              >
+                No orders yet
               </td>
             </tr>
-          <% }) %>
+
+          <% } else { %>
+
+            <% stats.recentOrders.forEach(order => { %>
+
+              <tr>
+
+                <!-- Order Number -->
+                <td>
+
+                  <a
+                    href="/admin/orders/<%= order._id %>"
+                    class="gt-table-link"
+                  >
+                    <%= order.orderNumber || 'N/A' %>
+                  </a>
+
+                </td>
+
+
+                <!-- Customer -->
+                <td>
+
+                  <%= order.user
+                    ? (order.user.name || order.user.phone || 'Customer')
+                    : 'Deleted user'
+                  %>
+
+                </td>
+
+
+                <!-- Amount -->
+                <td>
+
+                  ₹<%= Number(order.totalPrice || 0).toLocaleString('en-IN') %>
+
+                </td>
+
+
+                <!-- Status -->
+                <td>
+
+                  <%
+                    let statusClass = 'info';
+
+                    if (order.orderStatus === 'delivered') {
+                      statusClass = 'success';
+                    } else if (
+                      order.orderStatus === 'cancelled' ||
+                      order.orderStatus === 'rejected'
+                    ) {
+                      statusClass = 'danger';
+                    } else if (
+                      order.orderStatus === 'pending'
+                    ) {
+                      statusClass = 'warning';
+                    }
+                  %>
+
+                  <span class="gt-pill gt-pill-<%= statusClass %>">
+
+                    <%= String(order.orderStatus || 'pending')
+                      .replace(/_/g, ' ')
+                      .replace(/\b\w/g, c => c.toUpperCase())
+                    %>
+
+                  </span>
+
+                </td>
+
+              </tr>
+
+            <% }) %>
+
+          <% } %>
+
         </tbody>
+
       </table>
+
     </div>
+
   </div>
 
+
+
+  <!-- =========================
+       LOW STOCK PRODUCTS
+  ========================= -->
+
   <div class="gt-card">
+
     <div class="gt-card-header">
-      <h2>Low Stock Products</h2>
-      <a href="/admin/products" class="gt-btn gt-btn-outline gt-btn-sm">Manage</a>
+
+      <div>
+        <h2>
+          Low Stock Products
+        </h2>
+
+        <p class="gt-card-subtitle">
+          Products that need restocking
+        </p>
+      </div>
+
+      <a
+        href="/admin/products"
+        class="gt-btn gt-btn-outline gt-btn-sm"
+      >
+        Manage
+      </a>
+
     </div>
+
+
     <div class="gt-card-body">
-      <% if (stats.lowStockProducts.length === 0) { %>
-        <p class="gt-text-muted gt-mb-0">All products are well stocked 🎉</p>
-      <% } %>
-      <% stats.lowStockProducts.forEach(p => { %>
-        <div class="gt-flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--gt-border);">
-          <span><%= p.name %></span>
-          <span class="gt-pill gt-pill-warning"><%= p.stock %> left</span>
+
+      <% if (
+        !stats.lowStockProducts ||
+        stats.lowStockProducts.length === 0
+      ) { %>
+
+        <div class="gt-empty-state">
+
+          <div class="gt-empty-icon">
+            🎉
+          </div>
+
+          <p class="gt-text-muted">
+            All products are well stocked
+          </p>
+
         </div>
-      <% }) %>
+
+      <% } else { %>
+
+
+        <div class="gt-stock-list">
+
+          <% stats.lowStockProducts.forEach(p => { %>
+
+            <div class="gt-stock-item">
+
+              <div class="gt-stock-info">
+
+                <span class="gt-stock-name">
+                  <%= p.name %>
+                </span>
+
+              </div>
+
+
+              <span class="gt-pill gt-pill-warning">
+
+                <%= p.stock || 0 %> left
+
+              </span>
+
+            </div>
+
+          <% }) %>
+
+        </div>
+
+
+      <% } %>
+
     </div>
+
   </div>
+
 </div>

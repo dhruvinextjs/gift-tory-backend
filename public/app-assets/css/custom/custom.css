@@ -1,0 +1,1016 @@
+/*================================================================================
+	Item Name: Materialize - Material Design Admin Template
+	Version: 5.0
+	Author: PIXINVENT
+	Author URL: https://themeforest.net/user/pixinvent/portfolio
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN CSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.overflow {
+    overflow-x: auto;
+}
+
+.myBadge {
+    /* display: inline-block; */
+    font-size: 15px;
+    height: 36px;
+    line-height: 36px;
+    letter-spacing: 0.5px;
+    padding: 0 2rem;
+    text-transform: capitalize;
+    border-radius: 150px;
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 700;
+}
+
+.fixHeightTA {
+    max-height: 95px;
+}
+
+/* .theme-text{
+    color: #158944 !important;
+} */
+.theme-text {
+    /* color: #009fd6 !important; */
+    color: #0081ae !important;
+}
+.theme-warn-text{
+    color: #E82729 !important;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .btn-breadcrumbs {
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0 1rem;
+    }
+}
+
+.breadcrumbs-title {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbs-title a {
+    color: #fff;
+    cursor: pointer;
+}
+
+#page-length-option {
+    line-height: 0;
+}
+
+th {
+    color: black !important;
+    font-weight: bold !important;
+}
+
+#sortable .item {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+#sortable .item:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+label {
+    color: black !important;
+}
+
+.select2-container--default
+    .select2-selection--multiple
+    .select2-selection__choice {
+    color: black !important;
+    background-color: #e4e4e4 !important;
+    font-weight: 500;
+}
+
+.select2-container--default
+    .select2-selection--multiple
+    .select2-selection__choice__remove {
+    color: black !important;
+}
+
+.select2-container--default .select2-results__group {
+    color: #5a5a5a;
+    padding: 10px !important;
+}
+
+#ul-horizontal-nav li i{
+    font-size: 24px !important;
+}
+
+
+
+.error-message{
+    color: red;
+}
+
+.btn-add:hover {
+    background-color: #2C2C2C;
+    color: #fff;
+}
+
+.btn-add{
+    background-color: #2C2C2C;
+}
+
+.btn-edit:hover {
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background-color: #c91111;
+    color: #fff;
+}
+.btn-delete{
+    background-color: #ec1717;
+}
+
+/* ==============================
+   HORIZONTAL ADMIN LAYOUT
+==============================*/
+
+body{
+    margin:0;
+    background:#f5f6fa;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.gt-shell{
+    width:100%;
+}
+
+/* HEADER */
+
+.gt-header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:72px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    z-index:999;
+}
+
+.gt-header-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.gt-logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:#222;
+}
+
+.gt-logo-mark{
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:#0081ae;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.gt-logo-text{
+    display:flex;
+    flex-direction:column;
+}
+
+.gt-logo-text span{
+    font-size:13px;
+    color:#777;
+}
+
+.gt-admin-chip{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.gt-avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#0081ae;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+/* MENU */
+
+#horizontal-nav{
+    position:fixed;
+    top:72px;
+    left:0;
+    right:0;
+    height:72px;
+    background:#fff;
+    border-top:1px solid #eee;
+    border-bottom:1px solid #eee;
+    overflow-x:auto;
+    overflow-y:hidden;
+    white-space:nowrap;
+    z-index:998;
+}
+
+#horizontal-nav::-webkit-scrollbar{
+    height:6px;
+}
+
+#ul-horizontal-nav{
+    display:flex;
+    align-items:center;
+    margin:0;
+    padding:0 20px;
+    list-style:none;
+    min-width:max-content;
+}
+
+#ul-horizontal-nav li{
+    margin-right:6px;
+}
+
+#ul-horizontal-nav li a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#333;
+    min-width:95px;
+    height:72px;
+    padding:0 14px;
+    transition:.25s;
+}
+
+#ul-horizontal-nav li a i{
+    font-size:24px;
+    margin-bottom:8px;
+}
+
+#ul-horizontal-nav li a span{
+    font-size:13px;
+    white-space:nowrap;
+}
+
+#ul-horizontal-nav li.active{
+    background:#C5F0FF;
+}
+
+#ul-horizontal-nav li:hover{
+    background:#eef8fc;
+}
+
+/* CONTENT */
+
+.gt-main{
+    margin-top:150px;
+}
+
+.gt-content{
+    padding:25px;
+}
+
+/* DROPDOWN */
+
+.dropdown-content{
+    min-width:220px;
+}
+
+.dropdown-content li a{
+    color:#333;
+}
+
+/* MOBILE */
+
+.gt-menu-toggle{
+    display:none;
+}
+
+@media(max-width:992px){
+
+    .gt-header{
+        padding:0 15px;
+    }
+
+    .gt-menu-toggle{
+        display:block;
+        border:none;
+        background:none;
+        font-size:24px;
+        cursor:pointer;
+    }
+
+    .gt-main{
+        margin-top:145px;
+    }
+
+}
+
+/* =========================================================
+   GIFTTORY ADMIN LAYOUT
+========================================================= */
+
+body {
+  margin: 0;
+  background: #f5f6fa;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.gt-shell {
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.gt-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 20px;
+
+  background: #fff;
+  border-bottom: 1px solid #e9e9e9;
+
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+
+  z-index: 2000;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.gt-header-left {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 190px;
+}
+
+.gt-logo {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  text-decoration: none !important;
+}
+
+.gt-logo-mark {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: linear-gradient(135deg, #d81b60, #ad1457);
+
+  color: #fff;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  box-shadow: 0 5px 14px rgba(216, 27, 96, 0.22);
+}
+
+.gt-logo-text {
+  display: flex;
+  flex-direction: column;
+
+  line-height: 1.1;
+}
+
+.gt-logo-text strong {
+  font-size: 17px;
+  color: #222;
+}
+
+.gt-logo-text span {
+  margin-top: 3px;
+
+  font-size: 10px;
+
+  color: #8a8a8a;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HEADER NAV
+========================================================= */
+
+.gt-header-nav {
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   NAV
+========================================================= */
+
+.gt-horizontal-nav {
+  width: 100% !important;
+  height: 100% !important;
+
+  position: relative !important;
+
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+
+  background: transparent !important;
+
+  border: none !important;
+  box-shadow: none !important;
+
+  overflow: hidden !important;
+}
+
+.gt-nav-container {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+.gt-nav-list {
+  width: max-content;
+
+  min-width: 100%;
+
+  height: 100%;
+
+  margin: 0 !important;
+  padding: 0 8px !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  gap: 4px;
+
+  list-style: none !important;
+
+  white-space: nowrap;
+
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+
+  box-sizing: border-box;
+}
+
+.gt-nav-list::-webkit-scrollbar {
+  height: 4px;
+}
+
+.gt-nav-list::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   NAV ITEM
+========================================================= */
+
+.gt-nav-list > li {
+  position: relative;
+
+  flex: 0 0 auto !important;
+
+  height: 44px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+}
+
+.gt-nav-list > li > a {
+  height: 40px;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 7px;
+
+  padding: 0 13px;
+
+  border-radius: 9px;
+
+  color: #555 !important;
+
+  text-decoration: none !important;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  box-sizing: border-box;
+
+  transition: 0.2s ease;
+}
+
+.gt-nav-list > li > a .material-icons {
+  font-size: 19px !important;
+  color: #777 !important;
+}
+
+.gt-nav-list > li > a:hover {
+  background: #fdf0f5 !important;
+  color: #c2185b !important;
+}
+
+.gt-nav-list > li > a:hover .material-icons {
+  color: #c2185b !important;
+}
+
+.gt-nav-list > li.active > a {
+  background: #fce8f0 !important;
+  color: #c2185b !important;
+}
+
+.gt-nav-list > li.active > a .material-icons {
+  color: #c2185b !important;
+}
+
+
+/* =========================================================
+   CMS DROPDOWN
+========================================================= */
+
+.gt-cms-item {
+  position: relative !important;
+}
+
+.gt-cms-trigger {
+  cursor: pointer;
+}
+
+.gt-cms-arrow {
+  font-size: 17px !important;
+  margin-left: 2px;
+}
+
+
+/*
+   IMPORTANT:
+   CMS dropdown is hidden by default.
+*/
+
+.gt-cms-dropdown {
+  position: absolute !important;
+
+  top: calc(100% + 8px) !important;
+  left: 50% !important;
+
+  transform: translateX(-50%);
+
+  width: 260px;
+
+  max-height: 450px;
+
+  overflow-y: auto;
+
+  padding: 8px !important;
+
+  background: #fff !important;
+
+  border: 1px solid #eee;
+
+  border-radius: 12px;
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+
+  display: none !important;
+
+  z-index: 99999 !important;
+
+  box-sizing: border-box;
+}
+
+.gt-cms-dropdown.gt-cms-open {
+  display: block !important;
+}
+
+.gt-cms-dropdown a {
+  width: 100%;
+
+  min-height: 42px;
+
+  display: flex !important;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 9px 12px !important;
+
+  border-radius: 8px;
+
+  color: #555 !important;
+
+  text-decoration: none !important;
+
+  font-size: 13px;
+
+  box-sizing: border-box;
+}
+
+.gt-cms-dropdown a:hover {
+  background: #fdf0f5 !important;
+  color: #c2185b !important;
+}
+
+.gt-cms-dropdown a .material-icons {
+  font-size: 18px !important;
+}
+
+
+/* =========================================================
+   ADMIN RIGHT
+========================================================= */
+
+.gt-header-right {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  margin-left: 10px;
+}
+
+.gt-admin-chip {
+  height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 5px 11px 5px 6px;
+
+  border: 1px solid #eee;
+
+  border-radius: 25px;
+
+  background: #fafafa;
+
+  cursor: pointer;
+
+  color: #333;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.gt-avatar {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #d81b60, #ad1457);
+
+  color: #fff;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.gt-admin-name {
+  max-width: 110px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.gt-admin-arrow {
+  font-size: 18px !important;
+}
+
+
+/* =========================================================
+   ADMIN DROPDOWN
+========================================================= */
+
+.gt-admin-dropdown {
+  position: absolute;
+
+  top: calc(100% + 10px);
+
+  right: 0;
+
+  width: 245px;
+
+  padding: 10px;
+
+  background: #fff;
+
+  border: 1px solid #eee;
+
+  border-radius: 12px;
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+
+  display: none;
+
+  z-index: 99999;
+
+  box-sizing: border-box;
+}
+
+.gt-admin-dropdown.gt-admin-dropdown-open {
+  display: block;
+}
+
+.gt-admin-dropdown-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 8px;
+}
+
+.gt-dropdown-avatar {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #d81b60, #ad1457);
+
+  color: #fff;
+
+  font-weight: 700;
+}
+
+.gt-admin-dropdown-header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.gt-admin-dropdown-header strong {
+  font-size: 14px;
+  color: #222;
+}
+
+.gt-admin-dropdown-header span {
+  margin-top: 3px;
+
+  font-size: 11px;
+
+  color: #888;
+}
+
+.gt-dropdown-divider {
+  height: 1px;
+
+  margin: 7px 0;
+
+  background: #eee;
+}
+
+.gt-admin-dropdown-item {
+  width: 100%;
+
+  min-height: 42px;
+
+  display: flex !important;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 9px 11px;
+
+  border-radius: 8px;
+
+  text-decoration: none !important;
+
+  color: #555 !important;
+
+  font-size: 13px;
+
+  box-sizing: border-box;
+}
+
+.gt-admin-dropdown-item:hover {
+  background: #fdf0f5;
+
+  color: #c2185b !important;
+}
+
+.gt-admin-dropdown-item .material-icons {
+  font-size: 19px !important;
+}
+
+.gt-admin-logout:hover {
+  background: #fff0f0;
+
+  color: #c62828 !important;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.gt-main {
+  width: 100%;
+
+  padding-top: 72px;
+
+  box-sizing: border-box;
+}
+
+.gt-content {
+  width: 100%;
+
+  padding: 28px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.gt-alert {
+  margin-bottom: 20px;
+
+  padding: 13px 17px;
+
+  border-radius: 9px;
+
+  font-size: 14px;
+}
+
+.gt-alert-success {
+  background: #edf8f0;
+
+  color: #2e7d32;
+
+  border: 1px solid #c8e6c9;
+}
+
+.gt-alert-error {
+  background: #fff0f0;
+
+  color: #c62828;
+
+  border: 1px solid #ffcdd2;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.gt-menu-toggle {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #f7f7f7;
+
+  cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+
+  .gt-header {
+    padding: 0 12px;
+  }
+
+  .gt-header-left {
+    min-width: 175px;
+  }
+
+  .gt-nav-list > li > a {
+    padding: 0 9px;
+    font-size: 12px;
+  }
+
+}
+
+@media (max-width: 800px) {
+
+  .gt-header {
+    height: 68px;
+  }
+
+  .gt-menu-toggle {
+    display: flex;
+  }
+
+  .gt-logo-text {
+    display: none;
+  }
+
+  .gt-main {
+    padding-top: 68px;
+  }
+
+  .gt-admin-name {
+    display: none;
+  }
+
+  .gt-admin-chip {
+    padding: 5px;
+  }
+
+  .gt-admin-dropdown {
+    right: 0;
+  }
+
+}

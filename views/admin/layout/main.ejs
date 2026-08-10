@@ -1,40 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= typeof title !== 'undefined' ? title + ' — Gifttory Admin' : 'Gifttory Admin' %></title>
-  <link rel="stylesheet" href="/admin/css/style.css" />
+
+    <meta charset="UTF-8">
+
+    <meta
+        http-equiv="X-UA-Compatible"
+        content="IE=edge"
+    >
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"
+    >
+
+    <title>
+        <%= typeof title !== 'undefined'
+            ? title + ' — Gifttory Admin'
+            : 'Gifttory Admin'
+        %>
+    </title>
+
+
+    <!-- MATERIAL ICONS -->
+    <link
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet"
+    >
+
+
+    <!-- VENDOR CSS -->
+    <link
+        rel="stylesheet"
+        href="/app-assets/vendors/vendors.min.css"
+    >
+
+
+    <!-- MATERIALIZE -->
+    <link
+        rel="stylesheet"
+        href="/app-assets/css/themes/horizontal-menu-template/materialize.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/app-assets/css/themes/horizontal-menu-template/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/app-assets/css/layouts/style-horizontal.css"
+    >
+
+
+    <!-- CUSTOM -->
+    <link
+        rel="stylesheet"
+        href="/app-assets/css/custom/custom.css"
+    >
+
 </head>
+
+
 <body>
-  <div class="gt-shell">
-    <%- include('sidebar') %>
 
-    <div class="gt-main">
-      <header class="gt-topbar">
-        <div style="display:flex; align-items:center; gap:14px;">
-          <button class="gt-menu-toggle" data-menu-toggle>☰</button>
-          <h1><%= typeof title !== 'undefined' ? title : 'Dashboard' %></h1>
+    <div class="gt-shell">
+
+        <!-- HEADER -->
+        <%- include('header') %>
+
+
+        <!-- MAIN -->
+        <div class="gt-main">
+
+            <main class="gt-content">
+
+
+                <!-- SUCCESS -->
+                <% if (success && success.length) { %>
+
+                    <div
+                        class="gt-alert gt-alert-success"
+                        data-flash
+                    >
+                        <%= success[0] %>
+                    </div>
+
+                <% } %>
+
+
+                <!-- ERROR -->
+                <% if (error && error.length) { %>
+
+                    <div
+                        class="gt-alert gt-alert-error"
+                        data-flash
+                    >
+                        <%= error[0] %>
+                    </div>
+
+                <% } %>
+
+
+                <!-- PAGE -->
+                <%- body %>
+
+            </main>
+
         </div>
-        <div class="gt-admin-chip">
-          <span class="gt-avatar"><%= (adminName || 'A').charAt(0).toUpperCase() %></span>
-          <span><%= adminName || 'Admin' %></span>
-        </div>
-      </header>
 
-      <main class="gt-content">
-        <% if (success && success.length) { %>
-          <div class="gt-alert gt-alert-success" data-flash>✅ <%= success[0] %></div>
-        <% } %>
-        <% if (error && error.length) { %>
-          <div class="gt-alert gt-alert-error" data-flash>⚠️ <%= error[0] %></div>
-        <% } %>
-
-        <%- body %>
-      </main>
     </div>
-  </div>
 
-  <script src="/admin/js/script.js"></script>
+
+    <!-- VENDOR JS -->
+    <script src="/app-assets/js/vendors.min.js"></script>
+
+    <!-- THEME JS -->
+    <script src="/app-assets/js/plugins.js"></script>
+
+    <script src="/app-assets/js/scripts.js"></script>
+
+    <!-- CUSTOM ADMIN JS -->
+    <script src="/admin/js/script.js"></script>
+
+
+    <!-- FLASH -->
+    <script>
+
+        setTimeout(function () {
+
+            const alerts =
+                document.querySelectorAll("[data-flash]");
+
+            alerts.forEach(function (alert) {
+
+                alert.style.transition =
+                    "opacity 0.4s ease";
+
+                alert.style.opacity = "0";
+
+                setTimeout(function () {
+                    alert.remove();
+                }, 400);
+
+            });
+
+        }, 3000);
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       CMS DROPDOWN
+    ===================================================== */
+
+    const cmsToggle = document.getElementById("cmsToggle");
+    const cmsDropdown = document.getElementById("cmsDropdown");
+
+    if (cmsToggle && cmsDropdown) {
+
+        cmsToggle.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const isOpen =
+                cmsDropdown.classList.contains("gt-cms-open");
+
+            cmsDropdown.classList.toggle(
+                "gt-cms-open",
+                !isOpen
+            );
+
+            cmsToggle.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+        });
+
+
+        cmsDropdown.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+        });
+
+    }
+
+
+    /* =====================================================
+       ADMIN DROPDOWN
+    ===================================================== */
+
+    const adminToggle =
+        document.getElementById("adminProfileToggle");
+
+    const adminDropdown =
+        document.getElementById("adminProfileDropdown");
+
+
+    if (adminToggle && adminDropdown) {
+
+        adminToggle.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const isOpen =
+                adminDropdown.classList.contains(
+                    "gt-admin-dropdown-open"
+                );
+
+            adminDropdown.classList.toggle(
+                "gt-admin-dropdown-open",
+                !isOpen
+            );
+
+            adminToggle.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+        });
+
+
+        adminDropdown.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       OUTSIDE CLICK
+    ===================================================== */
+
+    document.addEventListener("click", function () {
+
+        if (cmsDropdown) {
+
+            cmsDropdown.classList.remove(
+                "gt-cms-open"
+            );
+
+        }
+
+        if (cmsToggle) {
+
+            cmsToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+        if (adminDropdown) {
+
+            adminDropdown.classList.remove(
+                "gt-admin-dropdown-open"
+            );
+
+        }
+
+        if (adminToggle) {
+
+            adminToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    });
+
+});
+
+    </script>
+
 </body>
+
 </html>
