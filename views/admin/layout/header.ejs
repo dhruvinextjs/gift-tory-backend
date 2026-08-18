@@ -2,127 +2,59 @@
 
     <!-- LEFT -->
     <div class="gt-header-left">
-
-        <button
-            type="button"
-            class="gt-menu-toggle"
-            data-menu-toggle
-            aria-label="Toggle menu"
-        >
+        <button type="button" class="gt-menu-toggle" data-menu-toggle aria-label="Toggle menu">
             <i class="material-icons">menu</i>
         </button>
 
-        <a
-            href="/admin/dashboard"
-            class="gt-logo"
-        >
-
-            <div class="gt-logo-mark">
-                GT
-            </div>
-
+        <a href="/admin/dashboard" class="gt-logo">
+            <div class="gt-logo-mark">GT</div>
             <div class="gt-logo-text">
                 <strong>Gifttory</strong>
                 <span>Admin Panel</span>
             </div>
-
         </a>
-
     </div>
-
 
     <!-- CENTER NAV -->
     <div class="gt-header-nav">
-
         <%- include('sidebar') %>
-
     </div>
-
 
     <!-- RIGHT ADMIN -->
     <div class="gt-header-right">
-
-        <button
-            type="button"
-            class="gt-admin-chip"
-            id="adminProfileToggle"
-            aria-expanded="false"
-        >
-
+        <button type="button" class="gt-admin-chip" id="adminProfileToggle" aria-expanded="false">
             <span class="gt-avatar">
                 <%= (adminName || 'A').charAt(0).toUpperCase() %>
             </span>
-
             <span class="gt-admin-name">
                 <%= adminName || 'Admin' %>
             </span>
-
-            <i class="material-icons gt-admin-arrow">
-                keyboard_arrow_down
-            </i>
-
+            <i class="material-icons gt-admin-arrow">keyboard_arrow_down</i>
         </button>
 
-
         <!-- ADMIN DROPDOWN -->
-        <div
-            class="gt-admin-dropdown"
-            id="adminProfileDropdown"
-        >
-
+        <div class="gt-admin-dropdown" id="adminProfileDropdown">
             <div class="gt-admin-dropdown-header">
-
                 <span class="gt-dropdown-avatar">
                     <%= (adminName || 'A').charAt(0).toUpperCase() %>
                 </span>
-
                 <div>
-
-                    <strong>
-                        <%= adminName || 'Admin' %>
-                    </strong>
-
-                    <span>
-                        Administrator
-                    </span>
-
+                    <strong><%= adminName || 'Admin' %></strong>
+                    <span>Administrator</span>
                 </div>
-
             </div>
-
 
             <div class="gt-dropdown-divider"></div>
 
-
-            <a
-                href="/admin/change-password"
-                class="gt-admin-dropdown-item"
-            >
-                <i class="material-icons">
-                    lock
-                </i>
-
-                <span>
-                    Change Password
-                </span>
+            <a href="/admin/change-password" class="gt-admin-dropdown-item">
+                <i class="material-icons">lock</i>
+                <span>Change Password</span>
             </a>
 
-
-            <a
-                href="/admin/logout"
-                class="gt-admin-dropdown-item gt-admin-logout"
-            >
-                <i class="material-icons">
-                    logout
-                </i>
-
-                <span>
-                    Logout
-                </span>
+            <a href="/admin/logout" class="gt-admin-dropdown-item gt-admin-logout">
+                <i class="material-icons">logout</i>
+                <span>Logout</span>
             </a>
-
         </div>
-
     </div>
-
 </header>

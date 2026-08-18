@@ -1,37 +1,93 @@
 <div class="gt-card">
   <div class="gt-card-header">
-    <h2>Edit Category</h2>
-    <a href="/admin/categories" class="gt-btn gt-btn-outline">← Back to list</a>
+    <div>
+      <h2>Edit Category</h2>
+      <p class="gt-card-subtitle">Update category details</p>
+    </div>
+    <a href="/admin/categories" class="gt-btn gt-btn-outline">
+      <i class="material-icons">arrow_back</i>
+      Back to list
+    </a>
   </div>
+
   <div class="gt-card-body">
-    <form method="POST" action="/admin/categories/edit/<%= category._id %>" enctype="multipart/form-data">
+    <form method="POST" action="/admin/categories/edit/<%= category._id %>" enctype="multipart/form-data" class="gt-form">
+
+      <!-- Name -->
       <div class="gt-form-group">
-        <label>Category Name *</label>
-        <input class="gt-input" type="text" name="name" value="<%= category.name %>" required />
+        <label>Category Name <span class="gt-required">*</span></label>
+        <input
+          class="gt-input"
+          type="text"
+          name="name"
+          value="<%= category.name %>"
+          required
+        />
       </div>
+
+      <!-- Description -->
       <div class="gt-form-group">
         <label>Description</label>
-        <textarea class="gt-input" name="description" rows="3"><%= category.description %></textarea>
+        <textarea class="gt-input gt-textarea" name="description" rows="3"><%= category.description || '' %></textarea>
       </div>
-      <div class="gt-form-grid">
-        <div class="gt-form-group">
-          <label>Display Order</label>
-          <input class="gt-input" type="number" name="displayOrder" value="<%= category.displayOrder %>" />
-        </div>
-        <div class="gt-form-group" style="align-self:end;">
-          <label class="gt-checkbox-row"><input type="checkbox" name="isActive" <%= category.isActive ? 'checked' : '' %> /> Active (visible on site)</label>
-        </div>
-      </div>
+
+      <!-- Order + Active (same row) -->
+<!-- Order + Active (same row) -->
+<div class="gt-form-grid">
+  <div class="gt-form-group">
+    <label>Display Order</label>
+    <input
+      class="gt-input"
+      type="number"
+      name="displayOrder"
+      value="<%= category.displayOrder %>"
+      min="0"
+    />
+  </div>
+
+  <div class="gt-form-group">
+    <label>Status</label>
+    <label class="gt-checkbox-row">
+      <input type="checkbox" name="isActive" <%= category.isActive ? 'checked' : '' %> />
+      <span>Active (visible on site)</span>
+    </label>
+  </div>
+</div>
+
+      <!-- Current Image -->
       <div class="gt-form-group">
         <label>Current Image</label>
-        <div class="gt-image-preview"><img src="/uploads/categories/<%= category.image %>" alt="" /></div>
+        <div class="gt-image-preview gt-image-preview-current">
+          <img
+            src="/uploads/categories/<%= category.image %>"
+            onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22120%22 height=%22120%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22%3ENo Img%3C/text%3E%3C/svg%3E'"
+            alt="<%= category.name %>"
+          />
+        </div>
       </div>
+
+      <!-- Replace Image -->
       <div class="gt-form-group">
-        <label>Replace Image (optional)</label>
-        <input class="gt-input" type="file" name="image" accept="image/*" data-preview-input="imgPreview" />
+        <label>Replace Image <span class="gt-optional">(optional)</span></label>
+        <input
+          class="gt-input"
+          type="file"
+          name="image"
+          accept="image/*"
+          data-preview-input="imgPreview"
+        />
         <div class="gt-image-preview" id="imgPreview"></div>
       </div>
-      <button type="submit" class="gt-btn gt-btn-primary">Update Category</button>
+
+      <!-- Actions -->
+      <div class="gt-form-actions">
+        <button type="submit" class="gt-btn gt-btn-primary">
+          <i class="material-icons">save</i>
+          Update Category
+        </button>
+        <a href="/admin/categories" class="gt-btn gt-btn-outline">Cancel</a>
+      </div>
+
     </form>
   </div>
 </div>

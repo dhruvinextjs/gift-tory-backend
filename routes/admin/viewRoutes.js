@@ -40,6 +40,16 @@ router.use(requireAdminSession);
 router.get("/", (req, res) => res.redirect("/admin/dashboard"));
 router.get("/dashboard", dashboardController.renderDashboard);
 
+router.get(
+  "/change-password",
+  authController.renderChangePasswordPage
+);
+
+router.post(
+  "/change-password",
+  authController.changePasswordPanel
+);
+
 // ---------- Products ----------
 router.get("/products", productController.renderProductList);
 router.get("/products/add", productController.renderAddProductForm);

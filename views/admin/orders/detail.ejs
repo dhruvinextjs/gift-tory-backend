@@ -1,76 +1,164 @@
-<div class="gt-flex-between" style="margin-bottom: 18px;">
-  <a href="/admin/orders" class="gt-btn gt-btn-outline">← Back to orders</a>
+<div class="gt-page-top">
+  <a href="/admin/orders" class="gt-btn gt-btn-outline">
+    <i class="material-icons">arrow_back</i>
+    Back to orders
+  </a>
 </div>
 
-<div class="gt-form-grid" style="align-items:start; grid-template-columns: 2fr 1fr;">
+<div class="gt-order-layout">
+
+  <!-- LEFT : Items + Totals -->
   <div class="gt-card">
-    <div class="gt-card-header"><h2>Order #<%= order.orderNumber %></h2></div>
+    <div class="gt-card-header">
+      <div>
+        <h2>Order #<%= order.orderNumber %></h2>
+        <p class="gt-card-subtitle">
+          Placed on <%= order.createdAt ? new Date(order.createdAt).toLocaleString('en-IN') : '—' %>
+        </p>
+      </div>
+    </div>
+
     <div class="gt-table-wrap">
       <table class="gt-table">
-        <thead><tr><th>Image</th><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead>
+        <thead>
+          <tr>
+            <th class="gt-th-img">Image</th>
+            <th>Product</th>
+            <th style="width:110px;">Price</th>
+            <th style="width:80px;">Qty</th>
+            <th style="width:120px;">Subtotal</th>
+          </tr>
+        </thead>
         <tbody>
-          <% order.items.forEach(item => { %>
+          <% if (!order.items || order.items.length === 0) { %>
             <tr>
-              <td><img class="gt-table-thumb" src="/uploads/products/<%= item.image %>" onerror="this.src='https://via.placeholder.com/44'" alt="" /></td>
-              <td><%= item.name %></td>
-              <td>₹<%= item.price %></td>
-              <td><%= item.quantity %></td>
-              <td>₹<%= item.price * item.quantity %></td>
+              <td colspan="5" class="gt-empty-state">No items in this order.</td>
             </tr>
-          <% }) %>
+          <% } else { %>
+            <% order.items.forEach(item => { %>
+              <tr>
+                <td class="gt-td-img">
+                  <div class="gt-thumb-box">
+                    <img
+                      class="gt-table-thumb"
+                      src="/uploads/products/<%= item.image %>"
+                      onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect fill=%22%23f0f0f0%22 width=%2248%22 height=%2248%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2210%22%3ENo%3C/text%3E%3C/svg%3E'"
+                      alt="<%= item.name %>"
+                      width="48"
+                      height="48"
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div class="gt-cell-title"><%= item.name %></div>
+                </td>
+                <td>₹<%= item.price %></td>
+                <td><%= item.quantity %></td>
+                <td><strong>₹<%= (item.price * item.quantity).toFixed(2) %></strong></td>
+              </tr>
+            <% }) %>
+          <% } %>
         </tbody>
       </table>
     </div>
-    <div class="gt-card-body" style="border-top:1px solid var(--gt-border);">
-      <div class="gt-flex-between"><span>Items Price</span><strong>₹<%= order.itemsPrice %></strong></div>
-      <div class="gt-flex-between"><span>Shipping</span><strong>₹<%= order.shippingPrice %></strong></div>
-      <div class="gt-flex-between" style="font-size:16px; margin-top:8px;"><span>Total</span><strong>₹<%= order.totalPrice %></strong></div>
+
+    <div class="gt-order-totals">
+      <div class="gt-total-row">
+        <span>Items Price</span>
+        <strong>₹<%= order.itemsPrice %></strong>
+      </div>
+      <div class="gt-total-row">
+        <span>Shipping</span>
+        <strong>₹<%= order.shippingPrice %></strong>
+      </div>
+      <div class="gt-total-row gt-total-final">
+        <span>Total</span>
+        <strong>₹<%= order.totalPrice %></strong>
+      </div>
     </div>
   </div>
 
-  <div>
-    <div class="gt-card" style="margin-bottom:18px;">
-      <div class="gt-card-header"><h2>Customer</h2></div>
-      <div class="gt-card-body">
-        <p><strong><%= order.user ? order.user.name : 'Deleted user' %></strong></p>
-        <p class="gt-text-muted"><%= order.user ? order.user.email : '' %></p>
-        <p class="gt-text-muted"><%= order.user ? order.user.phone : '' %></p>
-      </div>
-    </div>
+  <!-- RIGHT : Customer + Address + Status -->
+  <div class="gt-order-sidebar">
 
-    <div class="gt-card" style="margin-bottom:18px;">
-      <div class="gt-card-header"><h2>Shipping Address</h2></div>
-      <div class="gt-card-body">
-        <p class="gt-mb-0"><%= order.shippingAddress.fullName %></p>
-        <p class="gt-mb-0"><%= order.shippingAddress.addressLine1 %> <%= order.shippingAddress.addressLine2 || '' %></p>
-        <p class="gt-mb-0"><%= order.shippingAddress.city %>, <%= order.shippingAddress.state %> - <%= order.shippingAddress.pincode %></p>
-        <p class="gt-mb-0"><%= order.shippingAddress.phone %></p>
-      </div>
-    </div>
-
+    <!-- Customer -->
     <div class="gt-card">
-      <div class="gt-card-header"><h2>Update Status</h2></div>
+      <div class="gt-card-header">
+        <h2>Customer</h2>
+      </div>
       <div class="gt-card-body">
-        <form method="POST" action="/admin/orders/<%= order._id %>/status">
+        <div class="gt-info-block">
+          <div class="gt-info-name">
+            <%= order.user ? order.user.name : 'Deleted user' %>
+          </div>
+          <% if (order.user && order.user.email) { %>
+            <div class="gt-info-line"><%= order.user.email %></div>
+          <% } %>
+          <% if (order.user && order.user.phone) { %>
+            <div class="gt-info-line"><%= order.user.phone %></div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shipping Address -->
+    <div class="gt-card">
+      <div class="gt-card-header">
+        <h2>Shipping Address</h2>
+      </div>
+      <div class="gt-card-body">
+        <div class="gt-info-block">
+          <div class="gt-info-name"><%= order.shippingAddress.fullName %></div>
+          <div class="gt-info-line">
+            <%= order.shippingAddress.addressLine1 %>
+            <%= order.shippingAddress.addressLine2 || '' %>
+          </div>
+          <div class="gt-info-line">
+            <%= order.shippingAddress.city %>,
+            <%= order.shippingAddress.state %> - <%= order.shippingAddress.pincode %>
+          </div>
+          <div class="gt-info-line"><%= order.shippingAddress.phone %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Status -->
+    <div class="gt-card">
+      <div class="gt-card-header">
+        <h2>Update Status</h2>
+      </div>
+      <div class="gt-card-body">
+        <form method="POST" action="/admin/orders/<%= order._id %>/status" class="gt-form">
+
           <div class="gt-form-group">
             <label>Order Status</label>
-            <select class="gt-select" name="orderStatus">
+            <select class="gt-input gt-select" name="orderStatus">
               <% statuses.forEach(s => { %>
-                <option value="<%= s %>" <%= order.orderStatus === s ? 'selected' : '' %>><%= s.replace('_',' ') %></option>
+                <option value="<%= s %>" <%= order.orderStatus === s ? 'selected' : '' %>>
+                  <%= s.replace(/_/g, ' ') %>
+                </option>
               <% }) %>
             </select>
           </div>
+
           <div class="gt-form-group">
             <label>Payment Status</label>
-            <select class="gt-select" name="paymentStatus">
+            <select class="gt-input gt-select" name="paymentStatus">
               <% ['pending','paid','failed','refunded'].forEach(s => { %>
-                <option value="<%= s %>" <%= order.paymentStatus === s ? 'selected' : '' %>><%= s %></option>
+                <option value="<%= s %>" <%= order.paymentStatus === s ? 'selected' : '' %>>
+                  <%= s.charAt(0).toUpperCase() + s.slice(1) %>
+                </option>
               <% }) %>
             </select>
           </div>
-          <button type="submit" class="gt-btn gt-btn-primary" style="width:100%; justify-content:center;">Update</button>
+
+          <button type="submit" class="gt-btn gt-btn-primary gt-btn-block">
+            <i class="material-icons">update</i>
+            Update Status
+          </button>
         </form>
       </div>
     </div>
+
   </div>
 </div>

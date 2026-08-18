@@ -4,35 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Login — Gifttory</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="/admin/css/style.css" />
+  <link rel="stylesheet" href="/app-assets/css/custom/custom.css" />
 </head>
-<body>
+<body class="gt-login-page">
+
   <div class="gt-login-wrap">
     <div class="gt-login-card">
+
+      <!-- Logo -->
       <div class="gt-login-logo">
         <div class="gt-logo-mark">GT</div>
       </div>
-      <div class="gt-login-title">Gifttory Admin</div>
-      <div class="gt-login-subtitle">Sign in to manage your store</div>
 
+      <h1 class="gt-login-title">Gifttory Admin</h1>
+      <p class="gt-login-subtitle">Sign in to manage your store</p>
+
+      <!-- Error -->
       <% if (typeof error !== 'undefined' && error.length) { %>
-        <div class="gt-alert gt-alert-error">⚠️ <%= error[0] %></div>
+        <div class="gt-alert gt-alert-error">
+          <%= error[0] %>
+        </div>
       <% } %>
 
-      <form method="POST" action="/admin/login">
+      <!-- Form -->
+      <form method="POST" action="/admin/login" class="gt-login-form">
+
         <div class="gt-form-group">
           <label for="email">Email address</label>
-          <input class="gt-input" type="email" id="email" name="email" placeholder="admin@gifttory.com" required />
+          <input
+            class="gt-input"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="admin@gifttory.com"
+            required
+            autofocus
+          />
         </div>
+
         <div class="gt-form-group">
           <label for="password">Password</label>
-          <input class="gt-input" type="password" id="password" name="password" placeholder="••••••••" required />
+          <input
+            class="gt-input"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            required
+          />
         </div>
-        <button type="submit" class="gt-btn gt-btn-primary" style="width:100%; justify-content:center; padding:11px;">
+
+        <button type="submit" class="gt-btn gt-btn-primary gt-btn-login">
           Sign In
         </button>
+
       </form>
+
     </div>
+
+    <p class="gt-login-footer">© <%= new Date().getFullYear() %> Gifttory. All rights reserved.</p>
   </div>
+
 </body>
 </html>

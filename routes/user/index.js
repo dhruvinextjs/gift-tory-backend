@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../../controllers/user/auth.controller");
+const searchRoutes = require("./search.routes");
 
 router.post("/auth/request-otp", authController.requestOtp);
 router.post("/auth/verify-otp", authController.verifyOtp);
@@ -26,6 +27,7 @@ router.post(
 );
 
 router.use("/auth", require("./auth.routes"));
+router.use("/products", require("./productFilterRoutes"));
 router.use("/products", require("./product.routes"));
 router.use("/categories", require("./category.routes"));
 router.use("/occasions", require("./occasion.routes"));
@@ -50,6 +52,7 @@ router.use(
   "/cancel-orders",
   require("./cancel.routes")
 );
+router.use("/search", searchRoutes);
 router.use(
     "/careers",
     require("./career.routes")
