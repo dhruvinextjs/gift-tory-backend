@@ -3268,7 +3268,7 @@ html [type='button'],
 
 .mb-1
 {
-    margin-bottom: 1% !important;
+    margin-bottom: 3% !important;
 }
 
 .mb-2
@@ -8030,7 +8030,7 @@ li.home:before
 
     display: inline-block;
 
-    /* width: 28px; */
+    width: 28px;
 
     vertical-align: bottom;
     white-space: nowrap;

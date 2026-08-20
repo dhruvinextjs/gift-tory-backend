@@ -51,7 +51,7 @@ const buildStats = async () => {
 // @route   GET /admin/dashboard
 exports.renderDashboard = catchAsync(async (req, res) => {
   const stats = await buildStats();
-  res.render("admin/dashboard", {
+  res.render("index", {
     title: "Dashboard",
     active: "dashboard",
     stats,

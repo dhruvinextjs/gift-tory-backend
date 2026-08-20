@@ -12,7 +12,7 @@ const bcrypt = require("bcryptjs");
 // @desc    Render login page
 // @route   GET /admin/login
 exports.renderLoginPage = (req, res) => {
-  res.render("admin/login", {
+  res.render("login", {
     title: "Admin Login",
     layout: false,
     error: req.flash("error"),
@@ -136,7 +136,15 @@ exports.panelLogin = catchAsync(async (req, res) => {
   req.session.adminName = admin.name;
   req.session.adminRole = admin.role;
 
-  res.redirect("/admin/dashboard");
+  // explicitly save before redirecting
+  req.session.save((err) => {
+    if (err) {
+      console.error("Session save error:", err);
+      req.flash("error", "Something went wrong, please try again");
+      return res.redirect("/admin/login");
+    }
+    res.redirect("/admin/dashboard");
+  });
 });
 
 // @desc    Logout from panel

@@ -57,3 +57,23 @@ exports.optionalUser = catchAsync(async (req, res, next) => {
   }
   next();
 });
+
+// middlewares/adminAuth.middleware.js
+
+// Protect all admin panel view routes — session must have adminId
+exports.requireAdminSession = (req, res, next) => {
+  console.log("SESSION CHECK:", req.session);
+  if (!req.session || !req.session.adminId) {
+    req.flash("error", "Please login to access the admin panel");
+    return res.redirect("/admin/login");
+  }
+  next();
+};
+
+// If already logged in, don't show login page again
+exports.redirectIfAdminLoggedIn = (req, res, next) => {
+  if (req.session && req.session.adminId) {
+    return res.redirect("/admin/dashboard");
+  }
+  next();
+};

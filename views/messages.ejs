@@ -1,0 +1,25 @@
+<%
+const classMap = {
+    'error'  : 'red',
+    'success': 'green',
+    'warning': 'orange',
+    'info'   : 'blue'
+};
+
+Object.keys(messages).forEach(function (type) {
+    // agar is type ke messages hi nahi hain to render mat karo
+    if (!messages[type] || messages[type].length === 0) return;
+
+    const cssClass = classMap[type] || type;
+%>
+<div class="card-alert card <%= cssClass %> alert-auto-close">
+    <div class="card-content black-text">
+        <% messages[type].forEach(function (message) { %>
+            <%= message %>
+        <% }) %>
+    </div>
+    <button type="button" class="close black-text" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<% }) %>

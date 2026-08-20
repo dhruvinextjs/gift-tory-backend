@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+    <%- include('_layouts/head') %>
+        <title>Dashboard | <%= title %>
+        </title>
+        <link rel="stylesheet" type="text/css" href="/app-assets/css/pages/dashboard.css">
+</head>
+<style>
+    /* ==========================================================
+   GIFTTORY ADMIN DASHBOARD STYLES
+   Add this to: public/app-assets/css/pages/dashboard.css
+   ========================================================== */
+
+    /* ---------- Page Header ---------- */
+    .gt-page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0 24px;
+    }
+
+    .gt-page-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #212121;
+        margin: 0 0 4px;
+    }
+
+    .gt-page-subtitle {
+        font-size: 14px;
+        color: #757575;
+        margin: 0;
+    }
+
+    /* ---------- Stat Grid (main + secondary) ---------- */
+    .gt-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    @media (max-width: 992px) {
+        .gt-stat-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .gt-stat-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ---------- Main Stat Cards (colored, clickable) ---------- */
+    .gt-stat-card {
+        display: block;
+        border-radius: 16px;
+        padding: 22px 20px;
+        color: #fff;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .gt-stat-link:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    }
+
+    .gt-stat-top {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+    }
+
+    .gt-stat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gt-stat-icon .material-icons {
+        color: #fff;
+        font-size: 22px;
+    }
+
+    .gt-stat-label {
+        font-size: 14px;
+        opacity: 0.9;
+        margin-bottom: 6px;
+    }
+
+    .gt-stat-value {
+        font-size: 30px;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    /* Color variants for main stat cards */
+    .bg-rose {
+        background: linear-gradient(135deg, #ff6b9d, #c94277);
+    }
+
+    .bg-gold {
+        background: linear-gradient(135deg, #ffb648, #e08e00);
+    }
+
+    .bg-info {
+        background: linear-gradient(135deg, #29b6f6, #0277bd);
+    }
+
+    .bg-success {
+        background: linear-gradient(135deg, #66bb6a, #2e7d32);
+    }
+
+    /* ---------- Secondary Stat Cards (light, with button) ---------- */
+    .gt-secondary-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 992px) {
+        .gt-secondary-stats {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .gt-stat-card-light {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    }
+
+    .gt-stat-icon-sm {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+    }
+
+    .gt-stat-icon-sm .material-icons {
+        color: #555;
+        font-size: 20px;
+    }
+
+    .gt-stat-card-light .gt-stat-label {
+        color: #757575;
+        font-size: 13px;
+    }
+
+    .gt-stat-card-light .gt-stat-value {
+        color: #212121;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    /* ---------- Buttons ---------- */
+    .gt-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+    }
+
+    .gt-btn-outline {
+        background: transparent;
+        border: 1.5px solid #1A9CFF;
+        color: #1A9CFF;
+    }
+
+    .gt-btn-outline:hover {
+        background: #1A9CFF;
+        color: #fff;
+    }
+
+    .gt-btn-sm {
+        padding: 6px 14px;
+        font-size: 12px;
+    }
+
+    /* ---------- Dashboard Grid (2 columns: orders + stock) ---------- */
+    .gt-dashboard-grid {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr;
+        gap: 20px;
+    }
+
+    @media (max-width: 992px) {
+        .gt-dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ---------- Cards ---------- */
+    .gt-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .gt-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .gt-card-header h2 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #212121;
+        margin: 0 0 4px;
+    }
+
+    .gt-card-subtitle {
+        font-size: 12.5px;
+        color: #9e9e9e;
+        margin: 0;
+    }
+
+    .gt-card-body {
+        padding: 20px 24px;
+    }
+
+    /* ---------- Table ---------- */
+    .gt-table-wrap {
+        overflow-x: auto;
+    }
+
+    .gt-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .gt-table thead th {
+        text-align: left;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #9e9e9e;
+        padding: 12px 24px;
+        background: #fafafa;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .gt-table tbody td {
+        padding: 14px 24px;
+        font-size: 13.5px;
+        color: #424242;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .gt-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .gt-table tbody tr:hover {
+        background: #fafcff;
+    }
+
+    .gt-table-link {
+        color: #1A9CFF;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .gt-table-link:hover {
+        text-decoration: underline;
+    }
+
+    .gt-amount {
+        font-weight: 600;
+        color: #212121;
+    }
+
+    /* ---------- Status Pills ---------- */
+    .gt-pill {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    .gt-pill-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .gt-pill-danger {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    .gt-pill-warning {
+        background: #fff8e1;
+        color: #e65100;
+    }
+
+    .gt-pill-info {
+        background: #e3f2fd;
+        color: #1565c0;
+    }
+
+    /* ---------- Empty States ---------- */
+    .gt-empty-cell {
+        padding: 40px 24px !important;
+    }
+
+    .gt-empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #bdbdbd;
+    }
+
+    .gt-empty-state .material-icons {
+        font-size: 36px;
+        margin-bottom: 8px;
+        opacity: 0.6;
+    }
+
+    .gt-empty-state p {
+        margin: 0;
+        font-size: 13px;
+    }
+
+    /* ---------- Low Stock List ---------- */
+    .gt-stock-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .gt-stock-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        background: #fafafa;
+        border-radius: 10px;
+    }
+
+    .gt-stock-name {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #424242;
+    }
+</style>
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click" data-menu="vertical-dark-menu" data-col="2-columns">
+
+    <%- include('_layouts/sidenavbar') %>
+
+        <div id="main">
+            <div class="row dashboard">
+                <div class="col s12">
+                    <div class="container">
+                        <div class="section">
+
+                            <div class="row"><%- include('messages', { messages: messages }) %></div>
+
+                            <!-- =========================
+                 DASHBOARD HEADER
+            ========================= -->
+                            <div class="gt-page-header">
+                                <div>
+                                    <h1 class="gt-page-title">Dashboard</h1>
+                                    <p class="gt-page-subtitle">Welcome back to Gifttory Admin Panel</p>
+                                </div>
+                            </div>
+
+                            <!-- =========================
+                 MAIN STAT CARDS
+            ========================= -->
+                            <div class="gt-stat-grid">
+
+                                <a href="/admin/users" class="gt-stat-card bg-rose gt-stat-link">
+                                    <div class="gt-stat-top">
+                                        <div class="gt-stat-icon">
+                                            <i class="material-icons">people</i>
+                                        </div>
+                                    </div>
+                                    <div class="gt-stat-label">Total Customers</div>
+                                    <div class="gt-stat-value">
+                                        <%= stats.totalUsers || 0 %>
+                                    </div>
+                                </a>
+
+                                <a href="/admin/products" class="gt-stat-card bg-gold gt-stat-link">
+                                    <div class="gt-stat-top">
+                                        <div class="gt-stat-icon">
+                                            <i class="material-icons">inventory_2</i>
+                                        </div>
+                                    </div>
+                                    <div class="gt-stat-label">Total Products</div>
+                                    <div class="gt-stat-value">
+                                        <%= stats.totalProducts || 0 %>
+                                    </div>
+                                </a>
+
+                                <a href="/admin/orders" class="gt-stat-card bg-info gt-stat-link">
+                                    <div class="gt-stat-top">
+                                        <div class="gt-stat-icon">
+                                            <i class="material-icons">shopping_cart</i>
+                                        </div>
+                                    </div>
+                                    <div class="gt-stat-label">Total Orders</div>
+                                    <div class="gt-stat-value">
+                                        <%= stats.totalOrders || 0 %>
+                                    </div>
+                                </a>
+
+                                <a href="/admin/orders" class="gt-stat-card bg-success gt-stat-link">
+                                    <div class="gt-stat-top">
+                                        <div class="gt-stat-icon">
+                                            <i class="material-icons">payments</i>
+                                        </div>
+                                    </div>
+                                    <div class="gt-stat-label">Revenue (Paid)</div>
+                                    <div class="gt-stat-value">₹<%= (stats.totalRevenue || 0).toLocaleString('en-IN') %>
+                                    </div>
+                                </a>
+
+                            </div>
+
+                            <!-- =========================
+                 SECONDARY STAT CARDS
+            ========================= -->
+                            <div class="gt-stat-grid gt-secondary-stats">
+
+                                <div class="gt-stat-card gt-stat-card-light">
+                                    <div class="gt-stat-icon-sm">
+                                        <i class="material-icons">mail_outline</i>
+                                    </div>
+                                    <div class="gt-stat-label">New Contact Enquiries</div>
+                                    <div class="gt-stat-value">
+                                        <%= stats.pendingContacts || 0 %>
+                                    </div>
+                                    <a href="/admin/enquiries/contact" class="gt-btn gt-btn-outline gt-btn-sm">View
+                                        all</a>
+                                </div>
+
+                                <div class="gt-stat-card gt-stat-card-light">
+                                    <div class="gt-stat-icon-sm">
+                                        <i class="material-icons">local_shipping</i>
+                                    </div>
+                                    <div class="gt-stat-label">New Bulk Order Enquiries</div>
+                                    <div class="gt-stat-value">
+                                        <%= stats.pendingBulkOrders || 0 %>
+                                    </div>
+                                    <a href="/admin/enquiries/bulk-order" class="gt-btn gt-btn-outline gt-btn-sm">View
+                                        all</a>
+                                </div>
+
+                                <div class="gt-stat-card gt-stat-card-light">
+                                    <div class="gt-stat-icon-sm">
+                                        <i class="material-icons">category</i>
+                                    </div>
+                                    <div class="gt-stat-label">Total Categories</div>
+                                    <div class="gt-stat-value">
+                                        <%= stats.totalCategories || 0 %>
+                                    </div>
+                                    <a href="/admin/categories" class="gt-btn gt-btn-outline gt-btn-sm">Manage</a>
+                                </div>
+
+                            </div>
+
+                            <!-- =========================
+                 DASHBOARD CONTENT
+            ========================= -->
+                            <div class="gt-dashboard-grid">
+
+                                <!-- RECENT ORDERS -->
+                                <div class="gt-card">
+                                    <div class="gt-card-header">
+                                        <div>
+                                            <h2>Recent Orders</h2>
+                                            <p class="gt-card-subtitle">Latest orders placed by customers</p>
+                                        </div>
+                                        <a href="/admin/orders" class="gt-btn gt-btn-outline gt-btn-sm">View all</a>
+                                    </div>
+
+                                    <div class="gt-table-wrap">
+                                        <table class="gt-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order #</th>
+                                                    <th>Customer</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% if (!stats.recentOrders || stats.recentOrders.length===0) { %>
+                                                    <tr>
+                                                        <td colspan="4" class="gt-empty-cell">
+                                                            <div class="gt-empty-state">
+                                                                <i class="material-icons">receipt_long</i>
+                                                                <p>No orders yet</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <% } else { %>
+                                                        <% stats.recentOrders.forEach(order=> { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="/admin/orders/<%= order._id %>"
+                                                                        class="gt-table-link">
+                                                                        <%= order.orderNumber || 'N/A' %>
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <%= order.user ? (order.user.name ||
+                                                                        order.user.phone || 'Customer' )
+                                                                        : 'Deleted user' %>
+                                                                </td>
+                                                                <td class="gt-amount">₹<%= Number(order.totalPrice ||
+                                                                        0).toLocaleString('en-IN') %>
+                                                                </td>
+                                                                <td>
+                                                                    <% let statusClass='info' ; if
+                                                                        (order.orderStatus==='delivered' )
+                                                                        statusClass='success' ; else if
+                                                                        (order.orderStatus==='cancelled' ||
+                                                                        order.orderStatus==='rejected' )
+                                                                        statusClass='danger' ; else if
+                                                                        (order.orderStatus==='pending' )
+                                                                        statusClass='warning' ; %>
+                                                                        <span
+                                                                            class="gt-pill gt-pill-<%= statusClass %>">
+                                                                            <%= String(order.orderStatus || 'pending' )
+                                                                                .replace(/_/g, ' ' ) .replace(/\b\w/g,
+                                                                                c=> c.toUpperCase())
+                                                                                %>
+                                                                        </span>
+                                                                </td>
+                                                            </tr>
+                                                            <% }) %>
+                                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- LOW STOCK PRODUCTS -->
+                                <div class="gt-card">
+                                    <div class="gt-card-header">
+                                        <div>
+                                            <h2>Low Stock Products</h2>
+                                            <p class="gt-card-subtitle">Products that need restocking</p>
+                                        </div>
+                                        <a href="/admin/products" class="gt-btn gt-btn-outline gt-btn-sm">Manage</a>
+                                    </div>
+
+                                    <div class="gt-card-body">
+                                        <% if (!stats.lowStockProducts || stats.lowStockProducts.length===0) { %>
+                                            <div class="gt-empty-state">
+                                                <i class="material-icons">check_circle_outline</i>
+                                                <p>All products are well stocked</p>
+                                            </div>
+                                            <% } else { %>
+                                                <div class="gt-stock-list">
+                                                    <% stats.lowStockProducts.forEach(p=> { %>
+                                                        <div class="gt-stock-item">
+                                                            <div class="gt-stock-info">
+                                                                <span class="gt-stock-name">
+                                                                    <%= p.name %>
+                                                                </span>
+                                                            </div>
+                                                            <span class="gt-pill gt-pill-warning">
+                                                                <%= p.stock || 0 %> left
+                                                            </span>
+                                                        </div>
+                                                        <% }) %>
+                                                </div>
+                                                <% } %>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('_layouts/commonJs') %>
+
+</body>
+
+</html>

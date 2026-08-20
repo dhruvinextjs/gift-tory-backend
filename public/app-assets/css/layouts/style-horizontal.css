@@ -30,7 +30,7 @@ header .brand-logo
 }
 header .brand-logo img
 {
-    height: 70px;
+    height: 60px;
 }
 
 header .brand-logo .logo-text
@@ -177,7 +177,7 @@ header .brand-logo .logo-text
 
 #ul-horizontal-nav .active
 {
-    background-color: #C5F0FF;
+    background-color: #d1f1dd;
 }
 
 #ul-horizontal-nav .dropdown-content
