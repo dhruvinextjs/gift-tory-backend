@@ -78,20 +78,38 @@
         margin-bottom: 10px;
     }
 
-    .gt-stat-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.25);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.gt-stat-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
 
-    .gt-stat-icon .material-icons {
-        color: #fff;
-        font-size: 22px;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+}
+
+.gt-stat-icon .material-icons {
+    color: #fff;
+    font-size: 22px;
+
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+}
 
     .gt-stat-label {
         font-size: 14px;
@@ -141,21 +159,39 @@
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
     }
 
-    .gt-stat-icon-sm {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: #f3f4f6;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 12px;
-    }
+.gt-stat-icon-sm {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
 
-    .gt-stat-icon-sm .material-icons {
-        color: #555;
-        font-size: 20px;
-    }
+    border-radius: 10px;
+    background: #f3f4f6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0 0 12px 0;
+
+    line-height: 1;
+}
+
+.gt-stat-icon-sm .material-icons {
+    display: block;
+
+    width: 20px;
+    height: 20px;
+
+    font-size: 20px;
+    line-height: 20px;
+
+    color: #555;
+
+    margin: 0;
+    padding: 0;
+}
 
     .gt-stat-card-light .gt-stat-label {
         color: #757575;
@@ -416,7 +452,7 @@
                                 <a href="/admin/products" class="gt-stat-card bg-gold gt-stat-link">
                                     <div class="gt-stat-top">
                                         <div class="gt-stat-icon">
-                                            <i class="material-icons">inventory_2</i>
+                                            <i class="material-icons">shopping_bag</i>
                                         </div>
                                     </div>
                                     <div class="gt-stat-label">Total Products</div>
@@ -481,7 +517,7 @@
 
                                 <div class="gt-stat-card gt-stat-card-light">
                                     <div class="gt-stat-icon-sm">
-                                        <i class="material-icons">category</i>
+                                        <i class="material-icons">folder</i>
                                     </div>
                                     <div class="gt-stat-label">Total Categories</div>
                                     <div class="gt-stat-value">
