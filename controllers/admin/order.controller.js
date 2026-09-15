@@ -24,7 +24,7 @@ exports.renderOrderList = catchAsync(async (req, res) => {
 
   const total = await Order.countDocuments(filter);
 
-  res.render("admin/orders/list", {
+  res.render("orders", {
     title: "Orders",
     active: "orders",
     orders,
@@ -43,9 +43,9 @@ const order = await Order.findById(req.params.id)
   .populate("items.product", "name images slug price");
   if (!order) {
     req.flash("error", "Order not found");
-    return res.redirect("/admin/orders");
+    return res.redirect("orders");
   }
-  res.render("admin/orders/detail", {
+  res.render("orders_details", {
     title: `Order #${order.orderNumber}`,
     active: "orders",
     order,
@@ -59,14 +59,14 @@ exports.updateOrderStatusPanel = catchAsync(async (req, res) => {
   const order = await Order.findById(req.params.id);
   if (!order) {
     req.flash("error", "Order not found");
-    return res.redirect("/admin/orders");
+    return res.redirect("orders");
   }
   order.orderStatus = req.body.orderStatus;
   if (req.body.paymentStatus) order.paymentStatus = req.body.paymentStatus;
   await order.save();
 
   req.flash("success", "Order status updated successfully");
-  res.redirect(`/admin/orders/${order._id}`);
+  res.redirect(`orders/${order._id}`);
 });
 
 // ============ ADMIN API ============

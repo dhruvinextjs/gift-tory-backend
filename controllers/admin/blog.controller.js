@@ -17,17 +17,17 @@ const deleteFile = (folder, filename) => {
 
 exports.renderBlogList = catchAsync(async (req, res) => {
   const blogs = await Blog.find().sort("-createdAt");
-  res.render("admin/blogs/list", { title: "Blogs", active: "blogs", blogs });
+  res.render("blog", { title: "Blogs", active: "blogs", blogs });
 });
 
 exports.renderAddBlogForm = (req, res) => {
-  res.render("admin/blogs/add", { title: "Add Blog", active: "blogs" });
+  res.render("blog_add", { title: "Add Blog", active: "blogs" });
 };
 
 exports.createBlogPanel = catchAsync(async (req, res) => {
   if (!req.file) {
     req.flash("error", "Cover image is required");
-    return res.redirect("/admin/blogs/add");
+    return res.redirect("blog_add");
   }
   await Blog.create({
     title: req.body.title,
@@ -39,23 +39,23 @@ exports.createBlogPanel = catchAsync(async (req, res) => {
     isPublished: req.body.isPublished === "on",
   });
   req.flash("success", "Blog created successfully");
-  res.redirect("/admin/blogs");
+  res.redirect("blog");
 });
 
 exports.renderEditBlogForm = catchAsync(async (req, res) => {
   const blog = await Blog.findById(req.params.id);
   if (!blog) {
     req.flash("error", "Blog not found");
-    return res.redirect("/admin/blogs");
+    return res.redirect("blog");
   }
-  res.render("admin/blogs/edit", { title: "Edit Blog", active: "blogs", blog });
+  res.render("blog_edit", { title: "Edit Blog", active: "blogs", blog });
 });
 
 exports.updateBlogPanel = catchAsync(async (req, res) => {
   const blog = await Blog.findById(req.params.id);
   if (!blog) {
     req.flash("error", "Blog not found");
-    return res.redirect("/admin/blogs");
+    return res.redirect("blog");
   }
   blog.title = req.body.title;
   blog.content = req.body.content;
@@ -71,14 +71,14 @@ exports.updateBlogPanel = catchAsync(async (req, res) => {
 
   await blog.save();
   req.flash("success", "Blog updated successfully");
-  res.redirect("/admin/blogs");
+  res.redirect("blog");
 });
 
 exports.deleteBlogPanel = catchAsync(async (req, res) => {
   const blog = await Blog.findByIdAndDelete(req.params.id);
   if (blog) deleteFile("blogs", blog.coverImage);
   req.flash("success", "Blog deleted successfully");
-  res.redirect("/admin/blogs");
+  res.redirect("blog");
 });
 
 // ============ ADMIN API ============

@@ -29,7 +29,7 @@ exports.renderReviewList = catchAsync(async (req, res) => {
     .populate("product", "name")
     .populate("user", "name email")
     .sort("-createdAt");
-  res.render("admin/reviews/list", { title: "Reviews", active: "reviews", reviews });
+  res.render("reviews", { title: "Reviews", active: "reviews", reviews });
 });
 
 // @desc    Toggle approve/hide review (panel)
@@ -38,14 +38,14 @@ exports.toggleApproveReviewPanel = catchAsync(async (req, res) => {
   const review = await Review.findById(req.params.id);
   if (!review) {
     req.flash("error", "Review not found");
-    return res.redirect("/admin/reviews");
+    return res.redirect("reviews");
   }
   review.isApproved = !review.isApproved;
   await review.save();
   await recalculateProductRating(review.product);
 
   req.flash("success", "Review status updated");
-  res.redirect("/admin/reviews");
+  res.redirect("reviews");
 });
 
 // @desc    Delete review (panel)
@@ -54,7 +54,7 @@ exports.deleteReviewPanel = catchAsync(async (req, res) => {
   const review = await Review.findByIdAndDelete(req.params.id);
   if (review) await recalculateProductRating(review.product);
   req.flash("success", "Review deleted successfully");
-  res.redirect("/admin/reviews");
+  res.redirect("reviews");
 });
 
 // ============ ADMIN API ============

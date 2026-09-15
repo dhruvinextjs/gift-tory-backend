@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+  <%- include('_layouts/head') %>
+
+  <title>Add Coupon | <%= title %></title>
+
+
+  <style>
+    /* =========================================
+           COUPON FORM PAGE
+           Same UI style as Occasion Add
+        ========================================= */
+
+    .coupon-form-card {
+
+      background: #fff;
+
+      border-radius: 8px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.08);
+
+    }
+
+
+    .coupon-form-body {
+
+      padding: 30px;
+
+    }
+
+
+    .form-section {
+
+      background: #fff;
+
+      padding: 28px;
+
+      border-radius: 8px;
+
+      margin-bottom: 24px;
+
+      border: 1px solid #eeeeee;
+
+    }
+
+
+    .section-title {
+
+      margin: 0 0 22px 0;
+
+      color: #424242;
+
+      font-weight: 500;
+
+      font-size: 20px;
+
+    }
+
+
+    .section-title i {
+
+      vertical-align: middle;
+
+      margin-right: 7px;
+
+      color: #667eea;
+
+    }
+
+
+    .required::after {
+
+      content: " *";
+
+      color: #d32f2f;
+
+    }
+
+
+    /* Inputs */
+
+    .coupon-form-body .input-field {
+
+      margin-top: 8px;
+
+      margin-bottom: 20px;
+
+    }
+
+
+    .coupon-form-body input,
+    .coupon-form-body textarea,
+    .coupon-form-body select {
+
+      box-sizing: border-box;
+
+    }
+
+
+    .coupon-form-body input:focus,
+    .coupon-form-body textarea:focus {
+
+      border-bottom: 2px solid #667eea !important;
+
+      box-shadow:
+        0 1px 0 0 #667eea !important;
+
+    }
+
+
+    .coupon-form-body label {
+
+      color: #757575;
+
+    }
+
+
+    /* Select */
+
+    .coupon-form-body .select-wrapper {
+
+      margin-top: 8px;
+
+    }
+
+
+    .coupon-form-body .select-wrapper input.select-dropdown {
+
+      margin-bottom: 0;
+
+    }
+
+
+    /* Checkbox */
+
+    .checkbox-row {
+
+      display: flex;
+
+      align-items: center;
+
+      min-height: 38px;
+
+      color: #424242;
+
+    }
+
+
+    .checkbox-row span {
+
+      padding-left: 30px !important;
+
+    }
+
+
+    /* Hint */
+
+    .form-hint {
+
+      color: #9e9e9e;
+
+      font-size: 12px;
+
+      margin-top: 8px;
+
+    }
+
+
+    /* Actions */
+
+    .form-actions {
+
+      display: flex;
+
+      justify-content: flex-end;
+
+      align-items: center;
+
+      gap: 10px;
+
+      padding-top: 10px;
+
+    }
+
+
+    .btn-gradient {
+
+      background:
+        linear-gradient(45deg,
+          #667eea,
+          #764ba2) !important;
+
+    }
+
+
+    .btn-gradient:hover {
+
+      opacity: 0.92;
+
+    }
+
+
+    /* Page Header */
+
+    .coupon-page-header {
+
+      background: #fff;
+
+    }
+
+
+    .coupon-page-header .container {
+
+      padding-top: 5px;
+
+      padding-bottom: 5px;
+
+    }
+
+
+    /* Coupon Code */
+
+    #couponCode {
+
+      text-transform: uppercase;
+
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 768px) {
+
+      .coupon-form-body {
+
+        padding: 15px;
+
+      }
+
+
+      .form-section {
+
+        padding: 20px 15px;
+
+      }
+
+
+      .form-actions {
+
+        justify-content: flex-start;
+
+        flex-wrap: wrap;
+
+      }
+
+    }
+  </style>
+
+</head>
+
+
+<body class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns" data-open="click" data-menu="vertical-dark-menu" data-col="2-columns">
+
+
+  <!-- SIDEBAR -->
+
+  <%- include('_layouts/sidenavbar') %>
+
+
+  <!-- MAIN -->
+
+  <div id="main">
+
+    <div class="row">
+
+
+      <!-- PAGE HEADER -->
+
+      <div id="breadcrumbs-wrapper" class="coupon-page-header">
+
+        <div class="container">
+
+          <div class="row valign-wrapper">
+
+
+            <div class="col s12 m8 l8">
+
+              <h5 class="breadcrumbs-title mb-0">
+
+                Add Coupon
+
+              </h5>
+
+
+              <p class="grey-text" style="margin: 4px 0 0;">
+
+                Create a new discount coupon
+
+              </p>
+
+            </div>
+
+
+            <div class="col s12 m4 l4 right-align-md">
+
+              <a href="/admin/coupons" class="btn gradient-45deg-purple-deep-orange pull-right btn-breadcrumbs">
+
+                <i class="material-icons left">
+
+                  arrow_back
+
+                </i>
+
+                Back to Coupons
+
+              </a>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- MESSAGES -->
+
+      <%- include('messages', { messages: messages }) %>
+
+
+      <!-- MAIN CONTENT -->
+
+      <div class="col s12">
+
+        <div class="container">
+
+          <div class="section">
+
+
+            <div class="coupon-form-card">
+
+              <div class="coupon-form-body">
+
+
+                <form method="POST" action="/admin/coupons/add">
+
+
+                  <!-- =====================================
+                                         BASIC INFORMATION
+                                    ====================================== -->
+
+                  <div class="form-section">
+
+
+                    <h5 class="section-title">
+
+                      <i class="material-icons">
+
+                        local_offer
+
+                      </i>
+
+                      Basic Information
+
+                    </h5>
+
+
+                    <div class="row">
+
+
+                      <!-- Coupon Code -->
+
+                      <div class="input-field col s12 m6">
+
+                        <input id="couponCode" type="text" name="code" placeholder="GIFT10" required>
+
+                        <label for="couponCode" class="required">
+
+                          Coupon Code
+
+                        </label>
+
+
+                        <div class="form-hint">
+
+                          Example: GIFT10, SAVE20
+
+                        </div>
+
+                      </div>
+
+
+                      <!-- Discount Type -->
+
+                      <div class="input-field col s12 m6">
+
+                        <select id="discountType" name="discountType" required>
+
+                          <option value="percentage" selected>
+
+                            Percentage (%)
+
+                          </option>
+
+                          <option value="flat">
+
+                            Flat Amount (₹)
+
+                          </option>
+
+                        </select>
+
+
+                        <label for="discountType" class="active required">
+
+                          Discount Type
+
+                        </label>
+
+                      </div>
+
+
+                    </div>
+
+                  </div>
+
+
+                  <!-- =====================================
+                                         DISCOUNT SETTINGS
+                                    ====================================== -->
+
+                  <div class="form-section">
+
+
+                    <h5 class="section-title">
+
+                      <i class="material-icons">
+
+                        discount
+
+                      </i>
+
+                      Discount Settings
+
+                    </h5>
+
+
+                    <div class="row">
+
+
+                      <!-- Discount Value -->
+
+                      <div class="input-field col s12 m6">
+
+                        <input id="discountValue" type="number" name="discountValue" min="0" step="0.01" required>
+
+                        <label for="discountValue" class="required">
+
+                          Discount Value
+
+                        </label>
+
+                      </div>
+
+
+                      <!-- Max Discount -->
+
+                      <div class="input-field col s12 m6">
+
+                        <input id="maxDiscountAmount" type="number" name="maxDiscountAmount" min="0" step="0.01">
+
+                        <label for="maxDiscountAmount" class="active">
+
+                          Max Discount Amount (₹)
+
+                        </label>
+
+
+                        <div class="form-hint">
+
+                          Used for percentage discount type.
+
+                        </div>
+
+                      </div>
+
+
+                    </div>
+
+                  </div>
+
+
+                  <!-- =====================================
+                                         COUPON SETTINGS
+                                    ====================================== -->
+
+                  <div class="form-section">
+
+
+                    <h5 class="section-title">
+
+                      <i class="material-icons">
+
+                        tune
+
+                      </i>
+
+                      Coupon Settings
+
+                    </h5>
+
+
+                    <div class="row">
+
+
+                      <!-- Minimum Order -->
+
+                      <div class="input-field col s12 m4">
+
+                        <input id="minOrderAmount" type="number" name="minOrderAmount" value="0" min="0" step="0.01">
+
+                        <label for="minOrderAmount" class="active">
+
+                          Minimum Order Amount (₹)
+
+                        </label>
+
+                      </div>
+
+
+                      <!-- Usage Limit -->
+
+                      <div class="input-field col s12 m4">
+
+                        <input id="usageLimit" type="number" name="usageLimit" value="100" min="1">
+
+                        <label for="usageLimit" class="active">
+
+                          Usage Limit
+
+                        </label>
+
+                      </div>
+
+
+                      <!-- Expiry Date -->
+
+                      <div class="input-field col s12 m4">
+
+                        <input id="expiryDate" type="date" name="expiryDate" required>
+
+                        <label for="expiryDate" class="active required">
+
+                          Expiry Date
+
+                        </label>
+
+                      </div>
+
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="row">
+
+                      <div class="col s12">
+
+
+                        <label style="
+                                                        display:block;
+                                                        color:#757575;
+                                                        margin-bottom:10px;
+                                                    ">
+
+                          Status
+
+                        </label>
+
+
+                        <label class="checkbox-row">
+
+                          <input type="checkbox" name="isActive" checked>
+
+                          <span>
+
+                            Active
+
+                          </span>
+
+                        </label>
+
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                  <!-- =====================================
+                                         ACTIONS
+                                    ====================================== -->
+
+                  <div class="form-actions">
+
+
+                    <a href="/admin/coupons" class="btn grey waves-effect waves-light">
+
+                      Cancel
+
+                    </a>
+
+
+                    <button type="submit" class="btn btn-gradient waves-effect waves-light">
+
+                      <i class="material-icons left">
+
+                        save
+
+                      </i>
+
+                      Save Coupon
+
+                    </button>
+
+
+                  </div>
+
+
+                </form>
+
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <!-- COMMON JS -->
+
+  <%- include('_layouts/commonJs') %>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+      /* =========================================
+         MATERIALIZE SELECT
+      ========================================= */
+
+      const selects =
+        document.querySelectorAll('select');
+
+
+      if (selects.length) {
+
+        M.FormSelect.init(selects);
+
+      }
+
+
+      /* =========================================
+         COUPON CODE
+         Convert to uppercase
+      ========================================= */
+
+      const couponCode =
+        document.getElementById('couponCode');
+
+
+      if (couponCode) {
+
+        couponCode.addEventListener(
+          'input',
+          function() {
+
+            this.value =
+              this.value.toUpperCase();
+
+          }
+        );
+
+      }
+
+
+      /* =========================================
+         DISCOUNT TYPE
+      ========================================= */
+
+      const discountType =
+        document.getElementById('discountType');
+
+
+      const discountValue =
+        document.getElementById('discountValue');
+
+
+      if (
+        discountType &&
+        discountValue
+      ) {
+
+        discountType.addEventListener(
+          'change',
+          function() {
+
+            if (
+              this.value ===
+              'percentage'
+            ) {
+
+              discountValue.max =
+                '100';
+
+            } else {
+
+              discountValue.removeAttribute(
+                'max'
+              );
+
+            }
+
+          }
+        );
+
+
+        /* Initial */
+
+        if (
+          discountType.value ===
+          'percentage'
+        ) {
+
+          discountValue.max =
+            '100';
+
+        }
+
+      }
+
+
+      /* =========================================
+         EXPIRY DATE
+      ========================================= */
+
+      const expiryDate =
+        document.getElementById('expiryDate');
+
+
+      if (expiryDate) {
+
+        const today =
+          new Date();
+
+
+        const year =
+          today.getFullYear();
+
+
+        const month =
+          String(
+            today.getMonth() + 1
+          ).padStart(2, '0');
+
+
+        const day =
+          String(
+            today.getDate()
+          ).padStart(2, '0');
+
+
+        const minDate =
+          year +
+          '-' +
+          month +
+          '-' +
+          day;
+
+
+        expiryDate.min =
+          minDate;
+
+      }
+
+    });
+  </script>
+
+
+</body>
+
+</html>

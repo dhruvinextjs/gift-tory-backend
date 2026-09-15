@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Order Details | <%= title %></title>
+
+  <%- include('_layouts/head') %>
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" type="text/css"
+    href="/app-assets/vendors/data-tables/css/jquery.dataTables.min.css">
+
+  <link rel="stylesheet" type="text/css"
+    href="/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css">
+
+  <link rel="stylesheet" type="text/css"
+    href="/app-assets/vendors/data-tables/css/select.dataTables.min.css">
+
+  <link rel="stylesheet" type="text/css"
+    href="/app-assets/css/pages/data-tables.css">
+
+  <style>
+    /* =========================================================
+       PAGE HEADER
+    ========================================================= */
+
+    .order-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+
+    .order-back-btn i {
+      font-size: 18px;
+    }
+
+    /* =========================================================
+       ORDER LAYOUT
+    ========================================================= */
+
+    .order-details-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* =========================================================
+       COMMON CARD
+    ========================================================= */
+
+    .order-details-card {
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .order-details-card .card-content {
+      padding: 0;
+    }
+
+    /* =========================================================
+       CARD HEADER
+    ========================================================= */
+
+    .order-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #eeeeee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .order-card-header h5 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .order-card-subtitle {
+      margin: 5px 0 0;
+      color: #888;
+      font-size: 13px;
+    }
+
+    /* =========================================================
+       ORDER NUMBER
+    ========================================================= */
+
+    .order-number-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .order-number-title i {
+      font-size: 22px;
+      color: #555;
+    }
+
+    /* =========================================================
+       TABLE
+    ========================================================= */
+
+    .order-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .order-table {
+      width: 100%;
+      min-width: 700px;
+      border-collapse: collapse;
+    }
+
+    .order-table thead {
+      background: #fafafa;
+    }
+
+    .order-table thead th {
+      padding: 14px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border-bottom: 1px solid #eeeeee;
+      white-space: nowrap;
+    }
+
+    .order-table tbody td {
+      padding: 15px 16px;
+      border-bottom: 1px solid #f1f1f1;
+      vertical-align: middle;
+      color: #444;
+      font-size: 14px;
+    }
+
+    .order-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .order-table tbody tr:hover {
+      background: #fafafa;
+    }
+
+    /* =========================================================
+       PRODUCT IMAGE
+    ========================================================= */
+
+    .order-product-image {
+      width: 58px;
+      height: 58px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f5f5f5;
+      border: 1px solid #eeeeee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .order-product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* =========================================================
+       PRODUCT NAME
+    ========================================================= */
+
+    .order-product-name {
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .order-price {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .order-quantity {
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .order-subtotal {
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================= */
+
+    .order-empty-state {
+      text-align: center;
+      padding: 45px 20px !important;
+      color: #999;
+    }
+
+    .order-empty-state i {
+      display: block;
+      font-size: 45px;
+      margin-bottom: 8px;
+      color: #bbb;
+    }
+
+    /* =========================================================
+       TOTALS
+    ========================================================= */
+
+    .order-totals {
+      padding: 20px 24px;
+      border-top: 1px solid #eeeeee;
+      background: #fcfcfc;
+    }
+
+    .order-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 8px 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .order-total-row strong {
+      color: #333;
+      font-weight: 600;
+    }
+
+    .order-total-final {
+      margin-top: 8px;
+      padding-top: 14px;
+      border-top: 1px solid #e5e5e5;
+      font-size: 17px;
+      color: #333;
+    }
+
+    .order-total-final strong {
+      font-size: 18px;
+    }
+
+    /* =========================================================
+       SIDEBAR
+    ========================================================= */
+
+    .order-sidebar {
+      min-width: 0;
+    }
+
+    .order-sidebar .order-details-card {
+      margin-bottom: 20px;
+    }
+
+    /* =========================================================
+       INFORMATION BODY
+    ========================================================= */
+
+    .order-info-body {
+      padding: 20px 24px;
+    }
+
+    .order-info-block {
+      line-height: 1.7;
+    }
+
+    .order-info-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .order-info-line {
+      font-size: 14px;
+      color: #666;
+      word-break: break-word;
+    }
+
+    .order-info-line + .order-info-line {
+      margin-top: 2px;
+    }
+
+    /* =========================================================
+       SECTION ICON
+    ========================================================= */
+
+    .order-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .order-section-title i {
+      font-size: 21px;
+      color: #666;
+    }
+
+    /* =========================================================
+       STATUS FORM
+    ========================================================= */
+
+    .order-status-form {
+      padding: 20px 24px;
+    }
+
+    .order-form-group {
+      margin-bottom: 22px;
+    }
+
+    .order-form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .order-form-select {
+      width: 100%;
+      height: 45px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 0 12px;
+      background: #fff;
+      color: #444;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .order-form-select:focus {
+      border-color: #26a69a;
+      box-shadow: 0 0 0 1px #26a69a;
+    }
+
+    .order-update-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      height: 45px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .order-update-btn i {
+      font-size: 18px;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media only screen and (max-width: 992px) {
+      .order-details-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .order-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .order-sidebar .order-details-card {
+        margin-bottom: 0;
+      }
+
+      .order-sidebar .order-details-card:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      .order-card-header {
+        padding: 17px;
+      }
+
+      .order-card-header h5 {
+        font-size: 17px;
+      }
+
+      .order-info-body,
+      .order-status-form,
+      .order-totals {
+        padding: 17px;
+      }
+
+      .order-sidebar {
+        display: block;
+      }
+
+      .order-sidebar .order-details-card {
+        margin-bottom: 20px;
+      }
+
+      .order-table {
+        min-width: 700px;
+      }
+
+      .order-back-btn {
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+</head>
+
+
+<body
+  class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+  data-open="click"
+  data-menu="vertical-dark-menu"
+  data-col="2-columns"
+>
+
+  <!-- =========================================================
+       SIDEBAR
+  ========================================================= -->
+
+  <%- include('_layouts/sidenavbar') %>
+
+
+  <!-- =========================================================
+       MAIN CONTENT
+  ========================================================= -->
+
+  <div id="main">
+
+    <div class="row">
+
+      <!-- =====================================================
+           BREADCRUMBS
+      ===================================================== -->
+
+      <div id="breadcrumbs-wrapper" class="breadcrumbs-bg-image">
+        <div class="container">
+
+          <div class="row">
+
+            <div class="col s12 m6 l6">
+              <h5 class="breadcrumbs-title">
+                Order Details
+              </h5>
+
+              <ol class="breadcrumbs">
+                <li>
+                  <a href="/admin">Dashboard</a>
+                </li>
+
+                <li>
+                  <a href="/admin/orders">Orders</a>
+                </li>
+
+                <li class="active">
+                  Order Details
+                </li>
+              </ol>
+            </div>
+
+            <div class="col s12 m6 l6 right-align">
+              <a
+                href="/admin/orders"
+                class="btn btn-small white-text"
+                style="margin-top: 10px;"
+              >
+                <i class="material-icons left">arrow_back</i>
+                Back to Orders
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- =====================================================
+           PAGE CONTENT
+      ===================================================== -->
+
+      <div class="col s12">
+
+        <div class="container">
+
+          <div class="section">
+
+
+            <!-- =================================================
+                 ORDER DETAILS LAYOUT
+            ================================================= -->
+
+            <div class="order-details-layout">
+
+
+              <!-- ===============================================
+                   LEFT : ITEMS + TOTALS
+              ================================================ -->
+
+              <div>
+
+
+                <!-- =============================================
+                     ORDER ITEMS CARD
+                ============================================== -->
+
+                <div class="card order-details-card">
+
+                  <div class="card-content">
+
+                    <div class="order-card-header">
+
+                      <div>
+
+                        <h5 class="order-number-title">
+                          <i class="material-icons">receipt_long</i>
+
+                          Order #<%= order.orderNumber %>
+                        </h5>
+
+                        <p class="order-card-subtitle">
+
+                          Placed on
+                          <%= order.createdAt
+                            ? new Date(order.createdAt).toLocaleString('en-IN')
+                            : '—'
+                          %>
+
+                        </p>
+
+                      </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         ITEMS TABLE
+                    ========================================== -->
+
+                    <div class="order-table-wrapper">
+
+                      <table class="order-table">
+
+                        <thead>
+
+                          <tr>
+
+                            <th style="width: 90px;">
+                              Image
+                            </th>
+
+                            <th>
+                              Product
+                            </th>
+
+                            <th style="width: 120px;">
+                              Price
+                            </th>
+
+                            <th style="width: 80px; text-align:center;">
+                              Qty
+                            </th>
+
+                            <th style="width: 130px;">
+                              Subtotal
+                            </th>
+
+                          </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                          <% if (!order.items || order.items.length === 0) { %>
+
+                            <tr>
+
+                              <td
+                                colspan="5"
+                                class="order-empty-state"
+                              >
+
+                                <i class="material-icons">
+                                  shopping_bag
+                                </i>
+
+                                No items in this order.
+
+                              </td>
+
+                            </tr>
+
+                          <% } else { %>
+
+
+                            <% order.items.forEach(item => { %>
+
+                              <tr>
+
+                                <!-- Product Image -->
+
+                                <td>
+
+                                  <div class="order-product-image">
+
+                                    <img
+                                      src="/uploads/products/<%= item.image %>"
+                                      alt="<%= item.name %>"
+                                      width="58"
+                                      height="58"
+                                      onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2258%22 height=%2258%22%3E%3Crect fill=%22%23f0f0f0%22 width=%2258%22 height=%2258%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2210%22%3ENo%3C/text%3E%3C/svg%3E'"
+                                    />
+
+                                  </div>
+
+                                </td>
+
+
+                                <!-- Product -->
+
+                                <td>
+
+                                  <div class="order-product-name">
+                                    <%= item.name %>
+                                  </div>
+
+                                </td>
+
+
+                                <!-- Price -->
+
+                                <td class="order-price">
+
+                                  ₹<%= item.price %>
+
+                                </td>
+
+
+                                <!-- Quantity -->
+
+                                <td class="order-quantity">
+
+                                  <%= item.quantity %>
+
+                                </td>
+
+
+                                <!-- Subtotal -->
+
+                                <td class="order-subtotal">
+
+                                  ₹<%= (
+                                    item.price * item.quantity
+                                  ).toFixed(2) %>
+
+                                </td>
+
+                              </tr>
+
+                            <% }) %>
+
+                          <% } %>
+
+                        </tbody>
+
+                      </table>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         ORDER TOTALS
+                    ========================================== -->
+
+                    <div class="order-totals">
+
+                      <div class="order-total-row">
+
+                        <span>
+                          Items Price
+                        </span>
+
+                        <strong>
+                          ₹<%= order.itemsPrice %>
+                        </strong>
+
+                      </div>
+
+
+                      <div class="order-total-row">
+
+                        <span>
+                          Shipping
+                        </span>
+
+                        <strong>
+                          ₹<%= order.shippingPrice %>
+                        </strong>
+
+                      </div>
+
+
+                      <div class="order-total-row order-total-final">
+
+                        <span>
+                          Total
+                        </span>
+
+                        <strong>
+                          ₹<%= order.totalPrice %>
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <!-- ===============================================
+                   RIGHT : SIDEBAR
+              ================================================ -->
+
+              <div class="order-sidebar">
+
+
+                <!-- =============================================
+                     CUSTOMER CARD
+                ============================================== -->
+
+                <div class="card order-details-card">
+
+                  <div class="card-content">
+
+                    <div class="order-card-header">
+
+                      <h5 class="order-section-title">
+
+                        <i class="material-icons">
+                          person
+                        </i>
+
+                        Customer
+
+                      </h5>
+
+                    </div>
+
+
+                    <div class="order-info-body">
+
+                      <div class="order-info-block">
+
+                        <div class="order-info-name">
+
+                          <%= order.user
+                            ? order.user.name
+                            : 'Deleted user'
+                          %>
+
+                        </div>
+
+
+                        <% if (order.user && order.user.email) { %>
+
+                          <div class="order-info-line">
+
+                            <%= order.user.email %>
+
+                          </div>
+
+                        <% } %>
+
+
+                        <% if (order.user && order.user.phone) { %>
+
+                          <div class="order-info-line">
+
+                            <%= order.user.phone %>
+
+                          </div>
+
+                        <% } %>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     SHIPPING ADDRESS CARD
+                ============================================== -->
+
+                <div class="card order-details-card">
+
+                  <div class="card-content">
+
+                    <div class="order-card-header">
+
+                      <h5 class="order-section-title">
+
+                        <i class="material-icons">
+                          location_on
+                        </i>
+
+                        Shipping Address
+
+                      </h5>
+
+                    </div>
+
+
+                    <div class="order-info-body">
+
+                      <div class="order-info-block">
+
+                        <div class="order-info-name">
+
+                          <%= order.shippingAddress.fullName %>
+
+                        </div>
+
+
+                        <div class="order-info-line">
+
+                          <%= order.shippingAddress.addressLine1 %>
+
+                          <%= order.shippingAddress.addressLine2 || '' %>
+
+                        </div>
+
+
+                        <div class="order-info-line">
+
+                          <%= order.shippingAddress.city %>,
+                          <%= order.shippingAddress.state %>
+                          -
+                          <%= order.shippingAddress.pincode %>
+
+                        </div>
+
+
+                        <div class="order-info-line">
+
+                          <%= order.shippingAddress.phone %>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     UPDATE STATUS CARD
+                ============================================== -->
+
+                <div class="card order-details-card">
+
+                  <div class="card-content">
+
+                    <div class="order-card-header">
+
+                      <h5 class="order-section-title">
+
+                        <i class="material-icons">
+                          update
+                        </i>
+
+                        Update Status
+
+                      </h5>
+
+                    </div>
+
+
+                    <form
+                      method="POST"
+                      action="/admin/orders/<%= order._id %>/status"
+                      class="order-status-form"
+                    >
+
+
+                      <!-- Order Status -->
+
+                      <div class="order-form-group">
+
+                        <label for="orderStatus">
+                          Order Status
+                        </label>
+
+                        <select
+                          id="orderStatus"
+                          class="order-form-select"
+                          name="orderStatus"
+                        >
+
+                          <% statuses.forEach(s => { %>
+
+                            <option
+                              value="<%= s %>"
+                              <%= order.orderStatus === s
+                                ? 'selected'
+                                : ''
+                              %>
+                            >
+
+                              <%= s.replace(/_/g, ' ') %>
+
+                            </option>
+
+                          <% }) %>
+
+                        </select>
+
+                      </div>
+
+
+                      <!-- Payment Status -->
+
+                      <div class="order-form-group">
+
+                        <label for="paymentStatus">
+                          Payment Status
+                        </label>
+
+                        <select
+                          id="paymentStatus"
+                          class="order-form-select"
+                          name="paymentStatus"
+                        >
+
+                          <% [
+                            'pending',
+                            'paid',
+                            'failed',
+                            'refunded'
+                          ].forEach(s => { %>
+
+                            <option
+                              value="<%= s %>"
+                              <%= order.paymentStatus === s
+                                ? 'selected'
+                                : ''
+                              %>
+                            >
+
+                              <%= s.charAt(0).toUpperCase() + s.slice(1) %>
+
+                            </option>
+
+                          <% }) %>
+
+                        </select>
+
+                      </div>
+
+
+                      <!-- Update Button -->
+
+                      <button
+                        type="submit"
+                        class="btn waves-effect waves-light order-update-btn"
+                      >
+
+                        <i class="material-icons">
+                          update
+                        </i>
+
+                        Update Status
+
+                      </button>
+
+                    </form>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       MESSAGES
+  ========================================================= -->
+
+  <%- include('messages', { messages: messages }) %>
+
+
+  <!-- =========================================================
+       COMMON JS
+  ========================================================= -->
+
+  <%- include('_layouts/commonJs') %>
+
+
+  <!-- DataTables JS -->
+  <script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+
+  <script src="/app-assets/js/scripts/data-tables.js"></script>
+
+</body>
+
+</html>

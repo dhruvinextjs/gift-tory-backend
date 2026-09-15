@@ -9,7 +9,7 @@ exports.getShops = async (req, res) => {
         displayOrder: 1
     });
 
-    res.render("admin/shops/index", {
+    res.render("shops", {
         title: "Shops",
         active: "shops",
         shops
@@ -65,7 +65,7 @@ exports.createShop = async (req, res) => {
         "Shop Added Successfully"
     );
 
-    res.redirect("/admin/shops");
+    res.redirect("shops");
 
 };
 
@@ -83,6 +83,6 @@ exports.deleteShop = async (req, res) => {
         "Shop Deleted Successfully"
     );
 
-    res.redirect("/admin/shops");
+    res.redirect("shops");
 
 };

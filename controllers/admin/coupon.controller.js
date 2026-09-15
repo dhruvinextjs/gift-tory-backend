@@ -7,11 +7,11 @@ const ApiResponse = require("../../utils/ApiResponse");
 
 exports.renderCouponList = catchAsync(async (req, res) => {
   const coupons = await Coupon.find().sort("-createdAt");
-  res.render("admin/coupons/list", { title: "Coupons", active: "coupons", coupons });
+  res.render("coupon", { title: "Coupons", active: "coupons", coupons });
 });
 
 exports.renderAddCouponForm = (req, res) => {
-  res.render("admin/coupons/add", { title: "Add Coupon", active: "coupons" });
+  res.render("coupon_add", { title: "Add Coupon", active: "coupons" });
 };
 
 exports.createCouponPanel = catchAsync(async (req, res) => {
@@ -26,25 +26,25 @@ exports.createCouponPanel = catchAsync(async (req, res) => {
     isActive: req.body.isActive === "on",
   });
   req.flash("success", "Coupon created successfully");
-  res.redirect("/admin/coupons");
+  res.redirect("coupon");
 });
 
 exports.deleteCouponPanel = catchAsync(async (req, res) => {
   await Coupon.findByIdAndDelete(req.params.id);
   req.flash("success", "Coupon deleted successfully");
-  res.redirect("/admin/coupons");
+  res.redirect("coupon");
 });
 
 exports.toggleActiveCouponPanel = catchAsync(async (req, res) => {
   const coupon = await Coupon.findById(req.params.id);
   if (!coupon) {
     req.flash("error", "Coupon not found");
-    return res.redirect("/admin/coupons");
+    return res.redirect("coupon");
   }
   coupon.isActive = !coupon.isActive;
   await coupon.save();
   req.flash("success", "Coupon status updated");
-  res.redirect("/admin/coupons");
+  res.redirect("coupon");
 });
 
 // ============ ADMIN API ============

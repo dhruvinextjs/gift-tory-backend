@@ -17,7 +17,7 @@ exports.getReturnPolicy = async (req,res)=>{
     }
 
     res.render(
-        "admin/return-policy/index",
+        "return-policy",
         {
 
             title:"Return Policy",
@@ -62,6 +62,6 @@ exports.saveReturnPolicy = async(req,res)=>{
         "Return Policy Updated Successfully"
     );
 
-    res.redirect("/admin/return-policy");
+    res.redirect("return-policy");
 
 };

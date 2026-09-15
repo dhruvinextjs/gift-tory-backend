@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>About Us | <%= title %></title>
+
+
+    <style>
+
+        /* =========================================
+           ABOUT US PAGE
+           Same Materialize UI style as Categories
+        ========================================= */
+
+
+        /* Page Header */
+
+        .about-page-header {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .about-page-header h5 {
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .about-page-header p {
+
+            margin-top: 0;
+
+        }
+
+
+        /* Form Card */
+
+        .about-form-card {
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+        }
+
+
+        .about-form-body {
+
+            padding: 25px !important;
+
+        }
+
+
+        /* Form Sections */
+
+        .form-section {
+
+            margin-bottom: 30px;
+
+            padding-bottom: 25px;
+
+            border-bottom: 1px solid #eeeeee;
+
+        }
+
+
+        .form-section:last-child {
+
+            border-bottom: none;
+
+            margin-bottom: 0;
+
+            padding-bottom: 0;
+
+        }
+
+
+        /* Section Title */
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #333;
+
+            margin: 0 0 20px;
+
+        }
+
+
+        .section-title i {
+
+            font-size: 22px;
+
+            color: #26a69a;
+
+        }
+
+
+        /* Form Fields */
+
+        .form-field {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .form-field label {
+
+            color: #555;
+
+            font-weight: 500;
+
+        }
+
+
+        .form-field input[type="text"] {
+
+            margin-bottom: 0;
+
+        }
+
+
+        .form-field textarea {
+
+            min-height: 120px;
+
+        }
+
+
+        /* CKEditor */
+
+        .editor-box {
+
+            margin-top: 8px;
+
+        }
+
+
+        .ck-editor__editable {
+
+            min-height: 220px;
+
+        }
+
+
+        .editor-hint {
+
+            color: #999;
+
+            font-size: 12px;
+
+            margin-top: 7px;
+
+        }
+
+
+        /* Image Upload */
+
+        .image-upload-box {
+
+            border: 2px dashed #ddd;
+
+            border-radius: 8px;
+
+            padding: 20px;
+
+            background: #fafafa;
+
+            text-align: center;
+
+            transition: all 0.2s ease;
+
+        }
+
+
+        .image-upload-box:hover {
+
+            border-color: #26a69a;
+
+            background: #f9ffff;
+
+        }
+
+
+        .image-upload-box input[type="file"] {
+
+            display: block;
+
+            width: 100%;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .form-hint {
+
+            color: #999;
+
+            font-size: 12px;
+
+            display: block;
+
+            margin-top: 5px;
+
+        }
+
+
+        /* Current Image */
+
+        .current-image-box {
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border: 1px solid #eeeeee;
+
+            border-radius: 8px;
+
+            background: #fafafa;
+
+            display: inline-block;
+
+        }
+
+
+        .current-image-label {
+
+            display: block;
+
+            color: #777;
+
+            font-size: 12px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .current-image {
+
+            width: 180px;
+
+            height: 180px;
+
+            object-fit: cover;
+
+            border-radius: 8px;
+
+            border: 1px solid #ddd;
+
+            display: block;
+
+        }
+
+
+        .studio-current-image {
+
+            width: 150px;
+
+            height: 110px;
+
+            object-fit: cover;
+
+            border-radius: 8px;
+
+            border: 1px solid #ddd;
+
+            display: block;
+
+            margin-top: 12px;
+
+        }
+
+
+        /* Journey Cards */
+
+        .journey-card {
+
+            border: 1px solid #eeeeee;
+
+            border-radius: 8px;
+
+            padding: 20px;
+
+            margin-bottom: 20px;
+
+            background: #fafafa;
+
+        }
+
+
+        .journey-card:last-child {
+
+            margin-bottom: 0;
+
+        }
+
+
+        .journey-card-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .journey-card-header i {
+
+            color: #26a69a;
+
+            font-size: 21px;
+
+        }
+
+
+        .journey-card-header h6 {
+
+            margin: 0;
+
+            font-weight: 600;
+
+            color: #333;
+
+        }
+
+
+        .journey-image-preview {
+
+            width: 70px;
+
+            height: 70px;
+
+            object-fit: cover;
+
+            border-radius: 8px;
+
+            border: 1px solid #ddd;
+
+            display: block;
+
+            margin-top: 12px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* Actions */
+
+        .form-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding-top: 10px;
+
+        }
+
+
+        .btn-gradient {
+
+            background: linear-gradient(
+
+                135deg,
+
+                #7b1fa2,
+
+                #9c27b0
+
+            );
+
+            border-radius: 4px;
+
+            box-shadow: none;
+
+        }
+
+
+        .btn-gradient:hover {
+
+            box-shadow:
+
+                0 3px 8px rgba(123, 31, 162, 0.25);
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .about-form-body {
+
+                padding: 18px !important;
+
+            }
+
+
+            .form-actions {
+
+                justify-content: flex-start;
+
+                flex-wrap: wrap;
+
+            }
+
+
+            .current-image {
+
+                width: 150px;
+
+                height: 150px;
+
+            }
+
+
+            .studio-current-image {
+
+                width: 130px;
+
+                height: 100px;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .about-page-header h5 {
+
+                font-size: 20px;
+
+            }
+
+
+            .section-title {
+
+                font-size: 17px;
+
+            }
+
+
+            .journey-card {
+
+                padding: 15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- Breadcrumb Header -->
+
+            <div
+                class="pt-1 pb-0"
+                id="breadcrumbs-wrapper"
+            >
+
+                <div class="container">
+
+                    <div class="row">
+
+
+                        <!-- Messages -->
+
+                        <%- include('messages', { messages: messages }) %>
+
+
+
+                        <!-- Page Title -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Manage About Us
+
+                            </h6>
+
+                        </div>
+
+
+
+                        <!-- Breadcrumbs -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    About Us
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Page Header -->
+
+                    <div class="row about-page-header">
+
+                        <div class="col s12 m8">
+
+                            <h5 class="mt-0">
+
+                                About Us
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                Manage and update the About Us page content
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Main Content -->
+
+                    <div class="row">
+
+                        <div class="col s12">
+
+
+                            <div class="card about-form-card">
+
+                                <div class="card-content about-form-body">
+
+
+                                    <!-- FORM -->
+
+                                    <form
+                                        action="/admin/about-us"
+                                        method="POST"
+                                        enctype="multipart/form-data"
+                                    >
+
+
+
+                                        <!-- ================================= -->
+                                        <!-- INTRO SECTION -->
+                                        <!-- ================================= -->
+
+                                        <div class="form-section">
+
+
+                                            <h6 class="section-title">
+
+                                                <i class="material-icons">
+
+                                                    info_outline
+
+                                                </i>
+
+                                                Intro Section
+
+                                            </h6>
+
+
+
+                                            <div class="form-field">
+
+                                                <label for="introEditor">
+
+                                                    Intro Description
+
+                                                </label>
+
+
+                                                <div class="editor-box">
+
+                                                    <textarea
+                                                        id="introEditor"
+                                                        name="introDescription"
+                                                    ><%= about.introDescription %></textarea>
+
+                                                </div>
+
+
+                                                <div class="editor-hint">
+
+                                                    Update the introductory content displayed on the About Us page.
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+
+
+                                        <!-- ================================= -->
+                                        <!-- BRAND STORY -->
+                                        <!-- ================================= -->
+
+                                        <div class="form-section">
+
+
+                                            <h6 class="section-title">
+
+                                                <i class="material-icons">
+
+                                                    auto_stories
+
+                                                </i>
+
+                                                Brand Story
+
+                                            </h6>
+
+
+
+                                            <!-- Heading + Sub Heading -->
+
+                                            <div class="row">
+
+
+                                                <div class="input-field col s12 m6">
+
+                                                    <input
+                                                        type="text"
+                                                        id="brandHeading"
+                                                        name="brandHeading"
+                                                        value="<%= about.brandHeading %>"
+                                                    >
+
+                                                    <label for="brandHeading">
+
+                                                        Heading
+
+                                                    </label>
+
+                                                </div>
+
+
+
+                                                <div class="input-field col s12 m6">
+
+                                                    <input
+                                                        type="text"
+                                                        id="brandSubHeading"
+                                                        name="brandSubHeading"
+                                                        value="<%= about.brandSubHeading %>"
+                                                    >
+
+                                                    <label for="brandSubHeading">
+
+                                                        Sub Heading
+
+                                                    </label>
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                            <!-- Description -->
+
+                                            <div class="form-field">
+
+                                                <label for="brandEditor">
+
+                                                    Description
+
+                                                </label>
+
+
+                                                <div class="editor-box">
+
+                                                    <textarea
+                                                        id="brandEditor"
+                                                        name="brandDescription"
+                                                    ><%= about.brandDescription %></textarea>
+
+                                                </div>
+
+
+                                                <div class="editor-hint">
+
+                                                    Add the story and information about the GiftTory brand.
+
+                                                </div>
+
+                                            </div>
+
+
+
+                                            <!-- Brand Image -->
+
+                                            <div class="form-field">
+
+
+                                                <label>
+
+                                                    Brand Image
+
+                                                </label>
+
+
+                                                <div class="image-upload-box">
+
+
+                                                    <input
+                                                        type="file"
+                                                        name="brandImage"
+                                                        accept="image/*"
+                                                    >
+
+
+                                                    <span class="form-hint">
+
+                                                        Upload a new brand image. Leave empty to keep the current image.
+
+                                                    </span>
+
+
+
+                                                    <% if (about.brandImage) { %>
+
+
+                                                        <div class="current-image-box">
+
+
+                                                            <span class="current-image-label">
+
+                                                                Current Image
+
+                                                            </span>
+
+
+                                                            <img
+                                                                src="<%= about.brandImage %>"
+                                                                class="current-image"
+                                                                alt="Brand Image"
+                                                            >
+
+
+                                                        </div>
+
+
+                                                    <% } %>
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </div>
+
+
+
+                                        <!-- ================================= -->
+                                        <!-- OUR STUDIO -->
+                                        <!-- ================================= -->
+
+                                        <div class="form-section">
+
+
+                                            <h6 class="section-title">
+
+                                                <i class="material-icons">
+
+                                                    photo_library
+
+                                                </i>
+
+                                                Our Studio
+
+                                            </h6>
+
+
+
+                                            <!-- Heading + Sub Heading -->
+
+                                            <div class="row">
+
+
+                                                <div class="input-field col s12 m6">
+
+                                                    <input
+                                                        type="text"
+                                                        id="studioHeading"
+                                                        name="studioHeading"
+                                                        value="<%= about.studioHeading %>"
+                                                    >
+
+                                                    <label for="studioHeading">
+
+                                                        Heading
+
+                                                    </label>
+
+                                                </div>
+
+
+
+                                                <div class="input-field col s12 m6">
+
+                                                    <input
+                                                        type="text"
+                                                        id="studioSubHeading"
+                                                        name="studioSubHeading"
+                                                        value="<%= about.studioSubHeading %>"
+                                                    >
+
+                                                    <label for="studioSubHeading">
+
+                                                        Sub Heading
+
+                                                    </label>
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                            <!-- Description -->
+
+                                            <div class="form-field">
+
+                                                <label for="studioEditor">
+
+                                                    Description
+
+                                                </label>
+
+
+                                                <div class="editor-box">
+
+                                                    <textarea
+                                                        id="studioEditor"
+                                                        name="studioDescription"
+                                                    ><%= about.studioDescription %></textarea>
+
+                                                </div>
+
+
+                                                <div class="editor-hint">
+
+                                                    Add information about the GiftTory studio.
+
+                                                </div>
+
+                                            </div>
+
+
+
+                                            <!-- Studio Images -->
+
+                                            <div class="row">
+
+
+                                                <!-- Image 1 -->
+
+                                                <div class="col s12 m4">
+
+                                                    <div class="form-field">
+
+
+                                                        <label>
+
+                                                            Studio Image 1
+
+                                                        </label>
+
+
+                                                        <div class="image-upload-box">
+
+
+                                                            <input
+                                                                type="file"
+                                                                name="studioImage1"
+                                                                accept="image/*"
+                                                            >
+
+
+                                                            <% if (about.studioImage1) { %>
+
+
+                                                                <img
+                                                                    src="<%= about.studioImage1 %>"
+                                                                    class="studio-current-image"
+                                                                    alt="Studio Image 1"
+                                                                >
+
+
+                                                            <% } %>
+
+
+                                                            <span class="form-hint">
+
+                                                                Leave empty to keep current image.
+
+                                                            </span>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <!-- Image 2 -->
+
+                                                <div class="col s12 m4">
+
+                                                    <div class="form-field">
+
+
+                                                        <label>
+
+                                                            Studio Image 2
+
+                                                        </label>
+
+
+                                                        <div class="image-upload-box">
+
+
+                                                            <input
+                                                                type="file"
+                                                                name="studioImage2"
+                                                                accept="image/*"
+                                                            >
+
+
+                                                            <% if (about.studioImage2) { %>
+
+
+                                                                <img
+                                                                    src="<%= about.studioImage2 %>"
+                                                                    class="studio-current-image"
+                                                                    alt="Studio Image 2"
+                                                                >
+
+
+                                                            <% } %>
+
+
+                                                            <span class="form-hint">
+
+                                                                Leave empty to keep current image.
+
+                                                            </span>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <!-- Image 3 -->
+
+                                                <div class="col s12 m4">
+
+                                                    <div class="form-field">
+
+
+                                                        <label>
+
+                                                            Studio Image 3
+
+                                                        </label>
+
+
+                                                        <div class="image-upload-box">
+
+
+                                                            <input
+                                                                type="file"
+                                                                name="studioImage3"
+                                                                accept="image/*"
+                                                            >
+
+
+                                                            <% if (about.studioImage3) { %>
+
+
+                                                                <img
+                                                                    src="<%= about.studioImage3 %>"
+                                                                    class="studio-current-image"
+                                                                    alt="Studio Image 3"
+                                                                >
+
+
+                                                            <% } %>
+
+
+                                                            <span class="form-hint">
+
+                                                                Leave empty to keep current image.
+
+                                                            </span>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </div>
+
+
+
+                                        <!-- ================================= -->
+                                        <!-- GIFTTORY JOURNEY -->
+                                        <!-- ================================= -->
+
+                                        <div class="form-section">
+
+
+                                            <h6 class="section-title">
+
+                                                <i class="material-icons">
+
+                                                    timeline
+
+                                                </i>
+
+                                                GiftTory Journey
+
+                                            </h6>
+
+
+
+                                            <!-- Journey Heading -->
+
+                                            <div class="row">
+
+
+                                                <div class="input-field col s12">
+
+                                                    <input
+                                                        type="text"
+                                                        id="journeyHeading"
+                                                        name="journeyHeading"
+                                                        value="<%= about.journeyHeading %>"
+                                                    >
+
+                                                    <label for="journeyHeading">
+
+                                                        Journey Heading
+
+                                                    </label>
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                            <!-- Journey Cards -->
+
+                                            <% for (let i = 0; i < 4; i++) { %>
+
+
+                                                <div class="journey-card">
+
+
+                                                    <div class="journey-card-header">
+
+                                                        <i class="material-icons">
+
+                                                            card_giftcard
+
+                                                        </i>
+
+
+                                                        <h6>
+
+                                                            Journey Card <%= i + 1 %>
+
+                                                        </h6>
+
+                                                    </div>
+
+
+
+                                                    <!-- Journey Icon -->
+
+                                                    <div class="form-field">
+
+
+                                                        <label>
+
+                                                            Icon
+
+                                                        </label>
+
+
+                                                        <div class="image-upload-box">
+
+
+                                                            <input
+                                                                type="file"
+                                                                name="journeyIcon<%= i %>"
+                                                                accept="image/*"
+                                                            >
+
+
+
+                                                            <% if (about.journey[i]?.icon) { %>
+
+
+                                                                <img
+                                                                    src="<%= about.journey[i].icon %>"
+                                                                    class="journey-image-preview"
+                                                                    alt="Journey Icon <%= i + 1 %>"
+                                                                >
+
+
+                                                            <% } %>
+
+
+
+                                                            <span class="form-hint">
+
+                                                                Leave empty to keep current icon.
+
+                                                            </span>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+
+                                                    <!-- Journey Title -->
+
+                                                    <div class="input-field">
+
+                                                        <input
+                                                            type="text"
+                                                            id="journeyTitle<%= i %>"
+                                                            name="journeyTitle<%= i %>"
+                                                            value="<%= about.journey[i]?.title %>"
+                                                        >
+
+                                                        <label for="journeyTitle<%= i %>">
+
+                                                            Title
+
+                                                        </label>
+
+                                                    </div>
+
+
+
+                                                    <!-- Journey Description -->
+
+                                                    <div class="form-field">
+
+
+                                                        <label for="journeyDescription<%= i %>">
+
+                                                            Description
+
+                                                        </label>
+
+
+                                                        <textarea
+                                                            id="journeyDescription<%= i %>"
+                                                            name="journeyDescription<%= i %>"
+                                                            class="materialize-textarea"
+                                                        ><%= about.journey[i]?.description %></textarea>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            <% } %>
+
+
+                                        </div>
+
+
+
+                                        <!-- ================================= -->
+                                        <!-- ACTIONS -->
+                                        <!-- ================================= -->
+
+                                        <div class="form-actions">
+
+
+                                            <a
+                                                href="/admin/dashboard"
+                                                class="btn-flat waves-effect"
+                                            >
+
+                                                Cancel
+
+                                            </a>
+
+
+                                            <button
+                                                type="submit"
+                                                class="btn waves-effect waves-light btn-gradient"
+                                            >
+
+                                                <i class="material-icons left">
+
+                                                    save
+
+                                                </i>
+
+                                                Save About Us
+
+                                            </button>
+
+
+                                        </div>
+
+
+                                    </form>
+
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+
+    <!-- CKEDITOR -->
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+
+
+    <script>
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+
+                /*
+                 * Materialize fields
+                 */
+
+                if (window.M) {
+
+                    M.updateTextFields();
+
+
+                    document
+                        .querySelectorAll('.materialize-textarea')
+                        .forEach(function (textarea) {
+
+                            M.textareaAutoResize(textarea);
+
+                        });
+
+                }
+
+
+
+                /*
+                 * CKEditor - Intro
+                 */
+
+                const introEditor =
+                    document.querySelector('#introEditor');
+
+
+                if (introEditor) {
+
+                    ClassicEditor
+                        .create(introEditor)
+                        .catch(function (error) {
+
+                            console.error(
+                                'Intro Editor Error:',
+                                error
+                            );
+
+                        });
+
+                }
+
+
+
+                /*
+                 * CKEditor - Brand
+                 */
+
+                const brandEditor =
+                    document.querySelector('#brandEditor');
+
+
+                if (brandEditor) {
+
+                    ClassicEditor
+                        .create(brandEditor)
+                        .catch(function (error) {
+
+                            console.error(
+                                'Brand Editor Error:',
+                                error
+                            );
+
+                        });
+
+                }
+
+
+
+                /*
+                 * CKEditor - Studio
+                 */
+
+                const studioEditor =
+                    document.querySelector('#studioEditor');
+
+
+                if (studioEditor) {
+
+                    ClassicEditor
+                        .create(studioEditor)
+                        .catch(function (error) {
+
+                            console.error(
+                                'Studio Editor Error:',
+                                error
+                            );
+
+                        });
+
+                }
+
+
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

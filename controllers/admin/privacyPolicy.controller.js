@@ -15,7 +15,7 @@ exports.getPrivacyPolicy = async (req,res)=>{
     }
 
     res.render(
-        "admin/privacy-policy/index",
+        "privacy",
         {
 
             title:"Privacy Policy",
@@ -56,6 +56,6 @@ exports.savePrivacyPolicy = async(req,res)=>{
         "Privacy Policy Updated Successfully"
     );
 
-    res.redirect("/admin/privacy-policy");
+    res.redirect("privacy");
 
 }

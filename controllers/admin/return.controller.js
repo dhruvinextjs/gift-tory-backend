@@ -68,9 +68,9 @@ exports.renderReturnRequests = catchAsync(async (req, res) => {
         .skip(skip)
         .limit(limit);
 
-    res.render("admin/returns/index", {
+    res.render("return-request", {
 
-        layout: "admin/layout/main",
+        // layout: "admin/layout/main",
 
         title: "Return Requests",
 
@@ -102,10 +102,10 @@ exports.renderReturnRequestDetail = catchAsync(async (req, res) => {
         .populate("order");
 
     if (!request) {
-        return res.redirect("/admin/returns");
+        return res.redirect("return-request");
     }
 
-    res.render("admin/returns/view", {
+    res.render("return_view", {
         title: "Return Request Details",
         active: "returns",
         request
@@ -123,6 +123,6 @@ exports.updateReturnRequestStatus = catchAsync(async (req, res) => {
         { status }
     );
 
-    res.redirect("/admin/returns/" + req.params.id);
+    res.redirect("return-request" + req.params.id);
 
 });

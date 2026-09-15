@@ -24,22 +24,32 @@ const parseCheckbox = (val) => val === "on" || val === "true" || val === true;
 
 // @desc    List all products (panel)
 // @route   GET /admin/products
+// @desc    List all products (panel)
+// ============================
+// ADMIN PANEL (EJS views)
+// ============================
+
+// @desc   List all products (panel)
+// @route  GET /admin/products
 exports.renderProductList = catchAsync(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 10;
   const search = req.query.search || "";
 
-  const filter = search ? { name: { $regex: search, $options: "i" } } : {};
+  const filter = search
+    ? { name: { $regex: search, $options: "i" } }
+    : {};
 
   const products = await Product.find(filter)
     .populate("category", "name")
+    .populate("occasion", "name")
     .sort("-createdAt")
     .skip((page - 1) * limit)
     .limit(limit);
 
   const total = await Product.countDocuments(filter);
 
-  res.render("admin/products/list", {
+  res.render("products", {
     title: "Products",
     active: "products",
     products,
@@ -54,7 +64,7 @@ exports.renderProductList = catchAsync(async (req, res) => {
 exports.renderAddProductForm = catchAsync(async (req, res) => {
   const categories = await Category.find({ isActive: true });
   const occasions = await Occasion.find({ isActive: true });
-  res.render("admin/products/add", {
+  res.render("product_add", {
     title: "Add Product",
     active: "products",
     categories,
@@ -107,7 +117,7 @@ exports.renderEditProductForm = catchAsync(async (req, res) => {
   }
   const categories = await Category.find({ isActive: true });
   const occasions = await Occasion.find({ isActive: true });
-  res.render("admin/products/edit", {
+  res.render("product_edit", {
     title: "Edit Product",
     active: "products",
     product,

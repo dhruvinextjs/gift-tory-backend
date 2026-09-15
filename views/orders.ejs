@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>Orders | <%= title %></title>
+
+
+    <!-- DataTables CSS -->
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/jquery.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/select.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/css/pages/data-tables.css"
+    >
+
+
+    <style>
+
+        /* =========================================
+           ORDERS PAGE
+           Same UI style as Occasions page
+        ========================================= */
+
+
+        /* Table */
+
+        table tr td,
+        table tr th {
+
+            text-align: center;
+
+            vertical-align: middle !important;
+
+            padding: 12px 10px !important;
+
+        }
+
+
+        /* Order Number */
+
+        .order-number {
+
+            font-weight: 600;
+
+            color: #333;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* Customer */
+
+        .order-customer {
+
+            font-weight: 500;
+
+            color: #424242;
+
+        }
+
+
+        /* Items */
+
+        .order-items {
+
+            font-weight: 500;
+
+            color: #555;
+
+        }
+
+
+        /* Total */
+
+        .order-total {
+
+            font-weight: 600;
+
+            color: #333;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* Status */
+
+        .order-status {
+
+            padding: 16px 12px;
+
+            border-radius: 20px;
+
+            font-size: 0.8rem;
+
+            font-weight: 600;
+
+            display: inline-block;
+
+            text-transform: capitalize;
+
+            color: #fff;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* Payment - Paid */
+
+        .payment-status-paid {
+
+            background: #16a34a;
+
+        }
+
+
+        /* Payment - Pending */
+
+        .payment-status-pending {
+
+            background: #f59e0b;
+
+        }
+
+
+        /* Payment - Failed */
+
+        .payment-status-failed {
+
+            background: #dc2626;
+
+        }
+
+
+        /* Payment - Default */
+
+        .payment-status-default {
+
+            background: #757575;
+
+        }
+
+
+        /* Order Status */
+
+        .order-status-info {
+
+            background: #2196f3;
+
+        }
+
+
+        /* Date */
+
+        .order-date {
+
+            color: #666;
+
+            font-size: 13px;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* Actions */
+
+        .order-actions {
+
+            display: flex;
+
+            gap: 6px;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+
+        .order-actions .btn-floating {
+
+            margin: 0;
+
+        }
+
+
+        /* Filter */
+
+        .order-filter-wrapper {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .order-filter-wrapper form {
+
+            margin: 0;
+
+        }
+
+
+        .order-filter-wrapper select {
+
+            min-width: 180px;
+
+            margin: 0;
+
+        }
+
+
+        /* Empty state */
+
+        .order-empty {
+
+            text-align: center !important;
+
+            padding: 40px !important;
+
+        }
+
+
+        .order-empty i {
+
+            display: block;
+
+            font-size: 40px;
+
+            color: #bdbdbd;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .order-empty p {
+
+            color: #9e9e9e;
+
+            margin: 0;
+
+        }
+
+
+        /* Pagination */
+
+        .order-pagination {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .order-pagination a {
+
+            min-width: 32px;
+
+            height: 32px;
+
+            line-height: 32px;
+
+            text-align: center;
+
+            border-radius: 3px;
+
+            color: #555;
+
+            text-decoration: none;
+
+            border: 1px solid #ddd;
+
+            font-size: 13px;
+
+        }
+
+
+        .order-pagination a:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        .order-pagination a.active {
+
+            background: #26a69a;
+
+            border-color: #26a69a;
+
+            color: #fff;
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .order-filter-wrapper {
+
+                justify-content: flex-start;
+
+                margin-top: 10px;
+
+            }
+
+
+            .order-filter-wrapper select {
+
+                width: 100%;
+
+            }
+
+
+            .order-filter-wrapper form {
+
+                width: 100%;
+
+            }
+
+
+            table {
+
+                min-width: 950px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- =========================================
+                 PAGE HEADER
+            ========================================== -->
+
+            <div
+                id="breadcrumbs-wrapper"
+                class="order-page-header"
+            >
+
+                <div class="container">
+
+                    <div class="row">
+
+
+                        <!-- PAGE TITLE -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Manage Orders
+
+                            </h6>
+
+                        </div>
+
+
+                        <!-- BREADCRUMBS -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    Orders
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         DESCRIPTION + FILTER
+                    ====================================== -->
+
+                    <div class="row">
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="col s12 m6">
+
+                            <h5 class="mt-0">
+
+                                All Orders
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                View and manage customer orders
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- STATUS FILTER -->
+
+                        <div class="col s12 m6">
+
+                            <div class="order-filter-wrapper">
+
+                                <form
+                                    method="GET"
+                                    action="/admin/orders"
+                                >
+
+                                    <select
+                                        class="browser-default"
+                                        name="status"
+                                        onchange="this.form.submit()"
+                                    >
+
+                                        <option value="">
+
+                                            All statuses
+
+                                        </option>
+
+
+                                        <% if (statuses && statuses.length) { %>
+
+
+                                            <% statuses.forEach(s => { %>
+
+                                                <option
+                                                    value="<%= s %>"
+                                                    <%= status === s ? 'selected' : '' %>
+                                                >
+
+                                                    <%= s.replace(/\_/g, ' ') %>
+
+                                                </option>
+
+                                            <% }) %>
+
+
+                                        <% } %>
+
+                                    </select>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 MESSAGES
+            ========================================== -->
+
+            <%- include('messages', { messages: messages }) %>
+
+
+            <!-- =========================================
+                 MAIN CONTENT
+            ========================================== -->
+
+            <div class="col s12">
+
+                <div class="container">
+
+                    <div class="section section-data-tables">
+
+
+                        <div class="row">
+
+                            <div class="col s12">
+
+
+                                <div class="card">
+
+                                    <div class="card-content">
+
+
+                                        <!-- =================================
+                                             TABLE
+                                        ================================== -->
+
+                                        <div class="row">
+
+                                            <div class="col s12 overflow">
+
+
+                                                <table
+                                                    id="page-length-option"
+                                                    class="display"
+                                                >
+
+                                                    <thead>
+
+                                                        <tr>
+
+                                                            <th>
+                                                                Order #
+                                                            </th>
+
+                                                            <th>
+                                                                Customer
+                                                            </th>
+
+                                                            <th>
+                                                                Items
+                                                            </th>
+
+                                                            <th>
+                                                                Total
+                                                            </th>
+
+                                                            <th>
+                                                                Payment
+                                                            </th>
+
+                                                            <th>
+                                                                Status
+                                                            </th>
+
+                                                            <th>
+                                                                Date
+                                                            </th>
+
+                                                            <th>
+                                                                Actions
+                                                            </th>
+
+                                                        </tr>
+
+                                                    </thead>
+
+
+                                                    <tbody>
+
+
+                                                        <% if (!orders || orders.length === 0) { %>
+
+
+                                                            <!-- EMPTY STATE -->
+
+                                                            <tr>
+
+                                                                <td
+                                                                    colspan="8"
+                                                                    class="order-empty"
+                                                                >
+
+                                                                    <i class="material-icons">
+
+                                                                        shopping_bag
+
+                                                                    </i>
+
+
+                                                                    <p>
+
+                                                                        No orders found
+
+                                                                    </p>
+
+                                                                </td>
+
+                                                            </tr>
+
+
+                                                        <% } else { %>
+
+
+                                                            <% orders.forEach(o => { %>
+
+
+                                                                <tr>
+
+
+                                                                    <!-- =========================
+                                                                         ORDER NUMBER
+                                                                    ========================== -->
+
+                                                                    <td>
+
+                                                                        <span class="order-number">
+
+                                                                            <%= o.orderNumber || 'N/A' %>
+
+                                                                        </span>
+
+                                                                    </td>
+
+
+                                                                    <!-- =========================
+                                                                         CUSTOMER
+                                                                    ========================== -->
+
+                                                                    <td>
+
+                                                                        <span class="order-customer">
+
+                                                                            <%= o.user
+                                                                                ? o.user.name
+                                                                                : 'Deleted user'
+                                                                            %>
+
+                                                                        </span>
+
+                                                                    </td>
+
+
+                                                                    <!-- =========================
+                                                                         ITEMS
+                                                                    ========================== -->
+
+                                                                    <td>
+
+                                                                        <span class="order-items">
+
+                                                                            <%= o.items
+                                                                                ? o.items.length
+                                                                                : 0
+                                                                            %>
+
+                                                                        </span>
+
+                                                                    </td>
+
+
+                                                                    <!-- =========================
+                                                                         TOTAL
+                                                                    ========================== -->
+
+                                                                    <td>
+
+                                                                        <span class="order-total">
+
+                                                                            ₹<%= o.totalPrice || 0 %>
+
+                                                                        </span>
+
+                                                                    </td>
+
+
+                                                                    <!-- =========================
+                                                                         PAYMENT STATUS
+                                                                    ========================== -->
+
+                                                                    <td>
+
+
+                                                                        <%
+                                                                            const paymentStatus =
+                                                                                String(
+                                                                                    o.paymentStatus || ''
+                                                                                ).toLowerCase();
+                                                                        %>
+
+
+                                                                        <span
+                                                                            class="order-status
+                                                                            <%= paymentStatus === 'paid'
+                                                                                ? 'payment-status-paid'
+                                                                                : paymentStatus === 'pending'
+                                                                                    ? 'payment-status-pending'
+                                                                                    : paymentStatus === 'failed'
+                                                                                        ? 'payment-status-failed'
+                                                                                        : 'payment-status-default'
+                                                                            %>"
+                                                                        >
+
+                                                                            <%= o.paymentStatus || 'N/A' %>
+
+                                                                        </span>
+
+
+                                                                    </td>
+
+
+                                                                    <!-- =========================
+                                                                         ORDER STATUS
+                                                                    ========================== -->
+
+                                                                    <td>
+
+                                                                        <span
+                                                                            class="order-status order-status-info"
+                                                                        >
+
+                                                                            <%= o.orderStatus
+                                                                                ? o.orderStatus.replace(/\_/g, ' ')
+                                                                                : 'N/A'
+                                                                            %>
+
+                                                                        </span>
+
+                                                                    </td>
+
+
+                                                                    <!-- =========================
+                                                                         DATE
+                                                                    ========================== -->
+
+                                                                    <td>
+
+                                                                        <span class="order-date">
+
+                                                                            <%= o.createdAt
+                                                                                ? new Date(
+                                                                                    o.createdAt
+                                                                                ).toLocaleDateString('en-IN')
+                                                                                : 'N/A'
+                                                                            %>
+
+                                                                        </span>
+
+                                                                    </td>
+
+
+                                                                    <!-- =========================
+                                                                         ACTIONS
+                                                                    ========================== -->
+
+                                                                    <td>
+
+                                                                        <div class="order-actions">
+
+
+                                                                            <a
+                                                                                href="/admin/orders/<%= o._id %>"
+                                                                                class="btn-floating waves-effect waves-light accent-2"
+                                                                                title="View Order"
+                                                                            >
+
+                                                                                <i class="material-icons">
+
+                                                                                    visibility
+
+                                                                                </i>
+
+                                                                            </a>
+
+
+                                                                        </div>
+
+                                                                    </td>
+
+
+                                                                </tr>
+
+
+                                                            <% }) %>
+
+
+                                                        <% } %>
+
+
+                                                    </tbody>
+
+                                                </table>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- =================================
+                                             PAGINATION
+                                        ================================== -->
+
+                                        <% if (
+                                            typeof totalPages !== 'undefined' &&
+                                            totalPages > 1
+                                        ) { %>
+
+
+                                            <div class="order-pagination">
+
+
+                                                <% for (
+                                                    let i = 1;
+                                                    i <= totalPages;
+                                                    i++
+                                                ) { %>
+
+
+                                                    <a
+                                                        href="/admin/orders?page=<%= i %>&status=<%= status || '' %>"
+                                                        class="<%= currentPage === i ? 'active' : '' %>"
+                                                    >
+
+                                                        <%= i %>
+
+                                                    </a>
+
+
+                                                <% } %>
+
+
+                                            </div>
+
+
+                                        <% } %>
+
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         COMMON JS
+    ========================================== -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+    <!-- =========================================
+         DATATABLE JS
+    ========================================== -->
+
+    <script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+
+    <script src="/app-assets/js/scripts/data-tables.js"></script>
+
+
+</body>
+
+</html>

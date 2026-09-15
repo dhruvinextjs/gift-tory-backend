@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>Edit Blog Post - <%= blog.title %> | <%= title %></title>
+
+    <style>
+
+        /* =========================================
+           BLOG FORM PAGE
+           Same UI style as Category Add/Edit
+        ========================================= */
+
+        .blog-form-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .blog-form-body {
+            padding: 30px;
+        }
+
+        .form-section {
+            background: #fff;
+            padding: 28px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid #eeeeee;
+        }
+
+        .section-title {
+            margin: 0 0 22px 0;
+            color: #424242;
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        .section-title i {
+            vertical-align: middle;
+            margin-right: 7px;
+            color: #667eea;
+        }
+
+        .required::after {
+            content: " *";
+            color: #d32f2f;
+        }
+
+        /* Inputs */
+
+        .blog-form-body .input-field {
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+
+        .blog-form-body input,
+        .blog-form-body textarea,
+        .blog-form-body select {
+            box-sizing: border-box;
+        }
+
+        .blog-form-body input:focus,
+        .blog-form-body textarea:focus {
+            border-bottom: 2px solid #667eea !important;
+            box-shadow: 0 1px 0 0 #667eea !important;
+        }
+
+        .blog-form-body label {
+            color: #757575;
+        }
+
+        /* Textarea */
+
+        .content-textarea {
+            min-height: 220px !important;
+            resize: vertical;
+        }
+
+        /* Form Hint */
+
+        .form-hint {
+            color: #9e9e9e;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* Current Image */
+
+        .current-image-box {
+            display: inline-block;
+            padding: 15px;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .current-image-box img {
+            width: 180px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            display: block;
+        }
+
+        /* Image Upload */
+
+        .image-upload-box {
+            background: #fafafa;
+            border: 1px dashed #bdbdbd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .image-upload-box input[type="file"] {
+            margin: 0;
+            height: auto;
+            border: none;
+            box-shadow: none;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .image-preview img {
+            width: 180px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        /* Checkbox */
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            min-height: 38px;
+            color: #424242;
+        }
+
+        .checkbox-row span {
+            padding-left: 30px !important;
+        }
+
+        /* Actions */
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            padding-top: 10px;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(45deg, #667eea, #764ba2) !important;
+        }
+
+        .btn-gradient:hover {
+            opacity: 0.92;
+        }
+
+        /* Page Header */
+
+        .blog-page-header {
+            background: #fff;
+        }
+
+        .blog-page-header .container {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .blog-form-body {
+                padding: 15px;
+            }
+
+            .form-section {
+                padding: 20px 15px;
+            }
+
+            .form-actions {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .current-image-box img,
+            .image-preview img {
+                width: 140px;
+                height: 90px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns">
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- PAGE HEADER -->
+
+            <div
+                id="breadcrumbs-wrapper"
+                class="blog-page-header">
+
+                <div class="container">
+
+                    <div class="row valign-wrapper">
+
+
+                        <div class="col s12 m8 l8">
+
+                            <h5 class="breadcrumbs-title mb-0">
+
+                                Edit Blog Post
+
+                            </h5>
+
+                            <p
+                                class="grey-text"
+                                style="margin: 4px 0 0;">
+
+                                <%= blog.title %>
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="col s12 m4 l4 right-align-md">
+
+                            <a
+                                href="/admin/blogs"
+                                class="btn gradient-45deg-purple-deep-orange pull-right btn-breadcrumbs">
+
+                                <i class="material-icons left">
+                                    arrow_back
+                                </i>
+
+                                Back to Blogs
+
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MESSAGES -->
+
+            <%- include('messages', { messages: messages }) %>
+
+
+            <!-- MAIN CONTENT -->
+
+            <div class="col s12">
+
+                <div class="container">
+
+                    <div class="section">
+
+
+                        <div class="blog-form-card">
+
+                            <div class="blog-form-body">
+
+
+                                <form
+                                    method="POST"
+                                    action="/admin/blogs/edit/<%= blog._id %>"
+                                    enctype="multipart/form-data">
+
+
+                                    <!-- =====================================
+                                         BASIC INFORMATION
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+
+                                        <h5 class="section-title">
+
+                                            <i class="material-icons">
+                                                article
+                                            </i>
+
+                                            Basic Information
+
+                                        </h5>
+
+
+                                        <div class="row">
+
+
+                                            <!-- Blog Title -->
+
+                                            <div class="input-field col s12">
+
+                                                <input
+                                                    id="blogTitle"
+                                                    type="text"
+                                                    name="title"
+                                                    value="<%= blog.title %>"
+                                                    required>
+
+                                                <label
+                                                    for="blogTitle"
+                                                    class="active required">
+
+                                                    Blog Title
+
+                                                </label>
+
+                                            </div>
+
+
+                                            <!-- Excerpt -->
+
+                                            <div class="input-field col s12">
+
+                                                <input
+                                                    id="excerpt"
+                                                    type="text"
+                                                    name="excerpt"
+                                                    value="<%= blog.excerpt || '' %>">
+
+                                                <label
+                                                    for="excerpt"
+                                                    class="active">
+
+                                                    Excerpt
+
+                                                </label>
+
+                                                <div class="form-hint">
+
+                                                    Add a short summary or introduction for the blog post.
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- Content -->
+
+                                            <div class="input-field col s12">
+
+                                                <textarea
+                                                    id="content"
+                                                    name="content"
+                                                    class="materialize-textarea content-textarea"
+                                                    required><%= blog.content || '' %></textarea>
+
+                                                <label
+                                                    for="content"
+                                                    class="active required">
+
+                                                    Content
+
+                                                </label>
+
+                                                <div class="form-hint">
+
+                                                    Write the complete content of your blog post.
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         BLOG DETAILS
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+
+                                        <h5 class="section-title">
+
+                                            <i class="material-icons">
+                                                edit_note
+                                            </i>
+
+                                            Blog Details
+
+                                        </h5>
+
+
+                                        <div class="row">
+
+
+                                            <!-- Author -->
+
+                                            <div class="input-field col s12 m6">
+
+                                                <input
+                                                    id="author"
+                                                    type="text"
+                                                    name="author"
+                                                    value="<%= blog.author || '' %>">
+
+                                                <label
+                                                    for="author"
+                                                    class="active">
+
+                                                    Author
+
+                                                </label>
+
+                                            </div>
+
+
+                                            <!-- Tags -->
+
+                                            <div class="input-field col s12 m6">
+
+                                                <input
+                                                    id="tags"
+                                                    type="text"
+                                                    name="tags"
+                                                    value="<%= Array.isArray(blog.tags) ? blog.tags.join(', ') : (blog.tags || '') %>">
+
+                                                <label
+                                                    for="tags"
+                                                    class="active">
+
+                                                    Tags
+
+                                                </label>
+
+                                                <div class="form-hint">
+
+                                                    Enter tags separated by commas.
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         PUBLISH SETTINGS
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+
+                                        <h5 class="section-title">
+
+                                            <i class="material-icons">
+                                                tune
+                                            </i>
+
+                                            Publish Settings
+
+                                        </h5>
+
+
+                                        <div class="row">
+
+
+                                            <div class="col s12">
+
+
+                                                <label
+                                                    style="
+                                                        display:block;
+                                                        color:#757575;
+                                                        margin-bottom:10px;
+                                                    ">
+
+                                                    Status
+
+                                                </label>
+
+
+                                                <label class="checkbox-row">
+
+                                                    <input
+                                                        type="checkbox"
+                                                        name="isPublished"
+                                                        <%= blog.isPublished ? 'checked' : '' %>>
+
+                                                    <span>
+
+                                                        Published
+
+                                                    </span>
+
+                                                </label>
+
+
+                                                <div class="form-hint">
+
+                                                    Uncheck this option to save the blog post as a draft.
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         COVER IMAGE
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+
+                                        <h5 class="section-title">
+
+                                            <i class="material-icons">
+                                                image
+                                            </i>
+
+                                            Cover Image
+
+                                        </h5>
+
+
+                                        <!-- Current Image -->
+
+                                        <div class="input-field col s12">
+
+                                            <label
+                                                class="active"
+                                                style="
+                                                    position:static;
+                                                    display:block;
+                                                    margin-bottom:10px;
+                                                ">
+
+                                                Current Cover Image
+
+                                            </label>
+
+
+                                            <div class="current-image-box">
+
+                                                <% if (blog.coverImage) { %>
+
+                                                    <img
+                                                        src="/uploads/blogs/<%= blog.coverImage %>"
+                                                        onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22110%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22180%22 height=%22110%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22%3ENo Img%3C/text%3E%3C/svg%3E'"
+                                                        alt="<%= blog.title %>">
+
+                                                <% } else { %>
+
+                                                    <span class="grey-text">
+
+                                                        No cover image available
+
+                                                    </span>
+
+                                                <% } %>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- Replace Image -->
+
+                                        <div
+                                            class="row"
+                                            style="margin-top:25px;">
+
+                                            <div class="col s12">
+
+                                                <div class="image-upload-box">
+
+
+                                                    <label
+                                                        style="
+                                                            display:block;
+                                                            color:#757575;
+                                                            margin-bottom:10px;
+                                                        ">
+
+                                                        Replace Cover Image
+
+                                                        <span class="grey-text">
+                                                            (Optional)
+                                                        </span>
+
+                                                    </label>
+
+
+                                                    <input
+                                                        id="coverImageInput"
+                                                        type="file"
+                                                        name="coverImage"
+                                                        accept="image/*">
+
+
+                                                    <div class="form-hint">
+
+                                                        Upload a new cover image only if you want to replace the current one.
+
+                                                    </div>
+
+
+                                                    <div
+                                                        class="image-preview"
+                                                        id="imagePreview">
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         ACTIONS
+                                    ====================================== -->
+
+                                    <div class="form-actions">
+
+
+                                        <a
+                                            href="/admin/blogs"
+                                            class="btn grey waves-effect waves-light">
+
+                                            Cancel
+
+                                        </a>
+
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-gradient waves-effect waves-light">
+
+                                            <i class="material-icons left">
+                                                save
+                                            </i>
+
+                                            Update Blog Post
+
+                                        </button>
+
+
+                                    </div>
+
+
+                                </form>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            /* =========================================
+               Text Fields
+            ========================================= */
+
+            M.updateTextFields();
+
+
+            /* =========================================
+               Textarea
+            ========================================= */
+
+            const contentTextarea =
+                document.getElementById('content');
+
+
+            if (contentTextarea) {
+
+                M.textareaAutoResize(contentTextarea);
+
+            }
+
+
+            /* =========================================
+               Cover Image Preview
+            ========================================= */
+
+            const imageInput =
+                document.getElementById('coverImageInput');
+
+            const imagePreview =
+                document.getElementById('imagePreview');
+
+
+            if (imageInput) {
+
+                imageInput.addEventListener(
+                    'change',
+                    function () {
+
+
+                        imagePreview.innerHTML = '';
+
+
+                        const file =
+                            this.files[0];
+
+
+                        if (!file) {
+
+                            return;
+
+                        }
+
+
+                        if (!file.type.startsWith('image/')) {
+
+                            M.toast({
+
+                                html: 'Please select a valid image.',
+
+                                classes: 'red rounded'
+
+                            });
+
+
+                            this.value = '';
+
+                            return;
+
+                        }
+
+
+                        const reader =
+                            new FileReader();
+
+
+                        reader.onload =
+                            function (e) {
+
+
+                                const img =
+                                    document.createElement('img');
+
+
+                                img.src =
+                                    e.target.result;
+
+
+                                imagePreview.appendChild(img);
+
+                            };
+
+
+                        reader.readAsDataURL(file);
+
+
+                    }
+                );
+
+            }
+
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

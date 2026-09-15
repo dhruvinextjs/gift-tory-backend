@@ -17,17 +17,17 @@ const deleteFile = (folder, filename) => {
 
 exports.renderBannerList = catchAsync(async (req, res) => {
   const banners = await Banner.find().sort("displayOrder");
-  res.render("admin/banners/list", { title: "Banners", active: "banners", banners });
+  res.render("banner", { title: "Banners", active: "banners", banners });
 });
 
 exports.renderAddBannerForm = (req, res) => {
-  res.render("admin/banners/add", { title: "Add Banner", active: "banners" });
+  res.render("banner_add", { title: "Add Banner", active: "banners" });
 };
 
 exports.createBannerPanel = catchAsync(async (req, res) => {
   if (!req.file) {
     req.flash("error", "Banner image is required");
-    return res.redirect("/admin/banners/add");
+    return res.redirect("banner_add");
   }
   await Banner.create({
     title: req.body.title,
@@ -39,26 +39,26 @@ exports.createBannerPanel = catchAsync(async (req, res) => {
     isActive: req.body.isActive === "on",
   });
   req.flash("success", "Banner created successfully");
-  res.redirect("/admin/banners");
+  res.redirect("banner");
 });
 
 exports.deleteBannerPanel = catchAsync(async (req, res) => {
   const banner = await Banner.findByIdAndDelete(req.params.id);
   if (banner) deleteFile("banners", banner.image);
   req.flash("success", "Banner deleted successfully");
-  res.redirect("/admin/banners");
+  res.redirect("banner");
 });
 
 exports.toggleActiveBannerPanel = catchAsync(async (req, res) => {
   const banner = await Banner.findById(req.params.id);
   if (!banner) {
     req.flash("error", "Banner not found");
-    return res.redirect("/admin/banners");
+    return res.redirect("banner");
   }
   banner.isActive = !banner.isActive;
   await banner.save();
   req.flash("success", "Banner status updated");
-  res.redirect("/admin/banners");
+  res.redirect("banner");
 });
 
 // ============ ADMIN API ============

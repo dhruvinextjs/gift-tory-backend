@@ -8,7 +8,7 @@ exports.getVideos = async (req, res) => {
 
     const videos = await Video.find().sort({ createdAt: -1 });
 
-    res.render("admin/videos/index", {
+    res.render("videos", {
         title: "Videos",
         active: "videos",
         videos
@@ -52,7 +52,7 @@ exports.createVideo = async (req, res) => {
 
     req.flash("success", "Video Added Successfully");
 
-    res.redirect("/admin/videos");
+    res.redirect("videos");
 
 };
 
@@ -66,6 +66,6 @@ exports.deleteVideo = async (req, res) => {
 
     req.flash("success", "Video Deleted Successfully");
 
-    res.redirect("/admin/videos");
+    res.redirect("videos");
 
 };

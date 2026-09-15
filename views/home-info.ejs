@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>Home Information | <%= title %></title>
+
+
+    <style>
+
+        /* =========================================
+           HOME INFORMATION PAGE
+           Same Materialize UI style as Categories
+        ========================================= */
+
+
+        /* Page Header */
+
+        .home-info-page-header {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .home-info-page-header h5 {
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .home-info-page-header p {
+
+            margin-top: 0;
+
+        }
+
+
+        /* Form Card */
+
+        .home-info-form-card {
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+        }
+
+
+        .home-info-form-body {
+
+            padding: 25px !important;
+
+        }
+
+
+        /* Form Section */
+
+        .form-section {
+
+            margin-bottom: 30px;
+
+            padding-bottom: 25px;
+
+            border-bottom: 1px solid #eeeeee;
+
+        }
+
+
+        .form-section:last-child {
+
+            border-bottom: none;
+
+            margin-bottom: 0;
+
+            padding-bottom: 0;
+
+        }
+
+
+        /* Section Title */
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #333;
+
+            margin: 0 0 20px;
+
+        }
+
+
+        .section-title i {
+
+            font-size: 22px;
+
+            color: #26a69a;
+
+        }
+
+
+        /* Info Cards */
+
+        .info-card {
+
+            border: 1px solid #eeeeee;
+
+            border-radius: 8px;
+
+            padding: 20px;
+
+            margin-bottom: 20px;
+
+            background: #fafafa;
+
+            transition: all 0.2s ease;
+
+        }
+
+
+        .info-card:last-child {
+
+            margin-bottom: 0;
+
+        }
+
+
+        .info-card:hover {
+
+            border-color: #d6d6d6;
+
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+        }
+
+
+        /* Info Card Header */
+
+        .info-card-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .info-card-number {
+
+            width: 34px;
+
+            height: 34px;
+
+            line-height: 34px;
+
+            text-align: center;
+
+            border-radius: 50%;
+
+            background: #26a69a;
+
+            color: #fff;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .info-card-title {
+
+            margin: 0;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+            color: #333;
+
+        }
+
+
+        /* Fields */
+
+        .form-field {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .form-field:last-child {
+
+            margin-bottom: 0;
+
+        }
+
+
+        .form-field label {
+
+            color: #555;
+
+            font-weight: 500;
+
+        }
+
+
+        /* Save Actions */
+
+        .form-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding-top: 10px;
+
+        }
+
+
+        .btn-gradient {
+
+            background: linear-gradient(
+
+                135deg,
+
+                #7b1fa2,
+
+                #9c27b0
+
+            );
+
+            border-radius: 4px;
+
+            box-shadow: none;
+
+        }
+
+
+        .btn-gradient:hover {
+
+            box-shadow:
+
+                0 3px 8px rgba(123, 31, 162, 0.25);
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .home-info-form-body {
+
+                padding: 18px !important;
+
+            }
+
+
+            .form-actions {
+
+                justify-content: flex-start;
+
+            }
+
+
+            .info-card {
+
+                padding: 16px;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .home-info-page-header h5 {
+
+                font-size: 20px;
+
+            }
+
+
+            .section-title {
+
+                font-size: 17px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- Breadcrumb Header -->
+
+            <div
+                class="pt-1 pb-0"
+                id="breadcrumbs-wrapper"
+            >
+
+                <div class="container">
+
+                    <div class="row">
+
+
+                        <!-- Messages -->
+
+                        <%- include('messages', { messages: messages }) %>
+
+
+
+                        <!-- Page Title -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Manage Home Information
+
+                            </h6>
+
+                        </div>
+
+
+
+                        <!-- Breadcrumbs -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    Home Information
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Page Header -->
+
+                    <div class="row home-info-page-header">
+
+                        <div class="col s12 m8">
+
+                            <h5 class="mt-0">
+
+                                Home Information
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                Manage homepage statistics and information
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Main Content -->
+
+                    <div class="row">
+
+                        <div class="col s12">
+
+
+                            <div class="card home-info-form-card">
+
+                                <div class="card-content home-info-form-body">
+
+
+                                    <!-- FORM -->
+
+                                    <form
+                                        method="POST"
+                                        action="/admin/home-info"
+                                    >
+
+
+                                        <!-- ================================= -->
+                                        <!-- HOMEPAGE STATISTICS -->
+                                        <!-- ================================= -->
+
+                                        <div class="form-section">
+
+
+                                            <h6 class="section-title">
+
+                                                <i class="material-icons">
+
+                                                    analytics
+
+                                                </i>
+
+                                                Homepage Statistics
+
+                                            </h6>
+
+
+
+                                            <p class="grey-text">
+
+                                                Update the statistics displayed on the homepage.
+
+                                            </p>
+
+
+
+                                            <!-- ================================= -->
+                                            <!-- CARD 1 -->
+                                            <!-- ================================= -->
+
+                                            <div class="info-card">
+
+
+                                                <div class="info-card-header">
+
+
+                                                    <span class="info-card-number">
+
+                                                        1
+
+                                                    </span>
+
+
+                                                    <h6 class="info-card-title">
+
+                                                        Statistics Card 1
+
+                                                    </h6>
+
+
+                                                </div>
+
+
+
+                                                <div class="row">
+
+
+                                                    <!-- Value -->
+
+                                                    <div class="input-field col s12 m6">
+
+                                                        <input
+                                                            type="text"
+                                                            id="value0"
+                                                            name="value0"
+                                                            value="<%= data.infos[0].value %>"
+                                                        >
+
+
+                                                        <label for="value0">
+
+                                                            Value
+
+                                                        </label>
+
+                                                    </div>
+
+
+
+                                                    <!-- Title -->
+
+                                                    <div class="input-field col s12 m6">
+
+                                                        <input
+                                                            type="text"
+                                                            id="title0"
+                                                            name="title0"
+                                                            value="<%= data.infos[0].title %>"
+                                                        >
+
+
+                                                        <label for="title0">
+
+                                                            Title
+
+                                                        </label>
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                            <!-- ================================= -->
+                                            <!-- CARD 2 -->
+                                            <!-- ================================= -->
+
+                                            <div class="info-card">
+
+
+                                                <div class="info-card-header">
+
+
+                                                    <span class="info-card-number">
+
+                                                        2
+
+                                                    </span>
+
+
+                                                    <h6 class="info-card-title">
+
+                                                        Statistics Card 2
+
+                                                    </h6>
+
+
+                                                </div>
+
+
+
+                                                <div class="row">
+
+
+                                                    <!-- Value -->
+
+                                                    <div class="input-field col s12 m6">
+
+                                                        <input
+                                                            type="text"
+                                                            id="value1"
+                                                            name="value1"
+                                                            value="<%= data.infos[1].value %>"
+                                                        >
+
+
+                                                        <label for="value1">
+
+                                                            Value
+
+                                                        </label>
+
+                                                    </div>
+
+
+
+                                                    <!-- Title -->
+
+                                                    <div class="input-field col s12 m6">
+
+                                                        <input
+                                                            type="text"
+                                                            id="title1"
+                                                            name="title1"
+                                                            value="<%= data.infos[1].title %>"
+                                                        >
+
+
+                                                        <label for="title1">
+
+                                                            Title
+
+                                                        </label>
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                            <!-- ================================= -->
+                                            <!-- CARD 3 -->
+                                            <!-- ================================= -->
+
+                                            <div class="info-card">
+
+
+                                                <div class="info-card-header">
+
+
+                                                    <span class="info-card-number">
+
+                                                        3
+
+                                                    </span>
+
+
+                                                    <h6 class="info-card-title">
+
+                                                        Statistics Card 3
+
+                                                    </h6>
+
+
+                                                </div>
+
+
+
+                                                <div class="row">
+
+
+                                                    <!-- Value -->
+
+                                                    <div class="input-field col s12 m6">
+
+                                                        <input
+                                                            type="text"
+                                                            id="value2"
+                                                            name="value2"
+                                                            value="<%= data.infos[2].value %>"
+                                                        >
+
+
+                                                        <label for="value2">
+
+                                                            Value
+
+                                                        </label>
+
+                                                    </div>
+
+
+
+                                                    <!-- Title -->
+
+                                                    <div class="input-field col s12 m6">
+
+                                                        <input
+                                                            type="text"
+                                                            id="title2"
+                                                            name="title2"
+                                                            value="<%= data.infos[2].title %>"
+                                                        >
+
+
+                                                        <label for="title2">
+
+                                                            Title
+
+                                                        </label>
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </div>
+
+
+
+                                        <!-- ================================= -->
+                                        <!-- ACTIONS -->
+                                        <!-- ================================= -->
+
+                                        <div class="form-actions">
+
+
+                                            <a
+                                                href="/admin/dashboard"
+                                                class="btn-flat waves-effect"
+                                            >
+
+                                                Cancel
+
+                                            </a>
+
+
+                                            <button
+                                                type="submit"
+                                                class="btn waves-effect waves-light btn-gradient"
+                                            >
+
+                                                <i class="material-icons left">
+
+                                                    save
+
+                                                </i>
+
+                                                Save Changes
+
+                                            </button>
+
+
+                                        </div>
+
+
+                                    </form>
+
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+
+    <script>
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+
+                /*
+                 * Materialize floating labels
+                 */
+
+                if (window.M) {
+
+                    M.updateTextFields();
+
+                }
+
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

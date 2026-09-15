@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>Videos | <%= title %></title>
+
+
+    <style>
+
+        /* =========================================
+           VIDEOS PAGE
+           Same Materialize UI style as Categories
+        ========================================= */
+
+
+        /* Upload Card */
+
+        .video-form-card {
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+        }
+
+
+        .video-form-body {
+
+            padding: 25px !important;
+
+        }
+
+
+        /* Page Header */
+
+        .video-page-header {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .video-page-header h5 {
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .video-page-header p {
+
+            margin-top: 0;
+
+        }
+
+
+        /* Form Section */
+
+        .form-section {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #333;
+
+            margin: 0 0 20px;
+
+        }
+
+
+        .section-title i {
+
+            font-size: 22px;
+
+            color: #26a69a;
+
+        }
+
+
+        /* Form Fields */
+
+        .form-field {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .form-field label {
+
+            color: #555;
+
+            font-weight: 500;
+
+        }
+
+
+        /* File Upload */
+
+        .file-upload-box {
+
+            border: 2px dashed #ddd;
+
+            border-radius: 8px;
+
+            padding: 18px;
+
+            background: #fafafa;
+
+            transition: all 0.2s ease;
+
+        }
+
+
+        .file-upload-box:hover {
+
+            border-color: #26a69a;
+
+            background: #f9ffff;
+
+        }
+
+
+        .file-upload-box input[type="file"] {
+
+            display: block;
+
+            width: 100%;
+
+        }
+
+
+        .form-hint {
+
+            display: block;
+
+            color: #999;
+
+            font-size: 12px;
+
+            margin-top: 7px;
+
+        }
+
+
+        /* Upload Button */
+
+        .form-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 10px;
+
+        }
+
+
+        .btn-gradient {
+
+            background: linear-gradient(
+
+                135deg,
+
+                #7b1fa2,
+
+                #9c27b0
+
+            );
+
+            border-radius: 4px;
+
+            box-shadow: none;
+
+        }
+
+
+        .btn-gradient:hover {
+
+            box-shadow:
+
+                0 3px 8px rgba(123, 31, 162, 0.25);
+
+        }
+
+
+        /* Video List */
+
+        .video-list-section {
+
+            margin-top: 30px;
+
+        }
+
+
+        .video-card {
+
+            height: 100%;
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+            border: 1px solid #eeeeee;
+
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+        }
+
+
+        /* Creator / Thumbnail */
+
+        .video-thumbnail {
+
+            width: 100%;
+
+            height: 220px;
+
+            object-fit: cover;
+
+            display: block;
+
+            background: #f5f5f5;
+
+        }
+
+
+        .video-card-content {
+
+            padding: 18px;
+
+        }
+
+
+        .video-title {
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #333;
+
+            margin: 0 0 6px;
+
+        }
+
+
+        .video-creator {
+
+            color: #888;
+
+            font-size: 13px;
+
+            margin: 0 0 15px;
+
+        }
+
+
+        .video-player {
+
+            width: 100%;
+
+            height: 200px;
+
+            display: block;
+
+            border-radius: 6px;
+
+            background: #000;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* Delete Button */
+
+        .video-delete-button {
+
+            width: 100%;
+
+            border-radius: 4px;
+
+        }
+
+
+        /* Empty State */
+
+        .video-empty {
+
+            text-align: center;
+
+            padding: 45px 20px;
+
+            background: #fff;
+
+            border-radius: 8px;
+
+            border: 1px solid #eeeeee;
+
+        }
+
+
+        .video-empty i {
+
+            display: block;
+
+            font-size: 42px;
+
+            color: #bdbdbd;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .video-empty span {
+
+            color: #9e9e9e;
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .video-form-body {
+
+                padding: 18px !important;
+
+            }
+
+
+            .video-page-header h5 {
+
+                font-size: 20px;
+
+            }
+
+
+            .video-thumbnail {
+
+                height: 200px;
+
+            }
+
+
+            .form-actions {
+
+                justify-content: flex-start;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .video-card-content {
+
+                padding: 15px;
+
+            }
+
+
+            .video-player {
+
+                height: 190px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- Breadcrumb Header -->
+
+            <div
+                class="pt-1 pb-0"
+                id="breadcrumbs-wrapper"
+            >
+
+                <div class="container">
+
+
+                    <div class="row">
+
+
+                        <!-- Messages -->
+
+                        <%- include('messages', { messages: messages }) %>
+
+
+
+                        <!-- Page Title -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Manage Videos
+
+                            </h6>
+
+                        </div>
+
+
+
+                        <!-- Breadcrumbs -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    Videos
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Page Header -->
+
+                    <div class="row video-page-header">
+
+                        <div class="col s12 m8">
+
+                            <h5 class="mt-0">
+
+                                Videos
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                Upload and manage videos displayed on the homepage
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ========================================= -->
+                    <!-- UPLOAD VIDEO -->
+                    <!-- ========================================= -->
+
+                    <div class="row">
+
+                        <div class="col s12">
+
+
+                            <div class="card video-form-card">
+
+                                <div class="card-content video-form-body">
+
+
+                                    <div class="form-section">
+
+
+                                        <h6 class="section-title">
+
+                                            <i class="material-icons">
+
+                                                video_library
+
+                                            </i>
+
+                                            Upload New Video
+
+                                        </h6>
+
+
+
+                                        <form
+                                            action="/admin/videos"
+                                            method="POST"
+                                            enctype="multipart/form-data"
+                                        >
+
+
+                                            <!-- Title + User Name -->
+
+                                            <div class="row">
+
+
+                                                <div class="input-field col s12 m6">
+
+                                                    <input
+                                                        type="text"
+                                                        id="videoTitle"
+                                                        name="title"
+                                                        required
+                                                    >
+
+
+                                                    <label for="videoTitle">
+
+                                                        Title
+
+                                                    </label>
+
+                                                </div>
+
+
+
+                                                <div class="input-field col s12 m6">
+
+                                                    <input
+                                                        type="text"
+                                                        id="userName"
+                                                        name="userName"
+                                                        required
+                                                    >
+
+
+                                                    <label for="userName">
+
+                                                        User Name
+
+                                                    </label>
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                            <!-- Thumbnail + Video -->
+
+                                            <div class="row">
+
+
+                                                <!-- Thumbnail -->
+
+                                                <div class="col s12 m6">
+
+                                                    <div class="form-field">
+
+
+                                                        <label>
+
+                                                            Thumbnail
+
+                                                        </label>
+
+
+                                                        <div class="file-upload-box">
+
+
+                                                            <input
+                                                                type="file"
+                                                                name="thumbnail"
+                                                                accept="image/*"
+                                                                required
+                                                            >
+
+
+                                                            <span class="form-hint">
+
+                                                                Upload an image to be used as the video thumbnail.
+
+                                                            </span>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <!-- Video -->
+
+                                                <div class="col s12 m6">
+
+                                                    <div class="form-field">
+
+
+                                                        <label>
+
+                                                            Video
+
+                                                        </label>
+
+
+                                                        <div class="file-upload-box">
+
+
+                                                            <input
+                                                                type="file"
+                                                                name="video"
+                                                                accept="video/mp4"
+                                                                required
+                                                            >
+
+
+                                                            <span class="form-hint">
+
+                                                                Upload an MP4 video file.
+
+                                                            </span>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                            <!-- Actions -->
+
+                                            <div class="form-actions">
+
+
+                                                <button
+                                                    type="submit"
+                                                    class="btn waves-effect waves-light btn-gradient"
+                                                >
+
+                                                    <i class="material-icons left">
+
+                                                        cloud_upload
+
+                                                    </i>
+
+                                                    Upload Video
+
+                                                </button>
+
+
+                                            </div>
+
+
+                                        </form>
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ========================================= -->
+                    <!-- VIDEO LIST -->
+                    <!-- ========================================= -->
+
+                    <div class="row video-list-section">
+
+
+                        <div class="col s12 m8">
+
+                            <h5 class="mt-0">
+
+                                All Videos
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                View and manage homepage videos
+
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="row">
+
+
+                        <% if (!videos || videos.length === 0) { %>
+
+
+                            <div class="col s12">
+
+
+                                <div class="video-empty">
+
+
+                                    <i class="material-icons">
+
+                                        video_library
+
+                                    </i>
+
+
+                                    <span>
+
+                                        No videos found
+
+                                    </span>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        <% } else { %>
+
+
+
+                            <% videos.forEach(function(video) { %>
+
+
+                                <div class="col s12 m6 l4">
+
+                                    <div class="card video-card">
+
+
+                                        <!-- Thumbnail -->
+
+                                        <img
+                                            class="video-thumbnail"
+                                            src="<%= video.creatorImage %>"
+                                            onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22220%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22600%22 height=%22220%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E'"
+                                            alt="<%= video.title %>"
+                                        >
+
+
+
+                                        <div class="video-card-content">
+
+
+                                            <!-- Title -->
+
+                                            <h6 class="video-title">
+
+                                                <%= video.title %>
+
+                                            </h6>
+
+
+
+                                            <!-- Creator -->
+
+                                            <p class="video-creator">
+
+                                                <i
+                                                    class="material-icons"
+                                                    style="
+                                                        font-size:16px;
+                                                        vertical-align:middle;
+                                                        margin-right:3px;
+                                                    "
+                                                >
+
+                                                    person
+
+                                                </i>
+
+                                                <%= video.creatorName %>
+
+                                            </p>
+
+
+
+                                            <!-- Video -->
+
+                                            <video
+                                                class="video-player"
+                                                controls
+                                            >
+
+                                                <source
+                                                    src="<%= video.video %>"
+                                                    type="video/mp4"
+                                                >
+
+                                                Your browser does not support the video tag.
+
+                                            </video>
+
+
+
+                                            <!-- Delete -->
+
+                                            <form
+                                                action="/admin/videos/delete/<%= video._id %>"
+                                                method="POST"
+                                                onsubmit="return confirm('Delete this video? This cannot be undone.');"
+                                            >
+
+                                                <button
+                                                    type="submit"
+                                                    class="btn red waves-effect waves-light video-delete-button"
+                                                >
+
+                                                    <i class="material-icons left">
+
+                                                        delete
+
+                                                    </i>
+
+                                                    Delete Video
+
+                                                </button>
+
+                                            </form>
+
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+
+                            <% }) %>
+
+
+                        <% } %>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+
+    <script>
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+
+                /*
+                 * Materialize floating labels
+                 */
+
+                if (window.M) {
+
+                    M.updateTextFields();
+
+                }
+
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

@@ -11,7 +11,7 @@ exports.listFaqs = async (req, res) => {
       createdAt: -1,
     });
 
-    res.render("admin/faqs/index", {
+    res.render("faqs", {
     title: "FAQs",
     active: "faqs",
     faqs,
@@ -34,7 +34,7 @@ exports.listFaqs = async (req, res) => {
 
 exports.addFaqPage = (req, res) => {
 
-res.render("admin/faqs/add", {
+res.render("faqs_add", {
     title: "Add FAQ",
     active: "faqs",
 });
@@ -69,7 +69,7 @@ exports.addFaq = async (req, res) => {
 
     req.flash("success", "FAQ added successfully.");
 
-    res.redirect("/admin/faqs");
+    res.redirect("faqs");
 
   } catch (error) {
 
@@ -77,7 +77,7 @@ exports.addFaq = async (req, res) => {
 
     req.flash("error", "Unable to add FAQ.");
 
-    res.redirect("/admin/faqs/add");
+    res.redirect("faqs_add");
 
   }
 
@@ -97,11 +97,11 @@ exports.editFaqPage = async (req, res) => {
 
       req.flash("error", "FAQ not found");
 
-      return res.redirect("/admin/faqs");
+      return res.redirect("faqs");
 
     }
 
-    res.render("admin/faqs/edit", {
+    res.render("faqs_edit", {
     title: "Edit FAQ",
     active: "faqs",
     faq,
@@ -113,7 +113,7 @@ exports.editFaqPage = async (req, res) => {
 
     req.flash("error", "Something went wrong");
 
-    res.redirect("/admin/faqs");
+    res.redirect("faqs");
 
   }
 
@@ -160,7 +160,7 @@ exports.updateFaq = async (req, res) => {
 
     req.flash("success", "FAQ updated successfully.");
 
-    res.redirect("/admin/faqs");
+    res.redirect("faqs");
 
   } catch (error) {
 
@@ -168,7 +168,7 @@ exports.updateFaq = async (req, res) => {
 
     req.flash("error", "Unable to update FAQ.");
 
-    res.redirect("/admin/faqs");
+    res.redirect("faqs");
 
   }
 
@@ -187,7 +187,7 @@ exports.deleteFaq = async (req, res) => {
 
     req.flash("success", "FAQ deleted successfully.");
 
-    res.redirect("/admin/faqs");
+    res.redirect("faqs");
 
   } catch (error) {
 
@@ -195,7 +195,7 @@ exports.deleteFaq = async (req, res) => {
 
     req.flash("error", "Unable to delete FAQ.");
 
-    res.redirect("/admin/faqs");
+    res.redirect("faqs");
 
   }
 

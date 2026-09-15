@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+  <%- include('_layouts/head') %>
+
+  <title>Coupons | <%= title %></title>
+
+  <!-- DataTables CSS -->
+
+  <link rel="stylesheet" type="text/css" href="/app-assets/vendors/data-tables/css/jquery.dataTables.min.css">
+
+  <link rel="stylesheet" type="text/css" href="/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css">
+
+  <link rel="stylesheet" type="text/css" href="/app-assets/vendors/data-tables/css/select.dataTables.min.css">
+
+  <link rel="stylesheet" type="text/css" href="/app-assets/css/pages/data-tables.css">
+
+
+  <style>
+    /* =========================================
+           COUPONS PAGE
+           Same UI style as Occasion page
+        ========================================= */
+
+    table tr td,
+    table tr th {
+
+      text-align: center;
+
+      vertical-align: middle !important;
+
+      padding: 10px 8px !important;
+
+    }
+
+
+    /* Coupon Code */
+
+    .coupon-code {
+
+      font-weight: 600;
+
+      color: #333;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.5px;
+
+    }
+
+
+    /* Discount */
+
+    .coupon-discount {
+
+      font-weight: 600;
+
+      color: #424242;
+
+    }
+
+
+    /* Minimum Order */
+
+    .coupon-min-order {
+
+      font-weight: 500;
+
+      color: #555;
+
+    }
+
+
+    /* Expiry */
+
+    .coupon-expiry {
+
+      color: #555;
+
+      font-size: 13px;
+
+    }
+
+
+    /* Usage */
+
+    .coupon-usage {
+
+      font-weight: 500;
+
+      color: #555;
+
+    }
+
+
+    /* Status */
+
+    .coupon-status {
+
+      padding: 16px 12px;
+
+      border-radius: 20px;
+
+      font-size: 0.8rem;
+
+      font-weight: 600;
+
+      display: inline-block;
+
+      text-transform: capitalize;
+
+      color: #fff;
+
+    }
+
+
+    .coupon-status-active {
+
+      background: #16a34a;
+
+    }
+
+
+    .coupon-status-disabled {
+
+      background: #757575;
+
+    }
+
+
+    /* Actions */
+
+    .coupon-actions {
+
+      display: flex;
+
+      gap: 6px;
+
+      justify-content: center;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+    }
+
+
+    .coupon-actions form {
+
+      margin: 0;
+
+    }
+
+
+    /* Add Coupon */
+
+    .coupon-add-wrapper {
+
+      display: flex;
+
+      justify-content: flex-end;
+
+      padding: 6px 0;
+
+      margin-bottom: 5px;
+
+    }
+
+
+    /* Empty */
+
+    .coupon-empty {
+
+      text-align: center !important;
+
+      padding: 30px !important;
+
+    }
+
+
+    .coupon-empty i {
+
+      display: block;
+
+      font-size: 36px;
+
+      color: #bdbdbd;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .coupon-empty span {
+
+      color: #9e9e9e;
+
+    }
+
+
+    /* Row hover */
+
+    tr.coupon-row {
+
+      cursor: default;
+
+    }
+
+
+    tr.coupon-row:hover {
+
+      background: #f5f5f5;
+
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 768px) {
+
+      .coupon-add-wrapper {
+
+        justify-content: flex-start;
+
+      }
+
+
+      table {
+
+        min-width: 950px;
+
+      }
+
+    }
+  </style>
+
+</head>
+
+
+<body class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns" data-open="click" data-menu="vertical-dark-menu" data-col="2-columns">
+
+
+  <!-- SIDEBAR -->
+
+  <%- include('_layouts/sidenavbar') %>
+
+
+  <!-- MAIN -->
+
+  <div id="main">
+
+    <div class="row">
+
+
+      <!-- PAGE HEADER -->
+
+      <div id="breadcrumbs-wrapper" class="category-page-header">
+
+        <div class="container">
+
+          <div class="row">
+
+
+            <!-- Page Title -->
+
+            <div class="col s12 m6 l6">
+
+              <h6 class="breadcrumbs-title">
+
+                Manage Coupons
+
+              </h6>
+
+            </div>
+
+
+            <!-- Breadcrumb -->
+
+            <div class="col s12 m6 l6 right-align-md" style="margin-top:-10px;">
+
+              <ol class="breadcrumbs mb-0">
+
+                <li class="breadcrumb-item">
+
+                  <a href="/admin/dashboard">
+
+                    Dashboard
+
+                  </a>
+
+                </li>
+
+
+                <li class="breadcrumb-item active">
+
+                  Coupons
+
+                </li>
+
+              </ol>
+
+            </div>
+
+          </div>
+
+
+          <!-- ADD COUPON -->
+
+          <div class="coupon-add-wrapper">
+
+            <a class="btn btn-add btn-breadcrumbs white-text" href="/admin/coupons/add">
+
+              + Add Coupon
+
+            </a>
+
+          </div>
+
+
+          <!-- CARD HEADER -->
+
+          <div class="row">
+
+            <div class="col s12 m6">
+
+              <h5 class="mt-0">
+
+                All Coupons
+
+              </h5>
+
+
+              <p class="grey-text">
+
+                View and manage your discount coupons
+
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- MESSAGES -->
+
+          <%- include('messages', { messages: messages }) %>
+
+
+          <!-- MAIN CONTENT -->
+
+          <div class="col s12">
+
+            <div class="container">
+
+              <div class="section section-data-tables">
+
+                <div class="row">
+
+                  <div class="col s12">
+
+
+                    <div class="card">
+
+                      <div class="card-content">
+
+
+                        <!-- TABLE -->
+
+                        <div class="row">
+
+                          <div class="col s12 overflow">
+
+
+                            <table id="page-length-option" class="display">
+
+                              <thead>
+
+                                <tr>
+
+                                  <th>Sr</th>
+
+                                  <th>Code</th>
+
+                                  <th>Discount</th>
+
+                                  <th>Min Order</th>
+
+                                  <th>Expiry</th>
+
+                                  <th>Usage</th>
+
+                                  <th>Status</th>
+
+                                  <th>Actions</th>
+
+                                </tr>
+
+                              </thead>
+
+
+                              <tbody>
+
+
+                                <% if (!coupons || coupons.length === 0) { %>
+
+                                <tr>
+
+                                  <td colspan="8" class="coupon-empty">
+
+                                    <i class="material-icons">
+
+                                      local_offer
+
+                                    </i>
+
+
+                                    <span>
+
+                                      No coupons found
+
+                                    </span>
+
+                                  </td>
+
+                                </tr>
+
+                                <% } else { %>
+
+
+                                <% coupons.forEach((c, index) => { %>
+
+                                <tr class="coupon-row">
+
+
+                                  <!-- SR -->
+
+                                  <td>
+
+                                    <%= index + 1 %>
+
+                                  </td>
+
+
+                                  <!-- CODE -->
+
+                                  <td>
+
+                                    <span class="coupon-code">
+
+                                      <%= c.code %>
+
+                                    </span>
+
+                                  </td>
+
+
+                                  <!-- DISCOUNT -->
+
+                                  <td>
+
+                                    <span class="coupon-discount">
+
+                                      <%= c.discountType === 'percentage'
+                                                                                        ? c.discountValue + '%'
+                                                                                        : '₹' + c.discountValue
+                                                                                    %>
+
+                                    </span>
+
+                                  </td>
+
+
+                                  <!-- MIN ORDER -->
+
+                                  <td>
+
+                                    <span class="coupon-min-order">
+
+                                      ₹<%= c.minOrderAmount || 0 %>
+
+                                    </span>
+
+                                  </td>
+
+
+                                  <!-- EXPIRY -->
+
+                                  <td>
+
+                                    <span class="coupon-expiry">
+
+                                      <%= new Date(c.expiryDate).toLocaleDateString('en-IN') %>
+
+                                    </span>
+
+                                  </td>
+
+
+                                  <!-- USAGE -->
+
+                                  <td>
+
+                                    <span class="coupon-usage">
+
+                                      <%= c.usedCount || 0 %>
+                                      /
+                                      <%= c.usageLimit || 0 %>
+
+                                    </span>
+
+                                  </td>
+
+
+                                  <!-- STATUS -->
+
+                                  <td>
+
+                                    <span class="coupon-status
+                                                                                    <%= c.isActive
+                                                                                        ? 'coupon-status-active'
+                                                                                        : 'coupon-status-disabled'
+                                                                                    %>">
+
+                                      <%= c.isActive
+                                                                                        ? 'Active'
+                                                                                        : 'Disabled'
+                                                                                    %>
+
+                                    </span>
+
+                                  </td>
+
+
+                                  <!-- ACTIONS -->
+
+                                  <td>
+
+                                    <div class="coupon-actions">
+
+
+                                      <!-- ENABLE / DISABLE -->
+                                      <!-- 
+                                                                                    <form
+                                                                                        method="POST"
+                                                                                        action="/admin/coupons/<%= c._id %>/toggle-active">
+
+                                                                                        <button
+                                                                                            type="submit"
+                                                                                            class="btn-floating waves-effect waves-light
+                                                                                            <%= c.isActive ? 'orange' : 'green' %>"
+                                                                                            title="<%= c.isActive ? 'Disable' : 'Enable' %>">
+
+                                                                                            <i class="material-icons">
+
+                                                                                                <%= c.isActive
+                                                                                                    ? 'visibility_off'
+                                                                                                    : 'visibility'
+                                                                                                %>
+
+                                                                                            </i>
+
+                                                                                        </button>
+
+                                                                                    </form> -->
+
+
+                                      <!-- DELETE -->
+
+                                      <a href="#" class="btn-floating waves-effect waves-light red btn-delete-coupon" data-id="<%= c._id %>" data-code="<%= c.code %>" title="Delete">
+
+                                        <i class="material-icons">
+
+                                          delete
+
+                                        </i>
+
+                                      </a>
+
+
+                                    </div>
+
+                                  </td>
+
+
+                                </tr>
+
+                                <% }) %>
+
+
+                                <% } %>
+
+
+                              </tbody>
+
+                            </table>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- COMMON JS -->
+
+  <%- include('_layouts/commonJs') %>
+
+
+  <!-- DATATABLE JS -->
+
+  <script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+
+  <script src="/app-assets/js/scripts/data-tables.js"></script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+      /* =========================================
+         DELETE COUPON
+      ========================================= */
+
+      document
+        .querySelectorAll('.btn-delete-coupon')
+        .forEach(function(button) {
+
+
+          button.addEventListener('click', function(e) {
+
+            e.preventDefault();
+
+
+            const id =
+              this.dataset.id;
+
+
+            const code =
+              this.dataset.code;
+
+
+            if (!confirm(
+
+                'Delete coupon "' +
+                code +
+                '"? This cannot be undone.'
+
+              )) {
+
+              return;
+
+            }
+
+
+            const form =
+              document.createElement('form');
+
+
+            form.method =
+              'POST';
+
+
+            form.action =
+              '/admin/coupons/delete/' + id;
+
+
+            document.body.appendChild(form);
+
+
+            form.submit();
+
+          });
+
+        });
+
+    });
+  </script>
+
+
+</body>
+
+</html>

@@ -17,17 +17,17 @@ const deleteFile = (folder, filename) => {
 
 exports.renderOccasionList = catchAsync(async (req, res) => {
   const occasions = await Occasion.find().sort("displayOrder");
-  res.render("admin/occasions/list", { title: "Occasions", active: "occasions", occasions });
+  res.render("occasion", { title: "Occasions", active: "occasions", occasions });
 });
 
 exports.renderAddOccasionForm = (req, res) => {
-  res.render("admin/occasions/add", { title: "Add Occasion", active: "occasions" });
+  res.render("occasion_add", { title: "Add Occasion", active: "occasions" });
 };
 
 exports.createOccasionPanel = catchAsync(async (req, res) => {
   if (!req.file) {
     req.flash("error", "Occasion image is required");
-    return res.redirect("/admin/occasions/add");
+    return res.redirect("occasion_add");
   }
   await Occasion.create({
     name: req.body.name,
@@ -37,23 +37,23 @@ exports.createOccasionPanel = catchAsync(async (req, res) => {
     isActive: req.body.isActive === "on",
   });
   req.flash("success", "Occasion created successfully");
-  res.redirect("/admin/occasions");
+  res.redirect("occasion");
 });
 
 exports.renderEditOccasionForm = catchAsync(async (req, res) => {
   const occasion = await Occasion.findById(req.params.id);
   if (!occasion) {
     req.flash("error", "Occasion not found");
-    return res.redirect("/admin/occasions");
+    return res.redirect("occasion");
   }
-  res.render("admin/occasions/edit", { title: "Edit Occasion", active: "occasions", occasion });
+  res.render("occasion_edit", { title: "Edit Occasion", active: "occasions", occasion });
 });
 
 exports.updateOccasionPanel = catchAsync(async (req, res) => {
   const occasion = await Occasion.findById(req.params.id);
   if (!occasion) {
     req.flash("error", "Occasion not found");
-    return res.redirect("/admin/occasions");
+    return res.redirect("occasion");
   }
   occasion.name = req.body.name;
   occasion.description = req.body.description;
@@ -67,14 +67,14 @@ exports.updateOccasionPanel = catchAsync(async (req, res) => {
 
   await occasion.save();
   req.flash("success", "Occasion updated successfully");
-  res.redirect("/admin/occasions");
+  res.redirect("occasion");
 });
 
 exports.deleteOccasionPanel = catchAsync(async (req, res) => {
   const occasion = await Occasion.findByIdAndDelete(req.params.id);
   if (occasion) deleteFile("occasions", occasion.image);
   req.flash("success", "Occasion deleted successfully");
-  res.redirect("/admin/occasions");
+  res.redirect("occasion");
 });
 
 // ============ ADMIN API ============

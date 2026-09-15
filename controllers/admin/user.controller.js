@@ -23,7 +23,7 @@ exports.renderUserList = catchAsync(async (req, res) => {
 
   const total = await User.countDocuments(filter);
 
-  res.render("admin/users/list", {
+  res.render("customers", {
     title: "Users",
     active: "users",
     users,
@@ -39,13 +39,13 @@ exports.toggleBlockUserPanel = catchAsync(async (req, res) => {
   const user = await User.findById(req.params.id);
   if (!user) {
     req.flash("error", "User not found");
-    return res.redirect("/admin/users");
+    return res.redirect("customers");
   }
   user.isBlocked = !user.isBlocked;
   await user.save();
 
   req.flash("success", `User ${user.isBlocked ? "blocked" : "unblocked"} successfully`);
-  res.redirect("/admin/users");
+  res.redirect("customers");
 });
 
 // ============ ADMIN API ============

@@ -9,7 +9,7 @@ exports.renderDeliveryChargeList = catchAsync(async (req, res) => {
     timeSlot: 1,
   });
 
-  res.render("admin/delivery-charges/list", {
+  res.render("delivery-charges", {
     title: "Delivery Charges",
     active: "delivery-charges",
     deliveryCharges,
@@ -19,7 +19,7 @@ exports.renderDeliveryChargeList = catchAsync(async (req, res) => {
 // ================= CREATE PAGE =================
 
 exports.renderAddDeliveryCharge = (req, res) => {
-  res.render("admin/delivery-charges/create", {
+  res.render("delivery_create", {
     title: "Add Delivery Charge",
     active: "delivery-charges",
   });
@@ -43,7 +43,7 @@ exports.createDeliveryCharge = catchAsync(async (req, res) => {
 
   req.flash("success", "Delivery Charge Added Successfully");
 
-  res.redirect("/admin/delivery-charges");
+res.redirect("/admin/delivery-charges");
 });
 
 // ================= EDIT PAGE =================
@@ -57,7 +57,7 @@ exports.renderEditDeliveryCharge = catchAsync(async (req, res) => {
     return res.redirect("/admin/delivery-charges");
   }
 
-  res.render("admin/delivery-charges/edit", {
+  res.render("delivery_edit", {
     title: "Edit Delivery Charge",
     active: "delivery-charges",
     delivery,
@@ -84,7 +84,7 @@ exports.updateDeliveryCharge = catchAsync(async (req, res) => {
 
   req.flash("success", "Updated Successfully");
 
-  res.redirect("/admin/delivery-charges");
+res.redirect("/admin/delivery-charges");
 
 });
 
@@ -96,7 +96,7 @@ exports.deleteDeliveryCharge = catchAsync(async (req, res) => {
 
   req.flash("success", "Deleted Successfully");
 
-  res.redirect("/admin/delivery-charges");
+ res.redirect("/admin/delivery-charges");
 
 });
 

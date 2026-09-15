@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>FAQs | <%= title %></title>
+
+    <!-- DataTables CSS -->
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/jquery.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/select.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/css/pages/data-tables.css"
+    >
+
+    <style>
+
+        /* =========================================
+           FAQ PAGE
+           Same UI style as Categories page
+        ========================================= */
+
+        /* Table */
+
+        table tr td,
+        table tr th {
+
+            text-align: center;
+
+            vertical-align: middle !important;
+
+            padding: 10px 8px !important;
+
+        }
+
+
+        /* FAQ Question */
+
+        .faq-question {
+
+            font-weight: 600;
+
+            color: #333;
+
+              display: -webkit-box;
+    font-size: 13px;
+    line-height: 18px;
+    max-width: 250px;
+    margin: 0 auto;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+
+        }
+
+
+        /* FAQ Answer */
+
+        .faq-answer {
+
+            display: block;
+
+            color: #999;
+
+            font-size: 12px;
+
+            margin-top: 4px;
+
+            max-width: 420px;
+
+            margin-left: auto;
+
+            margin-right: auto;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        /* FAQ Order */
+
+        .faq-order {
+
+            font-weight: 500;
+
+            color: #333;
+
+        }
+
+
+        /* Status */
+
+        .faq-status {
+
+            padding: 16px 12px;
+
+            border-radius: 20px;
+
+            font-size: 0.8rem;
+
+            font-weight: 600;
+
+            display: inline-block;
+
+            text-transform: capitalize;
+
+            color: #fff;
+
+        }
+
+
+        .faq-status-active {
+
+            background: #16a34a;
+
+        }
+
+
+        .faq-status-inactive {
+
+            background: #757575;
+
+        }
+
+
+        /* Actions */
+
+        .faq-actions {
+
+            display: flex;
+
+            gap: 6px;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .faq-actions .btn-floating {
+
+            margin: 0;
+
+        }
+
+
+        /* Row hover */
+
+        tr.faq-row {
+
+            cursor: pointer;
+
+        }
+
+
+        tr.faq-row:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        td.actions-column {
+
+            cursor: default;
+
+        }
+
+
+        /* Add FAQ button */
+
+        .faq-add-wrapper {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            padding: 6px 0;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        /* Empty state */
+
+        .faq-empty {
+
+            text-align: center !important;
+
+            padding: 30px !important;
+
+        }
+
+
+        .faq-empty i {
+
+            display: block;
+
+            font-size: 36px;
+
+            color: #bdbdbd;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .faq-empty span {
+
+            color: #9e9e9e;
+
+        }
+
+
+        /* Pagination */
+
+        .faq-pagination {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .faq-pagination a {
+
+            min-width: 32px;
+
+            height: 32px;
+
+            line-height: 32px;
+
+            text-align: center;
+
+            border-radius: 3px;
+
+            color: #555;
+
+            text-decoration: none;
+
+            border: 1px solid #ddd;
+
+            font-size: 13px;
+
+        }
+
+
+        .faq-pagination a:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        .faq-pagination a.active {
+
+            background: #26a69a;
+
+            border-color: #26a69a;
+
+            color: #fff;
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .faq-add-wrapper {
+
+                justify-content: flex-start;
+
+            }
+
+
+            table {
+
+                min-width: 800px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- Breadcrumb Header -->
+
+            <div
+                class="pt-1 pb-0"
+                id="breadcrumbs-wrapper"
+            >
+
+                <div class="container">
+
+                    <div class="row">
+
+
+                        <!-- Messages -->
+
+                        <%- include('messages', { messages: messages }) %>
+
+
+
+                        <!-- Page Title -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Manage FAQs
+
+                            </h6>
+
+                        </div>
+
+
+
+                        <!-- Breadcrumbs -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    FAQs
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Add FAQ -->
+
+                    <div class="faq-add-wrapper">
+
+                        <a
+                            class="btn btn-add btn-breadcrumbs white-text"
+                            href="/admin/faqs/add"
+                        >
+
+                            + Add FAQ
+
+                        </a>
+
+                    </div>
+
+
+
+                    <!-- Card Header -->
+
+                    <div class="row">
+
+                        <div class="col s12 m6">
+
+                            <h5 class="mt-0">
+
+                                All FAQs
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                View and manage frequently asked questions
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Main Content -->
+
+                    <div class="col s12">
+
+                        <div class="container">
+
+                            <div class="section section-data-tables">
+
+                                <div class="row">
+
+                                    <div class="col s12">
+
+
+                                        <div class="card">
+
+                                            <div class="card-content">
+
+
+                                                <!-- Table -->
+
+                                                <div class="row">
+
+                                                    <div class="col s12 overflow">
+
+
+                                                        <table
+                                                            id="page-length-option"
+                                                            class="display"
+                                                        >
+
+                                                            <thead>
+
+                                                                <tr>
+
+                                                                    <th>Sr</th>
+
+                                                                    <th>Question</th>
+
+                                                                    <th>Status</th>
+
+                                                                    <th>Order</th>
+
+                                                                    <th>Actions</th>
+
+                                                                </tr>
+
+                                                            </thead>
+
+
+
+                                                            <tbody>
+
+
+                                                                <% if (!faqs || faqs.length === 0) { %>
+
+
+                                                                    <tr>
+
+                                                                        <td
+                                                                            colspan="5"
+                                                                            class="faq-empty"
+                                                                        >
+
+                                                                            <i class="material-icons">
+
+                                                                                help_outline
+
+                                                                            </i>
+
+
+                                                                            <span>
+
+                                                                                No FAQs found
+
+                                                                            </span>
+
+                                                                        </td>
+
+                                                                    </tr>
+
+
+                                                                <% } else { %>
+
+
+
+                                                                    <% faqs.forEach((faq, index) => { %>
+
+
+                                                                        <tr
+                                                                            class="faq-row"
+                                                                            data-href="/admin/faqs/edit/<%= faq._id %>"
+                                                                        >
+
+
+                                                                            <!-- Sr -->
+
+                                                                            <td>
+
+                                                                                <%= index + 1 %>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Question -->
+
+                                                                            <td>
+
+                                                                                <span class="faq-question">
+
+                                                                                    <%= faq.question %>
+
+                                                                                </span>
+
+
+                                                                                <span class="faq-answer">
+
+                                                                                    <%= faq.answer ? faq.answer.substring(0, 80) : '' %><%= faq.answer && faq.answer.length > 80 ? '...' : '' %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Status -->
+
+                                                                            <td>
+
+                                                                                <span
+                                                                                    class="faq-status
+                                                                                    <%= faq.isActive
+                                                                                        ? 'faq-status-active'
+                                                                                        : 'faq-status-inactive'
+                                                                                    %>"
+                                                                                >
+
+                                                                                    <%= faq.isActive
+                                                                                        ? 'Active'
+                                                                                        : 'Inactive'
+                                                                                    %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Order -->
+
+                                                                            <td>
+
+                                                                                <span class="faq-order">
+
+                                                                                    <%= faq.order || 0 %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Actions -->
+
+                                                                            <td class="actions-column">
+
+                                                                                <div class="faq-actions">
+
+
+                                                                                    <!-- Edit -->
+
+                                                                                    <a
+                                                                                        href="/admin/faqs/edit/<%= faq._id %>"
+                                                                                        class="btn-floating waves-effect waves-light accent-2"
+                                                                                        title="Edit"
+                                                                                    >
+
+                                                                                        <i class="material-icons">
+
+                                                                                            edit
+
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+
+                                                                                    <!-- Delete -->
+
+                                                                                    <a
+                                                                                        href="#"
+                                                                                        class="btn-floating waves-effect waves-light red btn-delete-faq"
+                                                                                        data-id="<%= faq._id %>"
+                                                                                        data-question="<%= faq.question %>"
+                                                                                        title="Delete"
+                                                                                    >
+
+                                                                                        <i class="material-icons">
+
+                                                                                            delete
+
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+                                                                                </div>
+
+                                                                            </td>
+
+
+                                                                        </tr>
+
+
+                                                                    <% }) %>
+
+
+                                                                <% } %>
+
+
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <!-- Pagination -->
+
+                                                <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+
+
+                                                    <div class="faq-pagination">
+
+
+                                                        <% for (let i = 1; i <= totalPages; i++) { %>
+
+
+                                                            <a
+                                                                href="/admin/faqs?page=<%= i %>"
+                                                                class="<%= currentPage === i ? 'active' : '' %>"
+                                                            >
+
+                                                                <%= i %>
+
+                                                            </a>
+
+
+                                                        <% } %>
+
+
+                                                    </div>
+
+
+                                                <% } %>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+
+    <!-- DATATABLE JS -->
+
+    <script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+
+    <script src="/app-assets/js/scripts/data-tables.js"></script>
+
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            /*
+             * FAQ row click
+             */
+
+            document
+                .querySelectorAll('.faq-row')
+                .forEach(function (row) {
+
+
+                    row.addEventListener('click', function (e) {
+
+
+                        /*
+                         * Do not redirect when
+                         * clicking action buttons
+                         */
+
+                        if (
+
+                            e.target.closest('.actions-column') ||
+
+                            e.target.closest('a') ||
+
+                            e.target.closest('button')
+
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const href =
+                            row.getAttribute('data-href');
+
+
+                        if (href) {
+
+                            window.location.href = href;
+
+                        }
+
+                    });
+
+                });
+
+
+
+            /*
+             * Delete FAQ
+             */
+
+            document
+                .querySelectorAll('.btn-delete-faq')
+                .forEach(function (button) {
+
+
+                    button.addEventListener('click', function (e) {
+
+
+                        e.preventDefault();
+
+
+                        const id =
+                            this.dataset.id;
+
+
+                        const question =
+                            this.dataset.question;
+
+
+
+                        if (!confirm(
+
+                            'Delete FAQ "' +
+                            question +
+                            '"? This cannot be undone.'
+
+                        )) {
+
+                            return;
+
+                        }
+
+
+
+                        const form =
+                            document.createElement('form');
+
+
+                        form.method = 'POST';
+
+
+                        form.action =
+                            '/admin/faqs/delete/' + id;
+
+
+
+                        document.body.appendChild(form);
+
+
+                        form.submit();
+
+                    });
+
+                });
+
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

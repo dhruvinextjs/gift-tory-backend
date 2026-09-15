@@ -8,7 +8,7 @@ exports.getHomeInfo = async (req, res) => {
         data = await HomeInfo.create({});
     }
 
-    res.render("admin/home-info/index", {
+    res.render("home-info", {
         title: "Home Information",
         active: "home-info",
         data
@@ -36,6 +36,6 @@ exports.saveHomeInfo = async (req, res) => {
 
     req.flash("success", "Information Updated Successfully");
 
-    res.redirect("/admin/home-info");
+    res.redirect("home-info");
 
 };

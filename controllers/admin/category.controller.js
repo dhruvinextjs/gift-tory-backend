@@ -17,17 +17,17 @@ const deleteFile = (folder, filename) => {
 
 exports.renderCategoryList = catchAsync(async (req, res) => {
   const categories = await Category.find().sort("displayOrder");
-  res.render("admin/categories/list", { title: "Categories", active: "categories", categories });
+  res.render("categories", { title: "Categories", active: "categories", categories });
 });
 
 exports.renderAddCategoryForm = (req, res) => {
-  res.render("admin/categories/add", { title: "Add Category", active: "categories" });
+  res.render("categories_add", { title: "Add Category", active: "categories" });
 };
 
 exports.createCategoryPanel = catchAsync(async (req, res) => {
   if (!req.file) {
     req.flash("error", "Category image is required");
-    return res.redirect("/admin/categories/add");
+    return res.redirect("categories_add");
   }
   await Category.create({
     name: req.body.name,
@@ -46,7 +46,7 @@ exports.renderEditCategoryForm = catchAsync(async (req, res) => {
     req.flash("error", "Category not found");
     return res.redirect("/admin/categories");
   }
-  res.render("admin/categories/edit", { title: "Edit Category", active: "categories", category });
+  res.render("categories_edit", { title: "Edit Category", active: "categories", category });
 });
 
 exports.updateCategoryPanel = catchAsync(async (req, res) => {

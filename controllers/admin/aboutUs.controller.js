@@ -7,7 +7,7 @@ exports.getAboutUs = async (req, res) => {
     about = await AboutUs.create({});
   }
 
-  res.render("admin/about-us/index", {
+  res.render("about-us", {
     title: "About Us",
     active: "about",
     about,
@@ -95,5 +95,5 @@ exports.saveAboutUs = async (req, res) => {
 
   req.flash("success", "About Us Updated Successfully");
 
-  res.redirect("/admin/about-us");
+  res.redirect("about-us");
 };

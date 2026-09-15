@@ -8,8 +8,8 @@ exports.renderCareerList = catchAsync(async (req, res) => {
 
     const careers = await Career.find().sort({ createdAt: -1 });
 
-    res.render("admin/careers/index", {
-        layout: "admin/layout/main",
+    res.render("careers", {
+        // layout: "admin/layout/main",
         title: "Careers",
         active: "careers",
         adminName: req.session?.admin?.name || "Admin",
@@ -25,8 +25,8 @@ exports.renderCareerList = catchAsync(async (req, res) => {
 // ==========================
 exports.renderAddCareer = (req, res) => {
 
-    res.render("admin/careers/add", {
-        layout: "admin/layout/main",
+    res.render("career_add", {
+        // layout: "admin/layout/main",
         title: "Add Career",
         active: "careers",
         adminName: req.session?.admin?.name || "Admin",
@@ -62,7 +62,7 @@ exports.createCareer = catchAsync(async (req, res) => {
 
     req.flash("success", "Career added successfully.");
 
-    res.redirect("/admin/careers");
+    res.redirect("careers");
 
 });
 
@@ -75,11 +75,11 @@ exports.renderEditCareer = catchAsync(async (req, res) => {
 
     if (!career) {
         req.flash("error", "Career not found.");
-        return res.redirect("/admin/careers");
+        return res.redirect("careers");
     }
 
-    res.render("admin/careers/edit", {
-        layout: "admin/layout/main",
+    res.render("career_edit", {
+        // layout: "admin/layout/main",
         title: "Edit Career",
         active: "careers",
         adminName: req.session?.admin?.name || "Admin",
@@ -124,7 +124,7 @@ exports.updateCareer = catchAsync(async (req, res) => {
 
     req.flash("success", "Career updated successfully.");
 
-    res.redirect("/admin/careers");
+    res.redirect("careers");
 
 });
 
@@ -137,6 +137,6 @@ exports.deleteCareer = catchAsync(async (req, res) => {
 
     req.flash("success", "Career deleted successfully.");
 
-    res.redirect("/admin/careers");
+    res.redirect("careers");
 
 });

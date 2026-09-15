@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+    <%- include('_layouts/head') %>
+
+    <title>Products | <%= title %></title>
+
+    <link rel="stylesheet" type="text/css"
+        href="/app-assets/vendors/data-tables/css/jquery.dataTables.min.css">
+
+    <link rel="stylesheet" type="text/css"
+        href="/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css">
+
+    <link rel="stylesheet" type="text/css"
+        href="/app-assets/vendors/data-tables/css/select.dataTables.min.css">
+
+    <link rel="stylesheet" type="text/css"
+        href="/app-assets/css/pages/data-tables.css">
+
+    <style>
+        /* =========================================
+           PRODUCTS PAGE
+           Same UI style as Orders page
+        ========================================= */
+
+        table tr td,
+        table tr th {
+            text-align: center;
+            vertical-align: middle !important;
+            padding: 10px 8px !important;
+        }
+
+        /* Product image */
+        .product-table-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #eeeeee;
+            display: inline-block;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Price */
+        .product-price {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .product-old-price {
+            display: block;
+            color: #999;
+            text-decoration: line-through;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        /* Stock */
+        .stock-normal {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .stock-low {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #fff3cd;
+            color: #f57c00;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Status */
+        .product-status {
+            padding: 16px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: capitalize;
+            color: #fff;
+        }
+
+        .product-status-active {
+            background: #16a34a;
+        }
+
+        .product-status-hidden {
+            background: #757575;
+        }
+
+        /* Action buttons */
+        .product-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .product-actions .btn-floating {
+            margin: 0;
+        }
+
+        /* Row hover */
+        tr.product-row {
+            cursor: pointer;
+        }
+
+        tr.product-row:hover {
+            background: #f5f5f5;
+        }
+
+        td.actions-column {
+            cursor: default;
+        }
+
+        /* Search area */
+        .product-search-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .product-search-wrapper input {
+            width: 260px !important;
+            margin: 0 !important;
+            height: 36px !important;
+            padding: 0 12px !important;
+            border: 1px solid #ddd !important;
+            border-radius: 4px !important;
+            box-sizing: border-box !important;
+        }
+
+        .product-search-wrapper input:focus {
+            border-bottom: 1px solid #26a69a !important;
+            box-shadow: 0 1px 0 0 #26a69a !important;
+        }
+
+        .product-search-btn {
+            height: 36px;
+            line-height: 36px;
+            padding: 0 18px;
+        }
+
+        /* Add product button */
+        .product-add-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            padding: 6px 0;
+            margin-bottom: 5px;
+        }
+
+        /* Empty state */
+        .product-empty {
+            text-align: center !important;
+            padding: 30px !important;
+        }
+
+        .product-empty i {
+            display: block;
+            font-size: 36px;
+            color: #bdbdbd;
+            margin-bottom: 8px;
+        }
+
+        .product-empty span {
+            color: #9e9e9e;
+        }
+
+        /* Pagination */
+        .product-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .product-pagination a {
+            min-width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 3px;
+            color: #555;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+
+        .product-pagination a:hover {
+            background: #f5f5f5;
+        }
+
+        .product-pagination a.active {
+            background: #26a69a;
+            border-color: #26a69a;
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+
+            .product-search-wrapper {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .product-search-wrapper input {
+                width: 100% !important;
+            }
+
+            .product-add-wrapper {
+                justify-content: flex-start;
+            }
+
+            table {
+                min-width: 900px;
+            }
+        }
+    </style>
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns">
+
+    <!-- SIDEBAR -->
+    <%- include('_layouts/sidenavbar') %>
+
+
+    <!-- MAIN -->
+    <div id="main">
+
+        <div class="row">
+
+            <!-- Breadcrumb Header -->
+            <div class="pt-1 pb-0" id="breadcrumbs-wrapper">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <%- include('messages', { messages: messages }) %>
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+                                Manage Products
+                            </h6>
+
+                        </div>
+
+                        <div class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;">
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+                                    <a href="/admin/dashboard">
+                                        Dashboard
+                                    </a>
+                                </li>
+
+                                <li class="breadcrumb-item active">
+                                    Products
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Add Product -->
+                    <div class="product-add-wrapper">
+
+                        <a
+                            class="btn btn-add btn-breadcrumbs white-text"
+                            href="/admin/products/add">
+
+                            + Add Product
+
+                        </a>
+
+                    </div>
+
+
+                             <!-- Card Header -->
+                                                <div class="row">
+
+                                                    <div class="col s12 m6">
+
+                                                        <h5 class="mt-0">
+                                                            All Products
+                                                        </h5>
+
+                                                        <p class="grey-text">
+                                                            View and manage your products
+                                                        </p>
+
+                                                    </div>      
+
+                                                </div>
+
+                    <!-- Main Content -->
+                    <div class="col s12">
+
+                        <div class="container">
+
+                            <div class="section section-data-tables">
+
+                                <div class="row">
+
+                                    <div class="col s12">
+
+                                        <div class="card">
+
+                                            <div class="card-content">
+
+                                    
+
+
+                                                <!-- Table -->
+                                                <div class="row">
+
+                                                    <div class="col s12 overflow">
+
+                                                        <table
+                                                            id="page-length-option"
+                                                            class="display">
+
+                                                            <thead>
+
+                                                                <tr>
+
+                                                                    <th>Sr</th>
+
+                                                                    <th>Image</th>
+
+                                                                    <th>Name</th>
+
+                                                                    <th>Category</th>
+
+                                                                    <th>Price</th>
+
+                                                                    <th>Stock</th>
+
+                                                                    <th>Status</th>
+
+                                                                    <th>Actions</th>
+
+                                                                </tr>
+
+                                                            </thead>
+
+
+                                                            <tbody>
+
+                                                                <% if (!products || products.length === 0) { %>
+
+                                                                    <tr>
+
+                                                                        <td
+                                                                            colspan="8"
+                                                                            class="product-empty">
+
+                                                                            <i class="material-icons">
+                                                                                inventory_2
+                                                                            </i>
+
+                                                                            <span>
+                                                                                No products found
+                                                                            </span>
+
+                                                                        </td>
+
+                                                                    </tr>
+
+                                                                <% } else { %>
+
+
+                                                                    <% products.forEach((p, index) => { %>
+
+                                                                        <tr
+                                                                            class="product-row"
+                                                                            data-href="/admin/products/edit/<%= p._id %>">
+
+                                                                            <!-- Sr -->
+
+                                                                            <td>
+                                                                                <%= index + 1 %>
+                                                                            </td>
+
+
+                                                                            <!-- Image -->
+
+                                                                            <td>
+
+                                                                                <img
+                                                                                    class="product-table-image"
+                                                                                    src="/uploads/products/<%= p.images && p.images.length ? p.images[0] : '' %>"
+                                                                                    onerror="this.src='https://via.placeholder.com/50'"
+                                                                                    alt="<%= p.name %>"
+                                                                                >
+
+                                                                            </td>
+
+
+                                                                            <!-- Name -->
+
+                                                                            <td>
+
+                                                                                <span class="product-name">
+                                                                                    <%= p.name %>
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Category -->
+
+                                                                            <td>
+
+                                                                                <%= p.category
+                                                                                    ? p.category.name
+                                                                                    : 'N/A'
+                                                                                %>
+
+                                                                            </td>
+
+
+                                                                            <!-- Price -->
+
+                                                                            <td>
+
+                                                                                <span class="product-price">
+
+                                                                                    ₹<%= Number(
+                                                                                        p.discountPrice || p.price || 0
+                                                                                    ).toLocaleString('en-IN') %>
+
+                                                                                </span>
+
+
+                                                                                <% if (p.discountPrice) { %>
+
+                                                                                    <span class="product-old-price">
+
+                                                                                        ₹<%= Number(
+                                                                                            p.price || 0
+                                                                                        ).toLocaleString('en-IN') %>
+
+                                                                                    </span>
+
+                                                                                <% } %>
+
+                                                                            </td>
+
+
+                                                                            <!-- Stock -->
+
+                                                                            <td>
+
+                                                                                <% if ((p.stock || 0) <= 5) { %>
+
+                                                                                    <span class="stock-low">
+
+                                                                                        <%= p.stock || 0 %>
+
+                                                                                    </span>
+
+                                                                                <% } else { %>
+
+                                                                                    <span class="stock-normal">
+
+                                                                                        <%= p.stock %>
+
+                                                                                    </span>
+
+                                                                                <% } %>
+
+                                                                            </td>
+
+
+                                                                            <!-- Status -->
+
+                                                                            <td>
+
+                                                                                <span
+                                                                                    class="product-status
+                                                                                    <%= p.isActive
+                                                                                        ? 'product-status-active'
+                                                                                        : 'product-status-hidden'
+                                                                                    %>">
+
+                                                                                    <%= p.isActive
+                                                                                        ? 'Active'
+                                                                                        : 'Hidden'
+                                                                                    %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Actions -->
+
+                                                                            <td class="actions-column">
+
+                                                                                <div class="product-actions">
+
+
+                                                                                    <!-- View -->
+
+                                                                                    <a
+                                                                                        href="/admin/products/view/<%= p._id %>"
+                                                                                        class="btn-floating waves-effect waves-light accent-2"
+                                                                                        title="View">
+
+                                                                                        <i class="material-icons">
+                                                                                            visibility
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+                                                                                    <!-- Edit -->
+
+                                                                                    <a
+                                                                                        href="/admin/products/edit/<%= p._id %>"
+                                                                                        class="btn-floating waves-effect waves-light accent-2"
+                                                                                        title="Edit">
+
+                                                                                        <i class="material-icons">
+                                                                                            edit
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+                                                                                    <!-- Delete -->
+
+                                                                                    <a
+                                                                                        href="#"
+                                                                                        class="btn-floating waves-effect waves-light red btn-delete-product"
+                                                                                        data-id="<%= p._id %>"
+                                                                                        data-name="<%= p.name %>"
+                                                                                        title="Delete">
+
+                                                                                        <i class="material-icons">
+                                                                                            delete
+                                                                                        </i>
+
+                                                                                    </a>
+
+                                                                                </div>
+
+                                                                            </td>
+
+                                                                        </tr>
+
+                                                                    <% }) %>
+
+                                                                <% } %>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- Pagination -->
+                                                <% if (totalPages > 1) { %>
+
+                                                    <div class="product-pagination">
+
+                                                        <% for (let i = 1; i <= totalPages; i++) { %>
+
+                                                            <a
+                                                                href="/admin/products?page=<%= i %>&search=<%= search || '' %>"
+                                                                class="<%= currentPage === i ? 'active' : '' %>">
+
+                                                                <%= i %>
+
+                                                            </a>
+
+                                                        <% } %>
+
+                                                    </div>
+
+                                                <% } %>
+
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+    <%- include('_layouts/commonJs') %>
+
+
+    <!-- DATATABLE JS -->
+    <script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+
+    <script src="/app-assets/js/scripts/data-tables.js"></script>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            /*
+             * Product row click
+             */
+            document.querySelectorAll('.product-row').forEach(function (row) {
+
+                row.addEventListener('click', function (e) {
+
+                    if (
+                        e.target.closest('.actions-column') ||
+                        e.target.closest('a') ||
+                        e.target.closest('button')
+                    ) {
+                        return;
+                    }
+
+                    const href = row.getAttribute('data-href');
+
+                    if (href) {
+                        window.location.href = href;
+                    }
+
+                });
+
+            });
+
+
+            /*
+             * Delete Product
+             */
+            document.querySelectorAll('.btn-delete-product').forEach(function (button) {
+
+                button.addEventListener('click', function (e) {
+
+                    e.preventDefault();
+
+                    const id = this.dataset.id;
+                    const name = this.dataset.name;
+
+                    if (!confirm(
+                        'Delete product "' + name + '"? This cannot be undone.'
+                    )) {
+                        return;
+                    }
+
+
+                    const form = document.createElement('form');
+
+                    form.method = 'POST';
+
+                    form.action =
+                        '/admin/products/delete/' + id;
+
+
+                    document.body.appendChild(form);
+
+                    form.submit();
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -13,7 +13,7 @@ exports.getShippingPolicy = async (req, res) => {
     }
 
     res.render(
-        "admin/shipping-policy/index",
+        "shipping-policy",
         {
             title: "Shipping Policy",
             active: "shipping-policy",
@@ -48,6 +48,6 @@ exports.saveShippingPolicy = async (req, res) => {
         "Shipping Policy Updated Successfully"
     );
 
-    res.redirect("/admin/shipping-policy");
+    res.redirect("shipping-policy");
 
 };

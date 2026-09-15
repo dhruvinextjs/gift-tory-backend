@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+<%- include('_layouts/head') %>
+
+    <title>Edit Delivery Charge | <%= title %></title>
+
+    <style>
+
+        /* =========================================
+           DELIVERY CHARGE EDIT PAGE
+           Same UI style as Category / Career Edit
+        ========================================= */
+
+        .delivery-form-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .delivery-form-body {
+            padding: 30px;
+        }
+
+        .form-section {
+            background: #fff;
+            padding: 28px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid #eeeeee;
+        }
+
+        .section-title {
+            margin: 0 0 22px 0;
+            color: #424242;
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        .section-title i {
+            vertical-align: middle;
+            margin-right: 7px;
+            color: #667eea;
+        }
+
+        .required::after {
+            content: " *";
+            color: #d32f2f;
+        }
+
+        /* =========================================
+           INPUTS
+        ========================================= */
+
+        .delivery-form-body .input-field {
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+
+        .delivery-form-body input,
+        .delivery-form-body textarea,
+        .delivery-form-body select {
+            box-sizing: border-box;
+        }
+
+        .delivery-form-body input:focus,
+        .delivery-form-body textarea:focus {
+            border-bottom: 2px solid #667eea !important;
+            box-shadow: 0 1px 0 0 #667eea !important;
+        }
+
+        .delivery-form-body label {
+            color: #757575;
+        }
+
+        /* =========================================
+           SELECT
+        ========================================= */
+
+        .delivery-form-body .select-wrapper input.select-dropdown {
+            margin-bottom: 0;
+        }
+
+        /* =========================================
+           STATUS CHECKBOX
+        ========================================= */
+
+        .delivery-checkbox-field {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .delivery-checkbox-field label {
+            color: #424242;
+            font-size: 15px;
+        }
+
+        .delivery-checkbox-field label span {
+            padding-left: 30px;
+        }
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            padding-top: 10px;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(45deg, #667eea, #764ba2) !important;
+        }
+
+        .btn-gradient:hover {
+            opacity: 0.92;
+        }
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .delivery-page-header {
+            background: #fff;
+        }
+
+        .delivery-page-header .container {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        /* =========================================
+           CURRENT VALUES
+        ========================================= */
+
+        .current-value {
+            color: #757575;
+            font-size: 13px;
+            margin-top: -10px;
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 768px) {
+
+            .delivery-form-body {
+                padding: 15px;
+            }
+
+            .form-section {
+                padding: 20px 15px;
+            }
+
+            .form-actions {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns">
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- =========================================
+                 PAGE HEADER
+            ========================================== -->
+
+            <div
+                id="breadcrumbs-wrapper"
+                class="delivery-page-header">
+
+                <div class="container">
+
+                    <div class="row valign-wrapper">
+
+
+                        <div class="col s12 m8 l8">
+
+                            <h5 class="breadcrumbs-title mb-0">
+                                Edit Delivery Charge
+                            </h5>
+
+                            <p
+                                class="grey-text"
+                                style="margin: 4px 0 0;">
+
+                                Update delivery charge details
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="col s12 m4 l4 right-align-md">
+
+                            <a
+                                href="/admin/delivery-charges"
+                                class="btn gradient-45deg-purple-deep-orange pull-right btn-breadcrumbs">
+
+                                <i class="material-icons left">
+                                    arrow_back
+                                </i>
+
+                                Back to Delivery Charges
+
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 MESSAGES
+            ========================================== -->
+
+            <%- include('messages', { messages: messages }) %>
+
+
+            <!-- =========================================
+                 MAIN CONTENT
+            ========================================== -->
+
+            <div class="col s12">
+
+                <div class="container">
+
+                    <div class="section">
+
+
+                        <div class="delivery-form-card">
+
+                            <div class="delivery-form-body">
+
+
+                                <form
+                                    method="POST"
+                                    action="/admin/delivery-charges/edit/<%= delivery._id %>">
+
+
+                                    <!-- =====================================
+                                         DELIVERY INFORMATION
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+
+                                        <h5 class="section-title">
+
+                                            <i class="material-icons">
+                                                local_shipping
+                                            </i>
+
+                                            Delivery Information
+
+                                        </h5>
+
+
+                                        <div class="row">
+
+
+                                            <!-- Delivery Type -->
+
+                                            <div class="input-field col s12 m6">
+
+                                                <select
+                                                    name="deliveryType"
+                                                    id="deliveryType"
+                                                    required>
+
+                                                    <option
+                                                        value=""
+                                                        disabled>
+
+                                                        Select Delivery Type
+
+                                                    </option>
+
+                                                    <option
+                                                        value="Standard Delivery"
+                                                        <%= delivery.deliveryType === "Standard Delivery" ? "selected" : "" %>>
+
+                                                        Standard Delivery
+
+                                                    </option>
+
+                                                    <option
+                                                        value="Fixed Time Delivery"
+                                                        <%= delivery.deliveryType === "Fixed Time Delivery" ? "selected" : "" %>>
+
+                                                        Fixed Time Delivery
+
+                                                    </option>
+
+                                                    <option
+                                                        value="Early Morning Delivery"
+                                                        <%= delivery.deliveryType === "Early Morning Delivery" ? "selected" : "" %>>
+
+                                                        Early Morning Delivery
+
+                                                    </option>
+
+                                                    <option
+                                                        value="Midnight Delivery"
+                                                        <%= delivery.deliveryType === "Midnight Delivery" ? "selected" : "" %>>
+
+                                                        Midnight Delivery
+
+                                                    </option>
+
+                                                </select>
+
+                                                <label
+                                                    for="deliveryType"
+                                                    class="required">
+
+                                                    Delivery Type
+
+                                                </label>
+
+                                            </div>
+
+
+                                            <!-- Time Slot -->
+
+                                            <div class="input-field col s12 m6">
+
+                                                <input
+                                                    id="timeSlot"
+                                                    type="text"
+                                                    name="timeSlot"
+                                                    value="<%= delivery.timeSlot || '' %>"
+                                                    placeholder="Example: 10 AM - 2 PM">
+
+                                                <label
+                                                    for="timeSlot">
+
+                                                    Time Slot
+
+                                                </label>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         CHARGE DETAILS
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+
+                                        <h5 class="section-title">
+
+                                            <i class="material-icons">
+                                                payments
+                                            </i>
+
+                                            Charge Details
+
+                                        </h5>
+
+
+                                        <div class="row">
+
+
+                                            <!-- Delivery Charge -->
+
+                                            <div class="input-field col s12 m6">
+
+                                                <input
+                                                    id="deliveryCharge"
+                                                    type="number"
+                                                    name="deliveryCharge"
+                                                    value="<%= delivery.deliveryCharge %>"
+                                                    min="0"
+                                                    step="0.01"
+                                                    placeholder="Enter delivery charge"
+                                                    required>
+
+                                                <label
+                                                    for="deliveryCharge"
+                                                    class="required">
+
+                                                    Delivery Charge (₹)
+
+                                                </label>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         STATUS
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+
+                                        <h5 class="section-title">
+
+                                            <i class="material-icons">
+                                                toggle_on
+                                            </i>
+
+                                            Status
+
+                                        </h5>
+
+
+                                        <div class="delivery-checkbox-field">
+
+                                            <label>
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isActive"
+                                                    <%= delivery.isActive ? "checked" : "" %>>
+
+                                                <span>
+                                                    Active
+                                                </span>
+
+                                            </label>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         ACTIONS
+                                    ====================================== -->
+
+                                    <div class="form-actions">
+
+
+                                        <a
+                                            href="/admin/delivery-charges"
+                                            class="btn grey waves-effect waves-light">
+
+                                            Cancel
+
+                                        </a>
+
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-gradient waves-effect waves-light">
+
+                                            <i class="material-icons left">
+                                                save
+                                            </i>
+
+                                            Update Delivery Charge
+
+                                        </button>
+
+
+                                    </div>
+
+
+                                </form>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         COMMON JS
+    ========================================== -->
+
+    <%- include('_layouts/commonJs') %>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            /* =========================================
+               Materialize Select
+            ========================================= */
+
+            const selects =
+                document.querySelectorAll('select');
+
+            M.FormSelect.init(selects);
+
+
+            /* =========================================
+               Update Text Fields
+            ========================================= */
+
+            M.updateTextFields();
+
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

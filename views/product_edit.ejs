@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+    <%- include('_layouts/head') %>
+
+    <title>Edit Product - <%= product.name %> | <%= title %></title>
+
+    <style>
+        /* =========================================
+           EDIT PRODUCT PAGE
+        ========================================= */
+
+        .product-form-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-form-body {
+            padding: 30px;
+        }
+
+        .form-section {
+            background: #fff;
+            padding: 28px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid #eeeeee;
+        }
+
+        .section-title {
+            margin: 0 0 22px 0;
+            color: #424242;
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        .section-title i {
+            vertical-align: middle;
+            margin-right: 7px;
+            color: #667eea;
+        }
+
+        .required::after {
+            content: " *";
+            color: #d32f2f;
+        }
+
+        /* Inputs */
+
+        .product-form-body .input-field {
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+
+        .product-form-body input,
+        .product-form-body textarea,
+        .product-form-body select {
+            box-sizing: border-box;
+        }
+
+        .product-form-body input:focus,
+        .product-form-body textarea:focus {
+            border-bottom: 2px solid #667eea !important;
+            box-shadow: 0 1px 0 0 #667eea !important;
+        }
+
+        .product-form-body label {
+            color: #757575;
+        }
+
+        /* Select */
+
+        .product-form-body .select-wrapper input.select-dropdown:focus {
+            border-bottom: 2px solid #667eea;
+        }
+
+        /* Current images */
+
+        .current-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            min-height: 100px;
+        }
+
+        .current-image-box {
+            position: relative;
+            width: 110px;
+            height: 110px;
+        }
+
+        .current-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        /* New image preview */
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .image-preview img {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .image-upload-box {
+            background: #fafafa;
+            border: 1px dashed #bdbdbd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .image-upload-box input[type="file"] {
+            margin: 0;
+            height: auto;
+            border: none;
+            box-shadow: none;
+        }
+
+        .form-hint {
+            color: #9e9e9e;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* Flags */
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px 25px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            min-height: 38px;
+            color: #424242;
+        }
+
+        .checkbox-row span {
+            padding-left: 30px !important;
+        }
+
+        /* Bottom actions */
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            padding-top: 10px;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(45deg, #667eea, #764ba2) !important;
+        }
+
+        .btn-gradient:hover {
+            opacity: 0.92;
+        }
+
+        /* Page header */
+
+        .product-page-header {
+            background: #fff;
+        }
+
+        .product-page-header .container {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .product-form-body {
+                padding: 15px;
+            }
+
+            .form-section {
+                padding: 20px 15px;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .current-image-box,
+            .image-preview img {
+                width: 90px;
+                height: 90px;
+            }
+        }
+    </style>
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns">
+
+    <!-- SIDEBAR -->
+    <%- include('_layouts/sidenavbar') %>
+
+
+    <!-- MAIN -->
+    <div id="main">
+
+        <div class="row">
+
+            <!-- PAGE HEADER -->
+            <div id="breadcrumbs-wrapper" class="product-page-header">
+
+                <div class="container">
+
+                    <div class="row valign-wrapper">
+
+                        <div class="col s12 m8 l8">
+
+                            <h5 class="breadcrumbs-title mb-0">
+                                Edit Product
+                            </h5>
+
+                            <p class="grey-text" style="margin: 4px 0 0;">
+                                <%= product.name %>
+                            </p>
+
+                        </div>
+
+
+                        <div class="col s12 m4 l4 right-align-md">
+
+                            <a
+                                href="/admin/products"
+                                class="btn gradient-45deg-purple-deep-orange pull-right btn-breadcrumbs">
+
+                                <i class="material-icons left">arrow_back</i>
+                                Back to Products
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MESSAGES -->
+            <%- include('messages', { messages: messages }) %>
+
+
+            <!-- MAIN CONTENT -->
+            <div class="col s12">
+
+                <div class="container">
+
+                    <div class="section">
+
+                        <div class="product-form-card">
+
+                            <div class="product-form-body">
+
+                                <form
+                                    method="POST"
+                                    action="/admin/products/edit/<%= product._id %>"
+                                    enctype="multipart/form-data">
+
+
+                                    <!-- =====================================
+                                         BASIC INFORMATION
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+                                        <h5 class="section-title">
+                                            <i class="material-icons">info_outline</i>
+                                            Basic Information
+                                        </h5>
+
+
+                                        <div class="row">
+
+                                            <div class="input-field col s12 m6">
+
+                                                <input
+                                                    id="productName"
+                                                    type="text"
+                                                    name="name"
+                                                    value="<%= product.name %>"
+                                                    required>
+
+                                                <label
+                                                    for="productName"
+                                                    class="active required">
+
+                                                    Product Name
+
+                                                </label>
+
+                                            </div>
+
+
+                                            <div class="input-field col s12 m6">
+
+                                                <input
+                                                    id="sku"
+                                                    type="text"
+                                                    name="sku"
+                                                    value="<%= product.sku || '' %>">
+
+                                                <label
+                                                    for="sku"
+                                                    class="active">
+
+                                                    SKU
+
+                                                </label>
+
+                                            </div>
+
+
+                                            <div class="input-field col s12">
+
+                                                <input
+                                                    id="shortDescription"
+                                                    type="text"
+                                                    name="shortDescription"
+                                                    value="<%= product.shortDescription || '' %>">
+
+                                                <label
+                                                    for="shortDescription"
+                                                    class="active">
+
+                                                    Short Description
+
+                                                </label>
+
+                                            </div>
+
+
+                                            <div class="input-field col s12">
+
+                                                <textarea
+                                                    id="description"
+                                                    name="description"
+                                                    class="materialize-textarea"
+                                                    required><%= product.description || '' %></textarea>
+
+                                                <label
+                                                    for="description"
+                                                    class="active required">
+
+                                                    Full Description
+
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         PRICING & STOCK
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+                                        <h5 class="section-title">
+                                            <i class="material-icons">payments</i>
+                                            Pricing & Stock
+                                        </h5>
+
+
+                                        <div class="row">
+
+                                            <div class="input-field col s12 m4">
+
+                                                <input
+                                                    id="price"
+                                                    type="number"
+                                                    step="0.01"
+                                                    name="price"
+                                                    value="<%= product.price %>"
+                                                    required>
+
+                                                <label
+                                                    for="price"
+                                                    class="active required">
+
+                                                    MRP (₹)
+
+                                                </label>
+
+                                            </div>
+
+
+                                            <div class="input-field col s12 m4">
+
+                                                <input
+                                                    id="discountPrice"
+                                                    type="number"
+                                                    step="0.01"
+                                                    name="discountPrice"
+                                                    value="<%= product.discountPrice || '' %>">
+
+                                                <label
+                                                    for="discountPrice"
+                                                    class="active">
+
+                                                    Selling Price (₹)
+
+                                                </label>
+
+                                            </div>
+
+
+                                            <div class="input-field col s12 m4">
+
+                                                <input
+                                                    id="stock"
+                                                    type="number"
+                                                    name="stock"
+                                                    value="<%= product.stock %>"
+                                                    required>
+
+                                                <label
+                                                    for="stock"
+                                                    class="active required">
+
+                                                    Stock
+
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         CATEGORY & TAGS
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+                                        <h5 class="section-title">
+                                            <i class="material-icons">category</i>
+                                            Category & Tags
+                                        </h5>
+
+
+                                        <div class="row">
+
+                                            <div class="input-field col s12 m6">
+
+                                                <select
+                                                    name="category"
+                                                    required>
+
+                                                    <option value="" disabled>
+                                                        Select Category
+                                                    </option>
+
+                                                    <% categories.forEach(c => { %>
+
+                                                        <option
+                                                            value="<%= c._id %>"
+                                                            <%= String(product.category) === String(c._id)
+                                                                ? 'selected'
+                                                                : '' %>>
+
+                                                            <%= c.name %>
+
+                                                        </option>
+
+                                                    <% }) %>
+
+                                                </select>
+
+                                                <label>Category *</label>
+
+                                            </div>
+
+
+                                            <div class="input-field col s12 m6">
+
+                                                <select
+                                                    name="occasion"
+                                                    multiple>
+
+                                                    <% occasions.forEach(o => { %>
+
+                                                        <option
+                                                            value="<%= o._id %>"
+                                                            <%= (product.occasion || [])
+                                                                .map(String)
+                                                                .includes(String(o._id))
+                                                                ? 'selected'
+                                                                : '' %>>
+
+                                                            <%= o.name %>
+
+                                                        </option>
+
+                                                    <% }) %>
+
+                                                </select>
+
+                                                <label>Occasions</label>
+
+                                            </div>
+
+
+                                            <div class="input-field col s12">
+
+                                                <input
+                                                    id="tags"
+                                                    type="text"
+                                                    name="tags"
+                                                    value="<%= (product.tags || []).join(', ') %>"
+                                                    placeholder="Example: birthday, gift, personalized">
+
+                                                <label
+                                                    for="tags"
+                                                    class="active">
+
+                                                    Tags
+
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         IMAGES
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+                                        <h5 class="section-title">
+                                            <i class="material-icons">image</i>
+                                            Product Images
+                                        </h5>
+
+
+                                        <div class="input-field col s12">
+
+                                            <label
+                                                class="active"
+                                                style="position:static; display:block; margin-bottom:10px;">
+
+                                                Current Images
+
+                                            </label>
+
+
+                                            <div class="current-images">
+
+                                                <% if (product.images && product.images.length) { %>
+
+                                                    <% product.images.forEach(img => { %>
+
+                                                        <div class="current-image-box">
+
+                                                            <img
+                                                                src="/uploads/products/<%= img %>"
+                                                                alt="<%= product.name %>">
+
+                                                        </div>
+
+                                                    <% }) %>
+
+                                                <% } else { %>
+
+                                                    <span class="grey-text">
+                                                        No images available
+                                                    </span>
+
+                                                <% } %>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row" style="margin-top:25px;">
+
+                                            <div class="col s12">
+
+                                                <div class="image-upload-box">
+
+                                                    <label
+                                                        style="display:block; color:#757575; margin-bottom:10px;">
+
+                                                        Replace Images
+                                                        <span class="grey-text">
+                                                            (Optional, up to 6)
+                                                        </span>
+
+                                                    </label>
+
+                                                    <input
+                                                        id="imageInput"
+                                                        type="file"
+                                                        name="images"
+                                                        accept="image/*"
+                                                        multiple>
+
+                                                    <div class="form-hint">
+
+                                                        New uploaded images will replace all existing images.
+
+                                                    </div>
+
+                                                    <div
+                                                        class="image-preview"
+                                                        id="imagePreview">
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         PRODUCT FLAGS
+                                    ====================================== -->
+
+                                    <div class="form-section">
+
+                                        <h5 class="section-title">
+                                            <i class="material-icons">tune</i>
+                                            Product Flags
+                                        </h5>
+
+
+                                        <div class="checkbox-grid">
+
+                                            <label class="checkbox-row">
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isTrending"
+                                                    <%= product.isTrending ? 'checked' : '' %>>
+
+                                                <span>Trending</span>
+
+                                            </label>
+
+
+                                            <label class="checkbox-row">
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isFeatured"
+                                                    <%= product.isFeatured ? 'checked' : '' %>>
+
+                                                <span>Featured</span>
+
+                                            </label>
+
+
+                                            <label class="checkbox-row">
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isBestSeller"
+                                                    <%= product.isBestSeller ? 'checked' : '' %>>
+
+                                                <span>Best Seller</span>
+
+                                            </label>
+
+
+                                            <label class="checkbox-row">
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isNewArrival"
+                                                    <%= product.isNewArrival ? 'checked' : '' %>>
+
+                                                <span>New Arrival</span>
+
+                                            </label>
+
+
+                                            <label class="checkbox-row">
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isPersonalized"
+                                                    <%= product.isPersonalized ? 'checked' : '' %>>
+
+                                                <span>Personalized</span>
+
+                                            </label>
+
+
+                                            <label class="checkbox-row">
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isCorporateGift"
+                                                    <%= product.isCorporateGift ? 'checked' : '' %>>
+
+                                                <span>Corporate Gift</span>
+
+                                            </label>
+
+
+                                            <label class="checkbox-row">
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isSameDayDelivery"
+                                                    <%= product.isSameDayDelivery ? 'checked' : '' %>>
+
+                                                <span>Same Day Delivery</span>
+
+                                            </label>
+
+
+                                            <label class="checkbox-row">
+
+                                                <input
+                                                    type="checkbox"
+                                                    name="isActive"
+                                                    <%= product.isActive ? 'checked' : '' %>>
+
+                                                <span>Active</span>
+
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- =====================================
+                                         ACTIONS
+                                    ====================================== -->
+
+                                    <div class="form-actions">
+
+                                        <a
+                                            href="/admin/products"
+                                            class="btn grey waves-effect waves-light">
+
+                                            Cancel
+
+                                        </a>
+
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-gradient waves-effect waves-light">
+
+                                            <i class="material-icons left">save</i>
+
+                                            Update Product
+
+                                        </button>
+
+                                    </div>
+
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+    <%- include('_layouts/commonJs') %>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            /* Materialize Select */
+
+            const selects = document.querySelectorAll('select');
+
+            M.FormSelect.init(selects);
+
+
+            /* Textarea */
+
+            M.updateTextFields();
+
+            const textarea = document.getElementById('description');
+
+            if (textarea) {
+                M.textareaAutoResize(textarea);
+            }
+
+
+            /* Image Preview */
+
+            const imageInput = document.getElementById('imageInput');
+
+            const imagePreview = document.getElementById('imagePreview');
+
+
+            if (imageInput) {
+
+                imageInput.addEventListener('change', function () {
+
+                    imagePreview.innerHTML = '';
+
+                    const files = Array.from(this.files);
+
+
+                    if (files.length > 6) {
+
+                        M.toast({
+                            html: 'You can upload maximum 6 images.',
+                            classes: 'red rounded'
+                        });
+
+                        this.value = '';
+
+                        return;
+
+                    }
+
+
+                    files.forEach(function (file) {
+
+                        if (!file.type.startsWith('image/')) {
+                            return;
+                        }
+
+
+                        const reader = new FileReader();
+
+
+                        reader.onload = function (e) {
+
+                            const img = document.createElement('img');
+
+                            img.src = e.target.result;
+
+                            imagePreview.appendChild(img);
+
+                        };
+
+
+                        reader.readAsDataURL(file);
+
+                    });
+
+                });
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -113,7 +113,8 @@ app.get("/api/health", (req, res) => {
 app.use("/api/user", userRoutes);
 
 // Admin REST API (JWT)   -> /api/admin/*
-app.use("/admin", adminApiRoutes);
+// app.use("/admin", adminApiRoutes);
+app.use("/api/admin", adminApiRoutes);
 
 // Admin Panel (EJS, session based) -> /admin/*
 app.use("/admin", adminViewRoutes);

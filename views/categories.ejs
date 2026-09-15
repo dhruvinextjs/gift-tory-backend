@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>Categories | <%= title %></title>
+
+    <!-- DataTables CSS -->
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/jquery.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/select.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/css/pages/data-tables.css"
+    >
+
+
+    <style>
+
+        /* =========================================
+           CATEGORIES PAGE
+           Same UI style as Products page
+        ========================================= */
+
+
+        /* Table */
+
+        table tr td,
+        table tr th {
+
+            text-align: center;
+
+            vertical-align: middle !important;
+
+            padding: 10px 8px !important;
+
+        }
+
+
+        /* Category image */
+
+        .category-table-image {
+
+            width: 50px;
+
+            height: 50px;
+
+            object-fit: cover;
+
+            border-radius: 6px;
+
+            border: 1px solid #eeeeee;
+
+            display: inline-block;
+
+        }
+
+
+        /* Category name */
+
+        .category-name {
+
+            font-weight: 600;
+
+            color: #333;
+
+        }
+
+
+        /* Description */
+
+      .category-description {
+    display: -webkit-box;
+    color: #757575;
+    font-size: 13px;
+    line-height: 18px;
+    max-width: 250px;
+    margin: 0 auto;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+}
+
+
+        /* Display order */
+
+        .category-order {
+
+            font-weight: 500;
+
+            color: #333;
+
+        }
+
+
+        /* Status */
+
+        .category-status {
+
+            padding: 16px 12px;
+
+            border-radius: 20px;
+
+            font-size: 0.8rem;
+
+            font-weight: 600;
+
+            display: inline-block;
+
+            text-transform: capitalize;
+
+            color: #fff;
+
+        }
+
+
+        .category-status-active {
+
+            background: #16a34a;
+
+        }
+
+
+        .category-status-hidden {
+
+            background: #757575;
+
+        }
+
+
+        /* Actions */
+
+        .category-actions {
+
+            display: flex;
+
+            gap: 6px;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .category-actions .btn-floating {
+
+            margin: 0;
+
+        }
+
+
+        /* Row hover */
+
+        tr.category-row {
+
+            cursor: pointer;
+
+        }
+
+
+        tr.category-row:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        td.actions-column {
+
+            cursor: default;
+
+        }
+
+
+        /* Add category button */
+
+        .category-add-wrapper {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            padding: 6px 0;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        /* Empty state */
+
+        .category-empty {
+
+            text-align: center !important;
+
+            padding: 30px !important;
+
+        }
+
+
+        .category-empty i {
+
+            display: block;
+
+            font-size: 36px;
+
+            color: #bdbdbd;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .category-empty span {
+
+            color: #9e9e9e;
+
+        }
+
+
+        /* Pagination */
+
+        .category-pagination {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .category-pagination a {
+
+            min-width: 32px;
+
+            height: 32px;
+
+            line-height: 32px;
+
+            text-align: center;
+
+            border-radius: 3px;
+
+            color: #555;
+
+            text-decoration: none;
+
+            border: 1px solid #ddd;
+
+            font-size: 13px;
+
+        }
+
+
+        .category-pagination a:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        .category-pagination a.active {
+
+            background: #26a69a;
+
+            border-color: #26a69a;
+
+            color: #fff;
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .category-add-wrapper {
+
+                justify-content: flex-start;
+
+            }
+
+
+            table {
+
+                min-width: 800px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- Breadcrumb Header -->
+
+            <div
+                class="pt-1 pb-0"
+                id="breadcrumbs-wrapper"
+            >
+
+                <div class="container">
+
+                    <div class="row">
+
+
+                        <!-- Messages -->
+
+                        <%- include('messages', { messages: messages }) %>
+
+
+
+                        <!-- Page Title -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Manage Categories
+
+                            </h6>
+
+                        </div>
+
+
+
+                        <!-- Breadcrumbs -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    Categories
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Add Category -->
+
+                    <div class="category-add-wrapper">
+
+                        <a
+                            class="btn btn-add btn-breadcrumbs white-text"
+                            href="/admin/categories/add"
+                        >
+
+                            + Add Category
+
+                        </a>
+
+                    </div>
+
+
+
+                    <!-- Card Header -->
+
+                    <div class="row">
+
+                        <div class="col s12 m6">
+
+                            <h5 class="mt-0">
+
+                                All Categories
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                View and manage your product categories
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Main Content -->
+
+                    <div class="col s12">
+
+                        <div class="container">
+
+                            <div class="section section-data-tables">
+
+                                <div class="row">
+
+                                    <div class="col s12">
+
+
+                                        <div class="card">
+
+                                            <div class="card-content">
+
+
+                                                <!-- Table -->
+
+                                                <div class="row">
+
+                                                    <div class="col s12 overflow">
+
+
+                                                        <table
+                                                            id="page-length-option"
+                                                            class="display"
+                                                        >
+
+                                                            <thead>
+
+                                                                <tr>
+
+                                                                    <th>Sr</th>
+
+                                                                    <th>Image</th>
+
+                                                                    <th>Name</th>
+
+                                                                    <th>Description</th>
+
+                                                                    <th>Order</th>
+
+                                                                    <th>Status</th>
+
+                                                                    <th>Actions</th>
+
+                                                                </tr>
+
+                                                            </thead>
+
+
+
+                                                            <tbody>
+
+
+                                                                <% if (!categories || categories.length === 0) { %>
+
+
+                                                                    <tr>
+
+                                                                        <td
+                                                                            colspan="7"
+                                                                            class="category-empty"
+                                                                        >
+
+                                                                            <i class="material-icons">
+
+                                                                                category
+
+                                                                            </i>
+
+
+                                                                            <span>
+
+                                                                                No categories found
+
+                                                                            </span>
+
+                                                                        </td>
+
+                                                                    </tr>
+
+
+                                                                <% } else { %>
+
+
+
+                                                                    <% categories.forEach((c, index) => { %>
+
+
+                                                                        <tr
+                                                                            class="category-row"
+                                                                            data-href="/admin/categories/edit/<%= c._id %>"
+                                                                        >
+
+
+                                                                            <!-- Sr -->
+
+                                                                            <td>
+
+                                                                                <%= index + 1 %>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Image -->
+
+                                                                            <td>
+
+                                                                                <img
+                                                                                    class="category-table-image"
+                                                                                    src="/uploads/categories/<%= c.image || '' %>"
+                                                                                    onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23f0f0f0%22 width=%2250%22 height=%2250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2210%22%3ENo Img%3C/text%3E%3C/svg%3E'"
+                                                                                    alt="<%= c.name %>"
+                                                                                >
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Name -->
+
+                                                                            <td>
+
+                                                                                <span class="category-name">
+
+                                                                                    <%= c.name %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Description -->
+
+                                                                            <td>
+
+                                                                                <% if (c.description) { %>
+
+                                                                                    <span class="category-description">
+
+                                                                                        <%= c.description %>
+
+                                                                                    </span>
+
+                                                                                <% } else { %>
+
+                                                                                    <span class="grey-text">
+
+                                                                                        N/A
+
+                                                                                    </span>
+
+                                                                                <% } %>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Order -->
+
+                                                                            <td>
+
+                                                                                <span class="category-order">
+
+                                                                                    <%= c.displayOrder || 0 %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Status -->
+
+                                                                            <td>
+
+                                                                                <span
+                                                                                    class="category-status
+                                                                                    <%= c.isActive
+                                                                                        ? 'category-status-active'
+                                                                                        : 'category-status-hidden'
+                                                                                    %>"
+                                                                                >
+
+                                                                                    <%= c.isActive
+                                                                                        ? 'Active'
+                                                                                        : 'Hidden'
+                                                                                    %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+
+                                                                            <!-- Actions -->
+
+                                                                            <td class="actions-column">
+
+                                                                                <div class="category-actions">
+
+
+                                                                                    <!-- Edit -->
+
+                                                                                    <a
+                                                                                        href="/admin/categories/edit/<%= c._id %>"
+                                                                                        class="btn-floating waves-effect waves-light accent-2"
+                                                                                        title="Edit"
+                                                                                    >
+
+                                                                                        <i class="material-icons">
+
+                                                                                            edit
+
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+
+                                                                                    <!-- Delete -->
+
+                                                                                    <a
+                                                                                        href="#"
+                                                                                        class="btn-floating waves-effect waves-light red btn-delete-category"
+                                                                                        data-id="<%= c._id %>"
+                                                                                        data-name="<%= c.name %>"
+                                                                                        title="Delete"
+                                                                                    >
+
+                                                                                        <i class="material-icons">
+
+                                                                                            delete
+
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+                                                                                </div>
+
+                                                                            </td>
+
+
+                                                                        </tr>
+
+
+                                                                    <% }) %>
+
+
+                                                                <% } %>
+
+
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <!-- Pagination -->
+
+                                                <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+
+
+                                                    <div class="category-pagination">
+
+
+                                                        <% for (let i = 1; i <= totalPages; i++) { %>
+
+
+                                                            <a
+                                                                href="/admin/categories?page=<%= i %>"
+                                                                class="<%= currentPage === i ? 'active' : '' %>"
+                                                            >
+
+                                                                <%= i %>
+
+                                                            </a>
+
+
+                                                        <% } %>
+
+
+                                                    </div>
+
+
+                                                <% } %>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+
+    <!-- DATATABLE JS -->
+
+    <script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+
+    <script src="/app-assets/js/scripts/data-tables.js"></script>
+
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            /*
+             * Category row click
+             */
+
+            document
+                .querySelectorAll('.category-row')
+                .forEach(function (row) {
+
+
+                    row.addEventListener('click', function (e) {
+
+
+                        /*
+                         * Do not redirect when
+                         * clicking action buttons
+                         */
+
+                        if (
+
+                            e.target.closest('.actions-column') ||
+
+                            e.target.closest('a') ||
+
+                            e.target.closest('button')
+
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const href =
+                            row.getAttribute('data-href');
+
+
+                        if (href) {
+
+                            window.location.href = href;
+
+                        }
+
+                    });
+
+                });
+
+
+
+            /*
+             * Delete Category
+             */
+
+            document
+                .querySelectorAll('.btn-delete-category')
+                .forEach(function (button) {
+
+
+                    button.addEventListener('click', function (e) {
+
+
+                        e.preventDefault();
+
+
+                        const id =
+                            this.dataset.id;
+
+
+                        const name =
+                            this.dataset.name;
+
+
+
+                        if (!confirm(
+
+                            'Delete category "' +
+                            name +
+                            '"? This cannot be undone.'
+
+                        )) {
+
+                            return;
+
+                        }
+
+
+
+                        const form =
+                            document.createElement('form');
+
+
+                        form.method = 'POST';
+
+
+                        form.action =
+                            '/admin/categories/delete/' + id;
+
+
+
+                        document.body.appendChild(form);
+
+
+                        form.submit();
+
+                    });
+
+                });
+
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

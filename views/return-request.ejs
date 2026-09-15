@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>Return Requests | <%= title %></title>
+
+
+    <!-- DataTables CSS -->
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/jquery.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/select.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/css/pages/data-tables.css"
+    >
+
+
+    <style>
+
+        /* =========================================
+           RETURN REQUESTS PAGE
+           Same UI style as Categories page
+        ========================================= */
+
+
+        /* Table */
+
+        table tr td,
+        table tr th {
+
+            text-align: center;
+
+            vertical-align: middle !important;
+
+            padding: 10px 8px !important;
+
+        }
+
+
+        /* Order Number */
+
+        .return-order-number {
+
+            font-weight: 600;
+
+            color: #333;
+
+        }
+
+
+        /* Customer */
+
+        .return-customer {
+
+            font-weight: 500;
+
+            color: #333;
+
+        }
+
+
+        /* Request Type */
+
+        .return-request-type {
+
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 15px;
+
+            background: #f3e5f5;
+
+            color: #7b1fa2;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-transform: capitalize;
+
+        }
+
+
+        /* Reason */
+
+        .return-reason {
+
+             display: -webkit-box;
+    color: #757575;
+    font-size: 13px;
+    line-height: 18px;
+    max-width: 250px;
+    margin: 0 auto;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+
+        }
+
+
+        /* Date */
+
+        .return-date {
+
+            color: #666;
+
+            font-size: 13px;
+
+        }
+
+
+        /* Status */
+
+        .return-status {
+
+            padding: 7px 13px;
+
+            border-radius: 20px;
+
+            font-size: 0.8rem;
+
+            font-weight: 600;
+
+            display: inline-block;
+
+            text-transform: capitalize;
+
+            color: #fff;
+
+        }
+
+
+        .return-status-pending {
+
+            background: #f59e0b;
+
+        }
+
+
+        .return-status-approved {
+
+            background: #16a34a;
+
+        }
+
+
+        .return-status-rejected {
+
+            background: #dc2626;
+
+        }
+
+
+        .return-status-completed {
+
+            background: #2563eb;
+
+        }
+
+
+        /* Actions */
+
+        .return-actions {
+
+            display: flex;
+
+            gap: 6px;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+
+        .return-actions .btn-floating {
+
+            margin: 0;
+
+        }
+
+
+        /* Row Hover */
+
+        tr.return-row {
+
+            cursor: pointer;
+
+        }
+
+
+        tr.return-row:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        td.actions-column {
+
+            cursor: default;
+
+        }
+
+
+        /* Filter */
+
+        .return-filter-wrapper {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            padding: 6px 0;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .return-filter-form {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+
+        .return-filter-form .input-field {
+
+            margin: 0;
+
+            min-width: 180px;
+
+        }
+
+
+        .return-filter-form select {
+
+            margin: 0;
+
+        }
+
+
+        /* Empty State */
+
+        .return-empty {
+
+            text-align: center !important;
+
+            padding: 35px !important;
+
+        }
+
+
+        .return-empty i {
+
+            display: block;
+
+            font-size: 40px;
+
+            color: #bdbdbd;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .return-empty span {
+
+            color: #9e9e9e;
+
+        }
+
+
+        /* Pagination */
+
+        .return-pagination {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .return-pagination a {
+
+            min-width: 32px;
+
+            height: 32px;
+
+            line-height: 32px;
+
+            text-align: center;
+
+            border-radius: 3px;
+
+            color: #555;
+
+            text-decoration: none;
+
+            border: 1px solid #ddd;
+
+            font-size: 13px;
+
+        }
+
+
+        .return-pagination a:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        .return-pagination a.active {
+
+            background: #26a69a;
+
+            border-color: #26a69a;
+
+            color: #fff;
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .return-filter-wrapper {
+
+                justify-content: flex-start;
+
+            }
+
+
+            .return-filter-form {
+
+                width: 100%;
+
+            }
+
+
+            .return-filter-form .input-field {
+
+                width: 100%;
+
+            }
+
+
+            table {
+
+                min-width: 1000px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- Breadcrumb Header -->
+
+            <div
+                class="pt-1 pb-0"
+                id="breadcrumbs-wrapper"
+            >
+
+                <div class="container">
+
+                    <div class="row">
+
+
+                        <!-- Messages -->
+
+                        <%- include('messages', { messages: messages }) %>
+
+
+                        <!-- Page Title -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Manage Return Requests
+
+                            </h6>
+
+                        </div>
+
+
+                        <!-- Breadcrumbs -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    Return Requests
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Page Header -->
+
+                    <div class="row">
+
+                        <div class="col s12 m6">
+
+                            <h5 class="mt-0">
+
+                                All Return Requests
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                Manage customer return and replacement requests
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Status Filter -->
+
+                    <div class="return-filter-wrapper">
+
+                        <form
+                            method="GET"
+                            action="/admin/returns"
+                            class="return-filter-form"
+                        >
+
+                            <div class="input-field">
+
+                                <select
+                                    name="status"
+                                    onchange="this.form.submit()"
+                                >
+
+                                    <option
+                                        value=""
+                                        <%= !status ? "selected" : "" %>
+                                    >
+
+                                        All Status
+
+                                    </option>
+
+
+                                    <option
+                                        value="pending"
+                                        <%= status === "pending" ? "selected" : "" %>
+                                    >
+
+                                        Pending
+
+                                    </option>
+
+
+                                    <option
+                                        value="approved"
+                                        <%= status === "approved" ? "selected" : "" %>
+                                    >
+
+                                        Approved
+
+                                    </option>
+
+
+                                    <option
+                                        value="rejected"
+                                        <%= status === "rejected" ? "selected" : "" %>
+                                    >
+
+                                        Rejected
+
+                                    </option>
+
+
+                                    <option
+                                        value="completed"
+                                        <%= status === "completed" ? "selected" : "" %>
+                                    >
+
+                                        Completed
+
+                                    </option>
+
+                                </select>
+
+                                <label>
+
+                                    Filter by Status
+
+                                </label>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- Main Content -->
+
+                    <div class="col s12">
+
+                        <div class="container">
+
+                            <div class="section section-data-tables">
+
+                                <div class="row">
+
+                                    <div class="col s12">
+
+
+                                        <div class="card">
+
+                                            <div class="card-content">
+
+
+                                                <!-- Table -->
+
+                                                <div class="row">
+
+                                                    <div class="col s12 overflow">
+
+
+                                                        <table
+                                                            id="page-length-option"
+                                                            class="display"
+                                                        >
+
+                                                            <thead>
+
+                                                                <tr>
+
+                                                                    <th>#</th>
+
+                                                                    <th>Order No.</th>
+
+                                                                    <th>Customer</th>
+
+                                                                    <th>Request Type</th>
+
+                                                                    <th>Reason</th>
+
+                                                                    <th>Status</th>
+
+                                                                    <th>Date</th>
+
+                                                                    <th>Actions</th>
+
+                                                                </tr>
+
+                                                            </thead>
+
+
+                                                            <tbody>
+
+
+                                                                <% if (!requests || requests.length === 0) { %>
+
+
+                                                                    <tr>
+
+                                                                        <td
+                                                                            colspan="8"
+                                                                            class="return-empty"
+                                                                        >
+
+                                                                            <i class="material-icons">
+
+                                                                                assignment_return
+
+                                                                            </i>
+
+
+                                                                            <span>
+
+                                                                                No return requests found
+
+                                                                            </span>
+
+                                                                        </td>
+
+                                                                    </tr>
+
+
+                                                                <% } else { %>
+
+
+                                                                    <% requests.forEach(function(item, index) { %>
+
+
+                                                                        <tr
+                                                                            class="return-row"
+                                                                            data-href="/admin/returns/<%= item._id %>"
+                                                                        >
+
+
+                                                                            <!-- Sr -->
+
+                                                                            <td>
+
+                                                                                <%= (currentPage - 1) * 10 + index + 1 %>
+
+                                                                            </td>
+
+
+                                                                            <!-- Order Number -->
+
+                                                                            <td>
+
+                                                                                <span class="return-order-number">
+
+                                                                                    <%= item.order?.orderNumber || "-" %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Customer -->
+
+                                                                            <td>
+
+                                                                                <span class="return-customer">
+
+                                                                                    <%= item.user?.name || "Guest User" %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Request Type -->
+
+                                                                            <td>
+
+                                                                                <span class="return-request-type">
+
+                                                                                    <%= item.requestType || "-" %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Reason -->
+
+                                                                            <td>
+
+                                                                                <span class="return-reason">
+
+                                                                                    <%= item.reason || "-" %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Status -->
+
+                                                                            <td>
+
+
+                                                                                <% if (item.status === "pending") { %>
+
+
+                                                                                    <span class="return-status return-status-pending">
+
+                                                                                        Pending
+
+                                                                                    </span>
+
+
+                                                                                <% } else if (item.status === "approved") { %>
+
+
+                                                                                    <span class="return-status return-status-approved">
+
+                                                                                        Approved
+
+                                                                                    </span>
+
+
+                                                                                <% } else if (item.status === "rejected") { %>
+
+
+                                                                                    <span class="return-status return-status-rejected">
+
+                                                                                        Rejected
+
+                                                                                    </span>
+
+
+                                                                                <% } else if (item.status === "completed") { %>
+
+
+                                                                                    <span class="return-status return-status-completed">
+
+                                                                                        Completed
+
+                                                                                    </span>
+
+
+                                                                                <% } else { %>
+
+
+                                                                                    <span class="return-status return-status-pending">
+
+                                                                                        <%= item.status || "Unknown" %>
+
+                                                                                    </span>
+
+
+                                                                                <% } %>
+
+
+                                                                            </td>
+
+
+                                                                            <!-- Date -->
+
+                                                                            <td>
+
+                                                                                <span class="return-date">
+
+                                                                                    <%= new Date(item.createdAt).toLocaleDateString() %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Actions -->
+
+                                                                            <td class="actions-column">
+
+                                                                                <div class="return-actions">
+
+
+                                                                                    <!-- View -->
+
+                                                                                    <a
+                                                                                        href="/admin/returns/<%= item._id %>"
+                                                                                        class="btn-floating waves-effect waves-light accent-2"
+                                                                                        title="View"
+                                                                                    >
+
+                                                                                        <i class="material-icons">
+
+                                                                                            visibility
+
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+                                                                                </div>
+
+                                                                            </td>
+
+
+                                                                        </tr>
+
+
+                                                                    <% }) %>
+
+
+                                                                <% } %>
+
+
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- Pagination -->
+
+                                                <% if (totalPages > 1) { %>
+
+
+                                                    <div class="return-pagination">
+
+
+                                                        <% for (let i = 1; i <= totalPages; i++) { %>
+
+
+                                                            <a
+                                                                href="/admin/returns?page=<%= i %>&status=<%= encodeURIComponent(status || '') %>"
+                                                                class="<%= currentPage === i ? 'active' : '' %>"
+                                                            >
+
+                                                                <%= i %>
+
+                                                            </a>
+
+
+                                                        <% } %>
+
+
+                                                    </div>
+
+
+                                                <% } %>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+    <!-- DATATABLE JS -->
+
+    <script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+
+    <script src="/app-assets/js/scripts/data-tables.js"></script>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            /* =========================================
+               Materialize Select
+            ========================================= */
+
+            if (typeof M !== 'undefined') {
+
+                const selects =
+                    document.querySelectorAll('select');
+
+                M.FormSelect.init(selects);
+
+            }
+
+
+            /* =========================================
+               Return Row Click
+            ========================================= */
+
+            document
+                .querySelectorAll('.return-row')
+                .forEach(function (row) {
+
+
+                    row.addEventListener('click', function (e) {
+
+
+                        /*
+                         * Do not redirect when
+                         * clicking action buttons
+                         */
+
+                        if (
+
+                            e.target.closest('.actions-column') ||
+
+                            e.target.closest('a') ||
+
+                            e.target.closest('button')
+
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const href =
+                            row.getAttribute('data-href');
+
+
+                        if (href) {
+
+                            window.location.href = href;
+
+                        }
+
+                    });
+
+                });
+
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

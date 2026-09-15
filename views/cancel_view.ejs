@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>Cancel Request Details | <%= title %></title>
+
+
+    <style>
+
+        /* =========================================
+           CANCEL REQUEST DETAILS
+           Same UI style as Categories Add/Edit
+        ========================================= */
+
+
+        .cancel-page-header {
+            margin-bottom: 20px;
+        }
+
+
+        .cancel-page-header h5 {
+            margin-bottom: 5px;
+        }
+
+
+        .cancel-page-header p {
+            margin-top: 0;
+        }
+
+
+        /* Main Card */
+
+        .cancel-detail-card {
+
+            border-radius: 8px;
+
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .cancel-detail-body {
+
+            padding: 30px !important;
+
+        }
+
+
+        /* Section */
+
+        .detail-section {
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #333;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .section-title i {
+
+            color: #26a69a;
+
+            font-size: 22px;
+
+        }
+
+
+        /* Details */
+
+        .detail-list {
+
+            border: 1px solid #eeeeee;
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+        }
+
+
+        .detail-row {
+
+            display: flex;
+
+            align-items: stretch;
+
+            border-bottom: 1px solid #eeeeee;
+
+        }
+
+
+        .detail-row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .detail-label {
+
+            width: 220px;
+
+            min-width: 220px;
+
+            padding: 15px 18px;
+
+            background: #fafafa;
+
+            font-weight: 600;
+
+            color: #555;
+
+            font-size: 14px;
+
+        }
+
+
+        .detail-value {
+
+            flex: 1;
+
+            padding: 15px 18px;
+
+            color: #333;
+
+            font-size: 14px;
+
+            word-break: break-word;
+
+        }
+
+
+        .detail-value strong {
+
+            color: #333;
+
+        }
+
+
+        /* Order Number */
+
+        .order-number {
+
+            color: #7b1fa2;
+
+            font-weight: 600;
+
+        }
+
+
+        /* Reason */
+
+        .cancel-reason {
+
+            display: inline-block;
+
+            padding: 5px 12px;
+
+            border-radius: 15px;
+
+            background: #f3e5f5;
+
+            color: #7b1fa2;
+
+            font-weight: 600;
+
+            font-size: 12px;
+
+        }
+
+
+        /* Description */
+
+        .description-value {
+
+            line-height: 1.7;
+
+            white-space: pre-line;
+
+        }
+
+
+        /* Status */
+
+        .cancel-status {
+
+            display: inline-block;
+
+            padding: 7px 14px;
+
+            border-radius: 20px;
+
+            color: #fff;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-transform: capitalize;
+
+        }
+
+
+        .cancel-status-pending {
+
+            background: #f59e0b;
+
+        }
+
+
+        .cancel-status-approved {
+
+            background: #16a34a;
+
+        }
+
+
+        .cancel-status-rejected {
+
+            background: #dc2626;
+
+        }
+
+
+        .cancel-status-completed {
+
+            background: #2563eb;
+
+        }
+
+
+        /* Status Update Section */
+
+        .status-update-card {
+
+            border: 1px solid #eeeeee;
+
+            border-radius: 8px;
+
+            padding: 25px;
+
+            background: #fafafa;
+
+        }
+
+
+        .status-update-title {
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            color: #333;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .status-update-card .input-field {
+
+            margin-top: 0;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* Buttons */
+
+        .form-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #eeeeee;
+
+            margin-top: 25px;
+
+        }
+
+
+        .btn-gradient {
+
+            background: linear-gradient(
+                135deg,
+                #7b1fa2,
+                #ab47bc
+            ) !important;
+
+            border-radius: 4px;
+
+            box-shadow: none;
+
+        }
+
+
+        .btn-gradient:hover {
+
+            box-shadow: 0 4px 12px rgba(
+                123,
+                31,
+                162,
+                0.25
+            );
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .cancel-detail-body {
+
+                padding: 20px !important;
+
+            }
+
+
+            .detail-row {
+
+                display: block;
+
+            }
+
+
+            .detail-label {
+
+                width: 100%;
+
+                min-width: 100%;
+
+                padding: 10px 15px;
+
+                border-bottom: 1px solid #eeeeee;
+
+            }
+
+
+            .detail-value {
+
+                padding: 12px 15px;
+
+            }
+
+
+            .form-actions {
+
+                flex-wrap: wrap;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- Breadcrumb Header -->
+
+            <div
+                class="pt-1 pb-0"
+                id="breadcrumbs-wrapper"
+            >
+
+                <div class="container">
+
+                    <div class="row">
+
+
+                        <!-- Messages -->
+
+                        <%- include('messages', { messages: messages }) %>
+
+
+                        <!-- Page Title -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Cancel Request Details
+
+                            </h6>
+
+                        </div>
+
+
+                        <!-- Breadcrumbs -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/cancel-requests">
+
+                                        Cancel Requests
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    Details
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Page Header -->
+
+                    <div class="row cancel-page-header">
+
+                        <div class="col s12 m8">
+
+                            <h5 class="mt-0">
+
+                                Cancel Request Details
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                View customer request and update cancellation status
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="col s12 m4 right-align">
+
+                            <a
+                                href="/admin/cancel-requests"
+                                class="btn-flat waves-effect"
+                            >
+
+                                <i class="material-icons left">
+
+                                    arrow_back
+
+                                </i>
+
+                                Back to Requests
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Main Card -->
+
+                    <div class="row">
+
+                        <div class="col s12">
+
+                            <div class="card cancel-detail-card">
+
+                                <div class="card-content cancel-detail-body">
+
+
+                                    <!-- ========================= -->
+                                    <!-- Customer Details -->
+                                    <!-- ========================= -->
+
+                                    <div class="detail-section">
+
+                                        <h6 class="section-title">
+
+                                            <i class="material-icons">
+
+                                                person
+
+                                            </i>
+
+                                            Customer Details
+
+                                        </h6>
+
+
+                                        <div class="detail-list">
+
+
+                                            <!-- Customer -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Customer
+
+                                                </div>
+
+                                                <div class="detail-value">
+
+                                                    <%= request.user?.name || "Guest User" %>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- Email -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Email
+
+                                                </div>
+
+                                                <div class="detail-value">
+
+                                                    <%= request.user?.email || "-" %>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- Phone -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Phone
+
+                                                </div>
+
+                                                <div class="detail-value">
+
+                                                    <%= request.user?.phone || "-" %>
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- ========================= -->
+                                    <!-- Order Details -->
+                                    <!-- ========================= -->
+
+                                    <div class="detail-section">
+
+                                        <h6 class="section-title">
+
+                                            <i class="material-icons">
+
+                                                shopping_bag
+
+                                            </i>
+
+                                            Order Details
+
+                                        </h6>
+
+
+                                        <div class="detail-list">
+
+
+                                            <!-- Order Number -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Order Number
+
+                                                </div>
+
+                                                <div class="detail-value">
+
+                                                    <span class="order-number">
+
+                                                        <%= request.order?.orderNumber || "-" %>
+
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- Order Amount -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Order Amount
+
+                                                </div>
+
+                                                <div class="detail-value">
+
+                                                    ₹ <%= request.order?.totalPrice || 0 %>
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- ========================= -->
+                                    <!-- Cancel Request -->
+                                    <!-- ========================= -->
+
+                                    <div class="detail-section">
+
+                                        <h6 class="section-title">
+
+                                            <i class="material-icons">
+
+                                                cancel
+
+                                            </i>
+
+                                            Cancel Request
+
+                                        </h6>
+
+
+                                        <div class="detail-list">
+
+
+                                            <!-- Reason -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Reason
+
+                                                </div>
+
+                                                <div class="detail-value">
+
+                                                    <span class="cancel-reason">
+
+                                                        <%= request.reason || "-" %>
+
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- Description -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Description
+
+                                                </div>
+
+                                                <div class="detail-value description-value">
+
+                                                    <%= request.description || "-" %>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- Current Status -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Current Status
+
+                                                </div>
+
+                                                <div class="detail-value">
+
+
+                                                    <% if (request.status === "pending") { %>
+
+
+                                                        <span class="cancel-status cancel-status-pending">
+
+                                                            Pending
+
+                                                        </span>
+
+
+                                                    <% } else if (request.status === "approved") { %>
+
+
+                                                        <span class="cancel-status cancel-status-approved">
+
+                                                            Approved
+
+                                                        </span>
+
+
+                                                    <% } else if (request.status === "rejected") { %>
+
+
+                                                        <span class="cancel-status cancel-status-rejected">
+
+                                                            Rejected
+
+                                                        </span>
+
+
+                                                    <% } else if (request.status === "completed") { %>
+
+
+                                                        <span class="cancel-status cancel-status-completed">
+
+                                                            Completed
+
+                                                        </span>
+
+
+                                                    <% } else { %>
+
+
+                                                        <span class="cancel-status cancel-status-pending">
+
+                                                            <%= request.status || "Unknown" %>
+
+                                                        </span>
+
+
+                                                    <% } %>
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- Requested On -->
+
+                                            <div class="detail-row">
+
+                                                <div class="detail-label">
+
+                                                    Requested On
+
+                                                </div>
+
+                                                <div class="detail-value">
+
+                                                    <%= new Date(request.createdAt).toLocaleString() %>
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- ========================= -->
+                                    <!-- Update Status -->
+                                    <!-- ========================= -->
+
+                                    <div class="detail-section">
+
+                                        <h6 class="section-title">
+
+                                            <i class="material-icons">
+
+                                                update
+
+                                            </i>
+
+                                            Update Request Status
+
+                                        </h6>
+
+
+                                        <div class="status-update-card">
+
+
+                                            <div class="status-update-title">
+
+                                                Change the current status of this cancellation request
+
+                                            </div>
+
+
+                                            <form
+                                                method="POST"
+                                                action="/admin/cancel-requests/<%= request._id %>/status"
+                                            >
+
+
+                                                <div class="input-field">
+
+                                                    <select
+                                                        id="status"
+                                                        name="status"
+                                                    >
+
+                                                        <option
+                                                            value="pending"
+                                                            <%= request.status === "pending" ? "selected" : "" %>
+                                                        >
+
+                                                            Pending
+
+                                                        </option>
+
+
+                                                        <option
+                                                            value="approved"
+                                                            <%= request.status === "approved" ? "selected" : "" %>
+                                                        >
+
+                                                            Approved
+
+                                                        </option>
+
+
+                                                        <option
+                                                            value="rejected"
+                                                            <%= request.status === "rejected" ? "selected" : "" %>
+                                                        >
+
+                                                            Rejected
+
+                                                        </option>
+
+
+                                                        <option
+                                                            value="completed"
+                                                            <%= request.status === "completed" ? "selected" : "" %>
+                                                        >
+
+                                                            Completed
+
+                                                        </option>
+
+                                                    </select>
+
+                                                    <label for="status">
+
+                                                        Update Status
+
+                                                    </label>
+
+                                                </div>
+
+
+                                                <div class="form-actions">
+
+                                                    <a
+                                                        href="/admin/cancel-requests"
+                                                        class="btn-flat waves-effect"
+                                                    >
+
+                                                        Cancel
+
+                                                    </a>
+
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn waves-effect waves-light btn-gradient"
+                                                    >
+
+                                                        <i class="material-icons left">
+
+                                                            save
+
+                                                        </i>
+
+                                                        Update Status
+
+                                                    </button>
+
+                                                </div>
+
+
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            /* =========================================
+               Materialize Select
+            ========================================= */
+
+            if (typeof M !== 'undefined') {
+
+                const selects =
+                    document.querySelectorAll('select');
+
+                M.FormSelect.init(selects);
+
+                M.updateTextFields();
+
+            }
+
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

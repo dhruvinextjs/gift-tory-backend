@@ -17,11 +17,11 @@ const deleteFile = (folder, filename) => {
 
 exports.renderTestimonialList = catchAsync(async (req, res) => {
   const testimonials = await Testimonial.find().sort("displayOrder");
-  res.render("admin/testimonials/list", { title: "Testimonials", active: "testimonials", testimonials });
+  res.render("testimonials", { title: "Testimonials", active: "testimonials", testimonials });
 });
 
 exports.renderAddTestimonialForm = (req, res) => {
-  res.render("admin/testimonials/add", { title: "Add Testimonial", active: "testimonials" });
+  res.render("testimonials_add", { title: "Add Testimonial", active: "testimonials" });
 };
 
 exports.createTestimonialPanel = catchAsync(async (req, res) => {
@@ -35,23 +35,23 @@ exports.createTestimonialPanel = catchAsync(async (req, res) => {
     isActive: req.body.isActive === "on",
   });
   req.flash("success", "Testimonial created successfully");
-  res.redirect("/admin/testimonials");
+  res.redirect("testimonials");
 });
 
 exports.renderEditTestimonialForm = catchAsync(async (req, res) => {
   const testimonial = await Testimonial.findById(req.params.id);
   if (!testimonial) {
     req.flash("error", "Testimonial not found");
-    return res.redirect("/admin/testimonials");
+    return res.redirect("testimonials");
   }
-  res.render("admin/testimonials/edit", { title: "Edit Testimonial", active: "testimonials", testimonial });
+  res.render("testimonials_Edit", { title: "Edit Testimonial", active: "testimonials", testimonial });
 });
 
 exports.updateTestimonialPanel = catchAsync(async (req, res) => {
   const testimonial = await Testimonial.findById(req.params.id);
   if (!testimonial) {
     req.flash("error", "Testimonial not found");
-    return res.redirect("/admin/testimonials");
+    return res.redirect("testimonials");
   }
   testimonial.name = req.body.name;
   testimonial.designation = req.body.designation;
@@ -67,14 +67,14 @@ exports.updateTestimonialPanel = catchAsync(async (req, res) => {
 
   await testimonial.save();
   req.flash("success", "Testimonial updated successfully");
-  res.redirect("/admin/testimonials");
+  res.redirect("testimonials");
 });
 
 exports.deleteTestimonialPanel = catchAsync(async (req, res) => {
   const testimonial = await Testimonial.findByIdAndDelete(req.params.id);
   if (testimonial) deleteFile("testimonials", testimonial.image);
   req.flash("success", "Testimonial deleted successfully");
-  res.redirect("/admin/testimonials");
+  res.redirect("testimonials");
 });
 
 // ============ ADMIN API ============

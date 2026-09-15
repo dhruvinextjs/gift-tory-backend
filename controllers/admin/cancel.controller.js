@@ -61,7 +61,7 @@ exports.renderCancelRequests = catchAsync(async (req, res) => {
         .skip(skip)
         .limit(limit);
 
-    res.render("admin/cancel-requests/index", {
+    res.render("cancel-request", {
         title: "Cancel Requests",
         active: "cancel",
         requests,
@@ -81,10 +81,10 @@ exports.renderCancelRequestDetail = catchAsync(async (req, res) => {
         .populate("order");
 
     if (!request) {
-        return res.redirect("/admin/cancel-requests");
+        return res.redirect("cancel-request");
     }
 
-    res.render("admin/cancel-requests/view", {
+    res.render("cancel_view", {
         title: "Cancel Request Details",
         active: "cancel",
         request
@@ -101,6 +101,6 @@ exports.updateCancelRequestStatus = catchAsync(async (req, res) => {
         { status }
     );
 
-    res.redirect("/admin/cancel-requests/" + req.params.id);
+    res.redirect("cancel-request" + req.params.id);
 
 });

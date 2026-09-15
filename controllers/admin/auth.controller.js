@@ -20,7 +20,7 @@ exports.renderLoginPage = (req, res) => {
 };
 
 exports.renderChangePasswordPage = (req, res) => {
-  res.render("admin/change-password", {
+  res.render("change-password", {
     title: "Change Password",
     active: "change-password",
     error: req.flash("error"),
@@ -29,7 +29,7 @@ exports.renderChangePasswordPage = (req, res) => {
 };
 
 // @desc    Change admin password from Admin Panel
-// @route   POST /admin/change-password
+// @route   POST change-password
 exports.changePasswordPanel = catchAsync(async (req, res) => {
   const {
     currentPassword,
@@ -45,7 +45,7 @@ exports.changePasswordPanel = catchAsync(async (req, res) => {
   // Required fields
   if (!currentPassword || !newPassword || !confirmPassword) {
     req.flash("error", "All fields are required");
-    return res.redirect("/admin/change-password");
+    return res.redirect("change-password");
   }
 
   // Confirm password
@@ -55,7 +55,7 @@ exports.changePasswordPanel = catchAsync(async (req, res) => {
       "New password and confirm password do not match"
     );
 
-    return res.redirect("/admin/change-password");
+    return res.redirect("change-password");
   }
 
   // Minimum password length
@@ -65,7 +65,7 @@ exports.changePasswordPanel = catchAsync(async (req, res) => {
       "New password must be at least 8 characters"
     );
 
-    return res.redirect("/admin/change-password");
+    return res.redirect("change-password");
   }
 
   // Find logged-in admin using session
@@ -87,7 +87,7 @@ exports.changePasswordPanel = catchAsync(async (req, res) => {
       "Current password is incorrect"
     );
 
-    return res.redirect("/admin/change-password");
+    return res.redirect("change-password");
   }
 
   // Check if new password is same as old password
@@ -100,7 +100,7 @@ exports.changePasswordPanel = catchAsync(async (req, res) => {
       "New password must be different from current password"
     );
 
-    return res.redirect("/admin/change-password");
+    return res.redirect("change-password");
   }
 
   // Update password
@@ -113,7 +113,7 @@ exports.changePasswordPanel = catchAsync(async (req, res) => {
     "Password changed successfully"
   );
 
-  return res.redirect("/admin/change-password");
+  return res.redirect("change-password");
 });
 
 // @desc    Handle login form submission (session based)

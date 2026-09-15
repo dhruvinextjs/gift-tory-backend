@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+
+    <%- include('_layouts/head') %>
+
+    <title>Delivery Charges | <%= title %></title>
+
+
+    <!-- DataTables CSS -->
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/jquery.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/vendors/data-tables/css/select.dataTables.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/app-assets/css/pages/data-tables.css"
+    >
+
+
+    <style>
+
+        /* =========================================
+           DELIVERY CHARGES PAGE
+           Same UI style as Categories page
+        ========================================= */
+
+
+        /* Table */
+
+        table tr td,
+        table tr th {
+
+            text-align: center;
+
+            vertical-align: middle !important;
+
+            padding: 10px 8px !important;
+
+        }
+
+
+        /* Delivery Type */
+
+        .delivery-type {
+
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 15px;
+
+            background: #f3e5f5;
+
+            color: #7b1fa2;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-transform: capitalize;
+
+        }
+
+
+        /* Time Slot */
+
+        .delivery-time-slot {
+
+            color: #555;
+
+            font-size: 13px;
+
+            font-weight: 500;
+
+        }
+
+
+        /* Delivery Charge */
+
+        .delivery-charge {
+
+            color: #333;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .delivery-charge-symbol {
+
+            color: #7b1fa2;
+
+            font-weight: 700;
+
+        }
+
+
+        /* Status */
+
+        .delivery-status {
+
+            padding: 7px 13px;
+
+            border-radius: 20px;
+
+            font-size: 0.8rem;
+
+            font-weight: 600;
+
+            display: inline-block;
+
+            text-transform: capitalize;
+
+            color: #fff;
+
+        }
+
+
+        .delivery-status-active {
+
+            background: #16a34a;
+
+        }
+
+
+        .delivery-status-inactive {
+
+            background: #757575;
+
+        }
+
+
+        /* Actions */
+
+        .delivery-actions {
+
+            display: flex;
+
+            gap: 6px;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .delivery-actions .btn-floating {
+
+            margin: 0;
+
+        }
+
+
+        /* Row Hover */
+
+        tr.delivery-row {
+
+            cursor: pointer;
+
+        }
+
+
+        tr.delivery-row:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        td.actions-column {
+
+            cursor: default;
+
+        }
+
+
+        /* Add Button */
+
+        .delivery-add-wrapper {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            padding: 6px 0;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        /* Empty State */
+
+        .delivery-empty {
+
+            text-align: center !important;
+
+            padding: 30px !important;
+
+        }
+
+
+        .delivery-empty i {
+
+            display: block;
+
+            font-size: 36px;
+
+            color: #bdbdbd;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .delivery-empty span {
+
+            color: #9e9e9e;
+
+        }
+
+
+        /* Pagination */
+
+        .delivery-pagination {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .delivery-pagination a {
+
+            min-width: 32px;
+
+            height: 32px;
+
+            line-height: 32px;
+
+            text-align: center;
+
+            border-radius: 3px;
+
+            color: #555;
+
+            text-decoration: none;
+
+            border: 1px solid #ddd;
+
+            font-size: 13px;
+
+        }
+
+
+        .delivery-pagination a:hover {
+
+            background: #f5f5f5;
+
+        }
+
+
+        .delivery-pagination a.active {
+
+            background: #26a69a;
+
+            border-color: #26a69a;
+
+            color: #fff;
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .delivery-add-wrapper {
+
+                justify-content: flex-start;
+
+            }
+
+
+            table {
+
+                min-width: 800px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="vertical-layout page-header-light vertical-menu-collapsible vertical-dark-menu preload-transitions 2-columns"
+    data-open="click"
+    data-menu="vertical-dark-menu"
+    data-col="2-columns"
+>
+
+
+    <!-- SIDEBAR -->
+
+    <%- include('_layouts/sidenavbar') %>
+
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <div class="row">
+
+
+            <!-- Breadcrumb Header -->
+
+            <div
+                class="pt-1 pb-0"
+                id="breadcrumbs-wrapper"
+            >
+
+                <div class="container">
+
+                    <div class="row">
+
+
+                        <!-- Messages -->
+
+                        <%- include('messages', { messages: messages }) %>
+
+
+                        <!-- Page Title -->
+
+                        <div class="col s12 m6 l6">
+
+                            <h6 class="breadcrumbs-title">
+
+                                Manage Delivery Charges
+
+                            </h6>
+
+                        </div>
+
+
+                        <!-- Breadcrumbs -->
+
+                        <div
+                            class="col s12 m6 l6 right-align-md"
+                            style="margin-top:-10px;"
+                        >
+
+                            <ol class="breadcrumbs mb-0">
+
+                                <li class="breadcrumb-item">
+
+                                    <a href="/admin/dashboard">
+
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="breadcrumb-item active">
+
+                                    Delivery Charges
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Add Delivery Charge -->
+
+                    <div class="delivery-add-wrapper">
+
+                        <a
+                            class="btn btn-add btn-breadcrumbs white-text"
+                            href="/admin/delivery-charges/add"
+                        >
+
+                            + Add Delivery Charge
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- Page Header -->
+
+                    <div class="row">
+
+                        <div class="col s12 m6">
+
+                            <h5 class="mt-0">
+
+                                All Delivery Charges
+
+                            </h5>
+
+
+                            <p class="grey-text">
+
+                                View and manage delivery charges for different delivery options
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Main Content -->
+
+                    <div class="col s12">
+
+                        <div class="container">
+
+                            <div class="section section-data-tables">
+
+                                <div class="row">
+
+                                    <div class="col s12">
+
+
+                                        <div class="card">
+
+                                            <div class="card-content">
+
+
+                                                <!-- Table -->
+
+                                                <div class="row">
+
+                                                    <div class="col s12 overflow">
+
+
+                                                        <table
+                                                            id="page-length-option"
+                                                            class="display"
+                                                        >
+
+                                                            <thead>
+
+                                                                <tr>
+
+                                                                    <th>Sr</th>
+
+                                                                    <th>Delivery Type</th>
+
+                                                                    <th>Time Slot</th>
+
+                                                                    <th>Charge</th>
+
+                                                                    <th>Status</th>
+
+                                                                    <th>Actions</th>
+
+                                                                </tr>
+
+                                                            </thead>
+
+
+                                                            <tbody>
+
+
+                                                                <% if (!deliveryCharges || deliveryCharges.length === 0) { %>
+
+
+                                                                    <tr>
+
+                                                                        <td
+                                                                            colspan="6"
+                                                                            class="delivery-empty"
+                                                                        >
+
+                                                                            <i class="material-icons">
+
+                                                                                local_shipping
+
+                                                                            </i>
+
+
+                                                                            <span>
+
+                                                                                No delivery charges found
+
+                                                                            </span>
+
+                                                                        </td>
+
+                                                                    </tr>
+
+
+                                                                <% } else { %>
+
+
+                                                                    <% deliveryCharges.forEach((item, index) => { %>
+
+
+                                                                        <tr
+                                                                            class="delivery-row"
+                                                                            data-href="/admin/delivery-charges/edit/<%= item._id %>"
+                                                                        >
+
+
+                                                                            <!-- Sr -->
+
+                                                                            <td>
+
+                                                                                <%= index + 1 %>
+
+                                                                            </td>
+
+
+                                                                            <!-- Delivery Type -->
+
+                                                                            <td>
+
+                                                                                <span class="delivery-type">
+
+                                                                                    <%= item.deliveryType || "-" %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Time Slot -->
+
+                                                                            <td>
+
+                                                                                <span class="delivery-time-slot">
+
+                                                                                    <%= item.timeSlot || "—" %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Charge -->
+
+                                                                            <td>
+
+                                                                                <span class="delivery-charge">
+
+                                                                                    <span class="delivery-charge-symbol">
+
+                                                                                        ₹
+
+                                                                                    </span>
+
+                                                                                    <%= item.deliveryCharge || 0 %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Status -->
+
+                                                                            <td>
+
+                                                                                <span
+                                                                                    class="delivery-status
+                                                                                    <%= item.isActive
+                                                                                        ? 'delivery-status-active'
+                                                                                        : 'delivery-status-inactive'
+                                                                                    %>"
+                                                                                >
+
+                                                                                    <%= item.isActive
+                                                                                        ? 'Active'
+                                                                                        : 'Inactive'
+                                                                                    %>
+
+                                                                                </span>
+
+                                                                            </td>
+
+
+                                                                            <!-- Actions -->
+
+                                                                            <td class="actions-column">
+
+                                                                                <div class="delivery-actions">
+
+
+                                                                                    <!-- Edit -->
+
+                                                                                    <a
+                                                                                        href="/admin/delivery-charges/edit/<%= item._id %>"
+                                                                                        class="btn-floating waves-effect waves-light accent-2"
+                                                                                        title="Edit"
+                                                                                    >
+
+                                                                                        <i class="material-icons">
+
+                                                                                            edit
+
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+                                                                                    <!-- Delete -->
+
+                                                                                    <a
+                                                                                        href="#"
+                                                                                        class="btn-floating waves-effect waves-light red btn-delete-delivery"
+                                                                                        data-id="<%= item._id %>"
+                                                                                        data-type="<%= item.deliveryType || 'Delivery Charge' %>"
+                                                                                        title="Delete"
+                                                                                    >
+
+                                                                                        <i class="material-icons">
+
+                                                                                            delete
+
+                                                                                        </i>
+
+                                                                                    </a>
+
+
+                                                                                </div>
+
+                                                                            </td>
+
+
+                                                                        </tr>
+
+
+                                                                    <% }) %>
+
+
+                                                                <% } %>
+
+
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- Pagination -->
+
+                                                <% if (
+                                                    typeof totalPages !== 'undefined' &&
+                                                    totalPages > 1
+                                                ) { %>
+
+
+                                                    <div class="delivery-pagination">
+
+
+                                                        <% for (
+                                                            let i = 1;
+                                                            i <= totalPages;
+                                                            i++
+                                                        ) { %>
+
+
+                                                            <a
+                                                                href="/admin/delivery-charges?page=<%= i %>"
+                                                                class="<%= currentPage === i ? 'active' : '' %>"
+                                                            >
+
+                                                                <%= i %>
+
+                                                            </a>
+
+
+                                                        <% } %>
+
+
+                                                    </div>
+
+
+                                                <% } %>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+
+    <%- include('_layouts/commonJs') %>
+
+
+    <!-- DATATABLE JS -->
+
+    <script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+
+    <script src="/app-assets/js/scripts/data-tables.js"></script>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            /* =========================================
+               Delivery Row Click
+            ========================================= */
+
+            document
+                .querySelectorAll('.delivery-row')
+                .forEach(function (row) {
+
+
+                    row.addEventListener('click', function (e) {
+
+
+                        /*
+                         * Do not redirect when
+                         * clicking action buttons
+                         */
+
+                        if (
+
+                            e.target.closest('.actions-column') ||
+
+                            e.target.closest('a') ||
+
+                            e.target.closest('button')
+
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const href =
+                            row.getAttribute('data-href');
+
+
+                        if (href) {
+
+                            window.location.href = href;
+
+                        }
+
+                    });
+
+                });
+
+
+            /* =========================================
+               Delete Delivery Charge
+            ========================================= */
+
+            document
+                .querySelectorAll('.btn-delete-delivery')
+                .forEach(function (button) {
+
+
+                    button.addEventListener('click', function (e) {
+
+
+                        e.preventDefault();
+
+
+                        const id =
+                            this.dataset.id;
+
+
+                        const type =
+                            this.dataset.type;
+
+
+
+                        if (!confirm(
+
+                            'Delete "' +
+                            type +
+                            '" delivery charge? This cannot be undone.'
+
+                        )) {
+
+                            return;
+
+                        }
+
+
+
+                        const form =
+                            document.createElement('form');
+
+
+                        form.method = 'POST';
+
+
+                        form.action =
+                            '/admin/delivery-charges/delete/' + id;
+
+
+
+                        document.body.appendChild(form);
+
+
+                        form.submit();
+
+                    });
+
+                });
+
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>
