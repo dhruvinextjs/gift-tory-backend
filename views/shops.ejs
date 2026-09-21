@@ -421,23 +421,30 @@
 
                                                 <!-- Location -->
 
-                                                <div class="input-field col s12 m6">
+                                         <!-- Google Maps Location Link -->
 
-                                                    <input
-                                                        type="text"
-                                                        id="location"
-                                                        name="location"
-                                                        required
-                                                    >
+<div class="input-field col s12 m6">
 
-                                                    <label for="location">
+<input
+    type="text"
+    id="location"
+    name="location"
+    required
+    placeholder="Paste Google Maps location link"
+>
 
-                                                        Location
-                                                        <span class="required">*</span>
+    <label for="location">
 
-                                                    </label>
+        Google Maps Location Link
+        <span class="required">*</span>
 
-                                                </div>
+    </label>
+
+    <span class="form-hint">
+        Paste the Google Maps link of the shop location.
+    </span>
+
+</div>
 
 
                                                 <!-- Description -->
@@ -901,7 +908,32 @@
 
                                                     <span class="shop-location">
 
-                                                        <%= shop.location || 'N/A' %>
+                                                   <!-- Location -->
+
+<div class="shop-info">
+
+    <strong>Location:</strong>
+
+    <% if (shop.location) { %>
+
+        <a
+            href="<%= shop.location %>"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="shop-location"
+        >
+            Open Google Maps
+        </a>
+
+    <% } else { %>
+
+        <span class="shop-location">
+            N/A
+        </span>
+
+    <% } %>
+
+</div>
 
                                                     </span>
 
