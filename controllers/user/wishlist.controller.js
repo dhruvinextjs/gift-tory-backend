@@ -39,6 +39,12 @@ exports.addToWishlist = async (req, res) => {
     product: productId,
   });
 
+  await Product.findByIdAndUpdate(productId, {
+  $inc: {
+    wishlistCount: 1,
+  },
+});
+
   res.status(201).json({
     success: true,
 
@@ -77,21 +83,25 @@ exports.removeWishlist = async (req, res) => {
 
   const item = await Wishlist.findOneAndDelete({
     user: userId,
-
     product: productId,
   });
 
   if (!item) {
     return res.status(404).json({
       success: false,
-
       message: "Wishlist item not found",
     });
   }
 
+  // Decrease wishlist count
+  await Product.findByIdAndUpdate(productId, {
+    $inc: {
+      wishlistCount: -1,
+    },
+  });
+
   res.status(200).json({
     success: true,
-
     message: "Removed from wishlist",
   });
 };

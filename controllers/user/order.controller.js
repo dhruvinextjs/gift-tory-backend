@@ -163,6 +163,15 @@ deliverySlot: cart.deliverySlot,
     notes,
   });
 
+  // Increase orders count for trending products
+for (const item of orderItems) {
+  await Product.findByIdAndUpdate(item.product, {
+    $inc: {
+      ordersCount: item.quantity,
+    },
+  });
+}
+
   if (summary.couponCode) {
     await Coupon.findOneAndUpdate(
       {
@@ -247,6 +256,15 @@ exports.cancelOrder = catchAsync(async (req, res) => {
       $inc: { stock: item.quantity },
     });
   }
+
+  // Remove cancelled quantities from trending order count
+for (const item of order.items) {
+  await Product.findByIdAndUpdate(item.product, {
+    $inc: {
+      ordersCount: -item.quantity,
+    },
+  });
+}
 
   res
     .status(200)

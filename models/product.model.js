@@ -23,6 +23,9 @@ const productSchema = new mongoose.Schema(
     ratingsCount: { type: Number, default: 0 },
 
     tags: [{ type: String }],
+viewsCount: { type: Number, default: 0 },
+wishlistCount: { type: Number, default: 0 },
+ordersCount: { type: Number, default: 0 },
 
     isTrending: { type: Boolean, default: false },
     isFeatured: { type: Boolean, default: false },

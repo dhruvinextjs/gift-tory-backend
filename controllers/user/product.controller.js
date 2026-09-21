@@ -60,13 +60,134 @@ exports.getAllProducts = catchAsync(async (req, res) => {
 // @desc    Get single product by slug
 // @route   GET /api/user/products/:slug
 exports.getProductBySlug = catchAsync(async (req, res) => {
-  const product = await Product.findOne({ slug: req.params.slug, isActive: true })
+  let product = await Product.findOne({
+    slug: req.params.slug,
+    isActive: true,
+  })
     .populate("category", "name slug")
     .populate("occasion", "name slug");
 
-  if (!product) throw new ApiError(404, "Product not found");
+  if (!product) {
+    throw new ApiError(404, "Product not found");
+  }
 
-  res.status(200).json(new ApiResponse(200, product, "Product fetched successfully"));
+  // Increase product view count by 1
+  product = await Product.findByIdAndUpdate(
+    product._id,
+    {
+      $inc: { viewsCount: 1 },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("category", "name slug")
+    .populate("occasion", "name slug");
+
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      product,
+      "Product fetched successfully"
+    )
+  );
+});
+
+
+// @desc    Get dynamically trending products
+// @route   GET /api/user/products/trending
+// @desc    Get dynamically trending products
+// @route   GET /api/user/products/trending
+exports.getTrendingProducts = catchAsync(async (req, res) => {
+  const limit = Math.min(
+    Math.max(parseInt(req.query.limit) || 10, 1),
+    50
+  );
+
+  console.log("\n========== TRENDING PRODUCTS ==========");
+  console.log("Requested limit:", limit);
+
+  const products = await Product.aggregate([
+    {
+      $match: {
+        isActive: true,
+        stock: { $gt: 0 },
+      },
+    },
+
+    {
+      $addFields: {
+        trendingScore: {
+          $add: [
+            {
+              $multiply: [
+                { $ifNull: ["$ordersCount", 0] },
+                5,
+              ],
+            },
+            {
+              $multiply: [
+                { $ifNull: ["$wishlistCount", 0] },
+                2,
+              ],
+            },
+            { $ifNull: ["$viewsCount", 0] },
+          ],
+        },
+      },
+    },
+
+      {
+    $match: {
+      trendingScore: { $gt: 0 },
+    },
+  },
+
+
+    {
+      $sort: {
+        trendingScore: -1,
+        createdAt: -1,
+      },
+    },
+
+    {
+      $limit: limit,
+    },
+  ]);
+
+  await Product.populate(products, [
+    {
+      path: "category",
+      select: "name slug",
+    },
+    {
+      path: "occasion",
+      select: "name slug",
+    },
+  ]);
+
+  console.log("Total trending products:", products.length);
+
+  products.forEach((product, index) => {
+    console.log(
+      `${index + 1}. ${product.name}`,
+      `| Orders: ${product.ordersCount || 0}`,
+      `| Wishlist: ${product.wishlistCount || 0}`,
+      `| Views: ${product.viewsCount || 0}`,
+      `| Score: ${product.trendingScore}`
+    );
+  });
+
+  console.log("========================================\n");
+
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      products,
+      "Trending products fetched successfully"
+    )
+  );
 });
 
 // @desc    Get related products (same category)
